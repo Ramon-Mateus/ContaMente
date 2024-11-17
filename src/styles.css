@@ -2,3 +2,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .dia {
+        @apply w-1/6 h-[80vh] border p-3;
+    }
+}
