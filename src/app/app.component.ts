@@ -5,7 +5,7 @@ import { PainelDaSemanaComponent } from './componentes/painel-da-semana/painel-d
   selector: 'app-root',
   standalone: true,
   imports: [
-    PainelDaSemanaComponent
+    
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
