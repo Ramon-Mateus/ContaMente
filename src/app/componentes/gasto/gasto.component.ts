@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { Gasto } from '../../lib/types';
 import { ApiService } from '../../services/api.service';
 
@@ -11,5 +11,5 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './gasto.component.css'
 })
 export class GastoComponent {
-  
+  @Input() gasto!: Gasto;
 }
