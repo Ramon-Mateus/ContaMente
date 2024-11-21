@@ -1,4 +1,32 @@
-<div>
+<div class="flex justify-center mt-4">
+    <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class=" bg-zinc-700 rounded-md w-[40vh] p-4 text-base">
+        <div class="flex justify-between mb-3">
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" [(ngModel)]="newGasto.valor" required>
+        </div>
+        
+        <div class="flex justify-between mb-3">
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" [(ngModel)]="newGasto.descricao">
+        </div>
+
+        <div class="flex justify-between mb-3">
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" [(ngModel)]="newGasto.data" required>
+        </div>
+
+        <div class="flex justify-between mb-4">
+            <label for="categoriaId">Categoria:</label>
+            <input type="number" id="categoriaId" name="categoriaId" [(ngModel)]="newGasto.categoriaId" required>
+        </div>
+
+        <div class="flex justify-center">
+            <button class="bg-green-500 text-black px-3 py-1 rounded-md" type="submit" [disabled]="!gastoForm.form.valid">Adicionar Gasto</button>
+        </div>
+    </form>
+</div>
+
+<div class="p-5 flex flex-wrap">
     <app-gasto
         *ngFor="let gasto of gastos"
         [gasto]="gasto"

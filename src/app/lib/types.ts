@@ -1,5 +1,5 @@
 export interface Gasto {
-    id: number,
+    id?: number,
     valor: number,
     data: string,
     descricao: string,
