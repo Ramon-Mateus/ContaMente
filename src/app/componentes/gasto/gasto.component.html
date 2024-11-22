@@ -1,9 +1,9 @@
-<div class="bg-blue-400 p-2 pl-4 w-56 text-black rounded-md m-2">
+<div class="bg-zinc-700 border border-zinc-600 p-2 pl-4 w-[40em] text-zinc-300 rounded-md m-2">
     <div class="flex align-middle justify-between">
-        <p>Valor: {{ gasto.valor }}</p>
+        <p class="text-xl">R$ {{ gasto.valor }}</p>
         <i class="pi pi-trash cursor-pointer" (click)="onDelete()"></i>
     </div>
-    <p>Descrição: {{ gasto.descricao }}</p>
-    <p>Data: {{ gasto.data }}</p>
+    <p class="text-zinc-400">{{ gasto.descricao }}</p>
+    <p hidden>Data: {{ gasto.data }}</p>
     <p>CategoriaId: {{ gasto.categoriaId }}</p>
 </div>

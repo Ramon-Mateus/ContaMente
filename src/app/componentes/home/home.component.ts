@@ -1,22 +1,23 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { Gasto } from '../../lib/types';
 import { ApiService } from '../../services/api.service';
 import { GastoComponent } from '../gasto/gasto.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    GastoComponent, CommonModule, FormsModule
+    GastoComponent, CommonModule, FormsModule, InputNumberModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   gastos: Gasto[] = [];
-  newGasto: Gasto = { valor: 0, descricao: '', data: '', categoriaId: 0 };
+  newGasto: Gasto = {descricao: '', data: '', categoriaId: 0 };
 
   constructor(private apiService: ApiService) {}
 
