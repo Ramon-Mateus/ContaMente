@@ -30,5 +30,6 @@
     <app-gasto
         *ngFor="let gasto of gastos"
         [gasto]="gasto"
+        (delete)="onDeleteGasto($event)"
     ></app-gasto>
 </div>

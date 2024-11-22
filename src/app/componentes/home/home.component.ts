@@ -32,4 +32,10 @@ export class HomeComponent {
       this.newGasto = { valor: 0, descricao: '', data: '', categoriaId: 0 };
     });
   }
+
+  onDeleteGasto(id: number) {
+    this.apiService.deleteGasto(id).subscribe(() => {
+      this.gastos = this.gastos.filter(gasto => gasto.id !== id);
+    });
+  }
 }

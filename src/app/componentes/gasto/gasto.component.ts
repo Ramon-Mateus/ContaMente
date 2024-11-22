@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Gasto } from '../../lib/types';
-import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-gasto',
@@ -12,4 +11,9 @@ import { ApiService } from '../../services/api.service';
 })
 export class GastoComponent {
   @Input() gasto!: Gasto;
+  @Output() delete = new EventEmitter<number>();
+
+  onDelete() {
+    this.delete.emit(this.gasto.id);
+  }
 }
