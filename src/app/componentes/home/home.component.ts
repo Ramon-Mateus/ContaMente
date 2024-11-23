@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Gasto } from '../../lib/types';
 import { ApiService } from '../../services/api.service';
 import { GastoComponent } from '../gasto/gasto.component';
@@ -10,7 +12,12 @@ import { GastoComponent } from '../gasto/gasto.component';
   selector: 'app-home',
   standalone: true,
   imports: [
-    GastoComponent, CommonModule, FormsModule, InputNumberModule
+    GastoComponent,
+    CommonModule,
+    FormsModule,
+    InputNumberModule,
+    InputTextareaModule,
+    CalendarModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
