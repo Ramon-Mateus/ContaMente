@@ -9,7 +9,10 @@
         <textarea id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="newGasto.descricao"></textarea><br>
         
         <label for="data">Data:</label><br>
-        <input class="rounded-lg" type="date" id="data" name="data" [(ngModel)]="newGasto.data" required><br>
+        <!-- <input class="rounded-lg" type="date" id="data" name="data" [(ngModel)]="newGasto.data" required><br> -->
+        <p-calendar d="data" name="data" [(ngModel)]="newGasto.data" required />
+
+        
     
         <label for="categoriaId">Categoria:</label><br>
         <input type="number" id="categoriaId" name="categoriaId" [(ngModel)]="newGasto.categoriaId" required><br>
