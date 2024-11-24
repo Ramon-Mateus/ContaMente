@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Gasto } from '../../lib/types';
+import { Categoria, Gasto } from '../../lib/types';
+import { CategoriaService } from '../../services/categoria.service';
 import { GastoService } from '../../services/gasto.service';
 import { GastoComponent } from '../gasto/gasto.component';
 
@@ -18,14 +20,20 @@ import { GastoComponent } from '../gasto/gasto.component';
     InputNumberModule,
     InputTextareaModule,
     CalendarModule,
+    DropdownModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  gastos: Gasto[] = [];
-  newGasto: Gasto = {descricao: '', data: '', categoriaId: 0 };
   gastoService: GastoService = inject(GastoService);
+  categoriaService: CategoriaService = inject(CategoriaService);
+
+  gastos: Gasto[] = [];
+  categorias: Categoria[] = [];
+
+  newGasto: Gasto = {descricao: '', data: '', categoriaId: 0 };
+  
 
   constructor() {}
 
@@ -33,6 +41,10 @@ export class HomeComponent {
     this.gastoService.getGastos().subscribe(gastos => {
       this.gastos = gastos;
     });
+
+    this.categoriaService.getCategorias().subscribe(categorias => {
+      this.categorias = categorias;
+    })
   }
 
   OnCreateGastoSubmit() {

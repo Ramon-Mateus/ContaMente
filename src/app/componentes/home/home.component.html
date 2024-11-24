@@ -10,12 +10,15 @@
         
         <label for="data">Data:</label><br>
         <!-- <input class="rounded-lg" type="date" id="data" name="data" [(ngModel)]="newGasto.data" required><br> -->
-        <p-calendar d="data" name="data" [(ngModel)]="newGasto.data" required />
+        <p-calendar d="data" name="data" [(ngModel)]="newGasto.data" required /> <br>
 
         
     
         <label for="categoriaId">Categoria:</label><br>
-        <input type="number" id="categoriaId" name="categoriaId" [(ngModel)]="newGasto.categoriaId" required><br>
+        <!-- <input type="number" id="categoriaId" name="categoriaId" [(ngModel)]="newGasto.categoriaId" required><br> -->
+        <p-dropdown [options]="categorias" optionLabel="nome" [(ngModel)]="newGasto.categoriaId" placeholder="Categoria">
+
+        </p-dropdown>
     
         <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 py-1 rounded-md mt-3" type="submit" [disabled]="!gastoForm.form.valid">Adicionar Gasto</button>
         
