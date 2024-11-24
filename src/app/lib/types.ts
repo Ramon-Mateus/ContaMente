@@ -5,3 +5,8 @@ export interface Gasto {
     descricao: string,
     categoriaId: number
 }
+
+export interface Categoria {
+    id?: number,
+    nome?: string
+}

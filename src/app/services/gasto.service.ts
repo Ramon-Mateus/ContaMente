@@ -6,7 +6,8 @@ import { Gasto } from '../lib/types';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+
+export class GastoService {
   private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
   private apiUrl = `http://localhost:${this.porta_da_api}/api/Gasto`;
 
