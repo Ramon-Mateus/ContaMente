@@ -7,7 +7,8 @@ import { Gasto } from '../lib/types';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'https://localhost:44376/api/Gasto';
+  private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
+  private apiUrl = `http://localhost:${this.porta_da_api}/api/Gasto`;
 
   constructor(
     private httpClient: HttpClient

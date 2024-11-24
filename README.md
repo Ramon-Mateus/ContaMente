@@ -5,4 +5,7 @@
 
 frontend do projeto de finanças pessoais ([api](https://github.com/Ramon-Mateus/ContaMente-API))
 
-Biblioteca de ícones e componentes: [Primeng](https://primeng.org/)
+## Libs
+
+- [Primeng](https://primeng.org/) - Ícones e componentes
+- [ngx-env/builder](https://www.npmjs.com/package/@ngx-env/builder) - Gerenciamento de variáveis de ambiente
