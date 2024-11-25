@@ -51,6 +51,9 @@ export class HomeComponent {
     this.gastoService.postGasto(this.newGasto).subscribe(gasto => {
       this.gastos.push(gasto);
       this.newGasto = { valor: 0, descricao: '', data: '', categoriaId: 0 };
+
+      console.log(gasto.categoriaId);
+      
     });
   }
 
