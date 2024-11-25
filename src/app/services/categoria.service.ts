@@ -7,7 +7,8 @@ import { Categoria } from '../lib/types';
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:5110/api/Categoria';
+  private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
+  private apiUrl = `http://localhost:${this.porta_da_api}/api/Categoria`;
 
   constructor(
     private httpClient: HttpClient
