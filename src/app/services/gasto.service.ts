@@ -9,7 +9,7 @@ import { Gasto } from '../lib/types';
 
 export class GastoService {
   private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
-  private apiUrl = `http://localhost:${this.porta_da_api}/api/Gasto`;
+  private apiUrl = `${this.porta_da_api}/api/Gasto`;
 
   constructor(
     private httpClient: HttpClient
