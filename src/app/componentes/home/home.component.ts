@@ -5,10 +5,12 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Categoria, Gasto } from '../../lib/types';
+import { Categoria, Gasto, PostGasto } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { GastoService } from '../../services/gasto.service';
 import { GastoComponent } from '../gasto/gasto.component';
+import { DialogModule } from 'primeng/dialog';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,8 @@ import { GastoComponent } from '../gasto/gasto.component';
     InputNumberModule,
     InputTextareaModule,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    DialogModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -28,14 +31,18 @@ import { GastoComponent } from '../gasto/gasto.component';
 export class HomeComponent {
   gastoService: GastoService = inject(GastoService);
   categoriaService: CategoriaService = inject(CategoriaService);
-
+  
   gastos: Gasto[] = [];
   categorias: Categoria[] = [];
+  visible: boolean = false;
 
-  newGasto: Gasto = {descricao: '', data: '', categoriaId: 0 };
+  newGasto: PostGasto = {descricao: '', data: '', categoriaId: 0 };
   
-
   constructor() {}
+
+  showDialog() {
+    this.visible = true;
+  }
 
   ngOnInit() {
     this.gastoService.getGastos().subscribe(gastos => {
@@ -48,12 +55,17 @@ export class HomeComponent {
   }
 
   OnCreateGastoSubmit() {
-    this.gastoService.postGasto(this.newGasto).subscribe(gasto => {
+    this.gastoService.postGasto(this.newGasto).pipe(
+      map((response: Gasto) => ({
+        id: response.id,
+        valor: response.valor,
+        data: response.data,
+        descricao: response.descricao,
+        categoria: response.categoria
+      }) as Gasto)
+    ).subscribe(gasto => {
       this.gastos.push(gasto);
-      this.newGasto = { valor: 0, descricao: '', data: '', categoriaId: 0 };
-
-      console.log(gasto.categoriaId);
-      
+      this.newGasto = { descricao: '', data: '', categoriaId: 0 };
     });
   }
 

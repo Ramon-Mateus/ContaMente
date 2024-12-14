@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Gasto } from '../lib/types';
+import { Gasto, PostGasto } from '../lib/types';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class GastoService {
     return this.httpClient.get<Gasto>(`${this.apiUrl}/${id}`);
   }
 
-  postGasto(gasto: Gasto): Observable<Gasto> {
+  postGasto(gasto: PostGasto): Observable<Gasto> {
     return this.httpClient.post<Gasto>(this.apiUrl, gasto);
   }
 

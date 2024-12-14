@@ -1,31 +1,21 @@
 <div class="flex justify-center mt-4">
-    <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class=" bg-zinc-700 rounded-md w-[20em] p-4 text-base">
-        
+    <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class="bg-zinc-700 rounded-md w-[20em] p-4 text-base ">
         <label for="valor">Valor:</label><br>
         <p-inputNumber inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valor" name="valor" [(ngModel)]="newGasto.valor" required></p-inputNumber><br>
         
-        
+        <label for="categoriaId">Categoria:</label><br>
+        <p-dropdown [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="newGasto.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
+
         <label for="descricao">Descrição:</label><br>
         <textarea id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="newGasto.descricao"></textarea><br>
         
         <label for="data">Data:</label><br>
-        <!-- <input class="rounded-lg" type="date" id="data" name="data" [(ngModel)]="newGasto.data" required><br> -->
         <p-calendar id="data" name="data" [(ngModel)]="newGasto.data" required /> <br>
-
-        
-    
-        <label for="categoriaId">Categoria:</label><br>
-        <!-- <input type="number" id="categoriaId" name="categoriaId" [(ngModel)]="newGasto.categoriaId" required><br> -->
-        <p-dropdown [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="newGasto.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria">
-
-        </p-dropdown>
         <br>
     
         <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 py-1 rounded-md mt-3" type="submit" [disabled]="!gastoForm.form.valid">Adicionar Gasto</button>
-        
     </form>
 </div>
-
 
 <section class="p-5 flex flex-col justify-center items-center w-full">
     <app-gasto

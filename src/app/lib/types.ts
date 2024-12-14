@@ -3,6 +3,13 @@ export interface Gasto {
     valor?: number,
     data: string,
     descricao: string,
+    categoria: Categoria
+}
+
+export interface PostGasto {
+    valor?: number,
+    data: string,
+    descricao?: string,
     categoriaId: number
 }
 
