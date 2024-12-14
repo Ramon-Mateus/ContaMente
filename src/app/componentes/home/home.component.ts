@@ -26,7 +26,7 @@ import { map } from 'rxjs';
     DialogModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
   gastoService: GastoService = inject(GastoService);
@@ -45,9 +45,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.gastoService.getGastos().subscribe(gastos => {
-      this.gastos = gastos;
-    });
+    this.getGastos();
 
     this.categoriaService.getCategorias().subscribe(categorias => {
       this.categorias = categorias;
@@ -55,6 +53,11 @@ export class HomeComponent {
   }
 
   OnCreateGastoSubmit() {
+    if (this.newGasto.valor === 0) {
+      alert('Por favor, insira um valor maior que zero.');
+      return;
+    }
+
     this.gastoService.postGasto(this.newGasto).pipe(
       map((response: Gasto) => ({
         id: response.id,
@@ -64,14 +67,21 @@ export class HomeComponent {
         categoria: response.categoria
       }) as Gasto)
     ).subscribe(gasto => {
-      this.gastos.push(gasto);
+      this.getGastos();
       this.newGasto = { descricao: '', data: '', categoriaId: 0 };
+      this.visible = false;
     });
   }
 
   onDeleteGasto(id: number) {
     this.gastoService.deleteGasto(id).subscribe(() => {
       this.gastos = this.gastos.filter(gasto => gasto.id !== id);
+    });
+  }
+
+  getGastos() {
+    this.gastoService.getGastos().subscribe(gastos => {
+      this.gastos = gastos;
     });
   }
 }

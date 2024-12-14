@@ -1,26 +1,35 @@
-<div class="flex justify-center mt-4">
-    <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class="bg-zinc-700 rounded-md w-[20em] p-4 text-base ">
-        <label for="valor">Valor:</label><br>
-        <p-inputNumber inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valor" name="valor" [(ngModel)]="newGasto.valor" required></p-inputNumber><br>
-        
-        <label for="categoriaId">Categoria:</label><br>
-        <p-dropdown [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="newGasto.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
-
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="newGasto.descricao"></textarea><br>
-        
-        <label for="data">Data:</label><br>
-        <p-calendar id="data" name="data" [(ngModel)]="newGasto.data" required /> <br>
-        <br>
+<body class="flex justify-center">
+    <div class="flex justify-start flex-col w-[96em]">
+        <div class="flex mt-6 ml-7 justify-start">
+            <button (click)="showDialog()" class="text-zinc-800 bg-zinc-300 p-2 rounded-lg focus:outline-none">Adicionar gasto</button>
+            <p-dialog header="Adicionar gasto" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
+                <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class="p-4 text-base w-full">
+                    <label for="valor">Valor:</label><br>
+                    <p-inputNumber class="h-10 mb-4" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valor" name="valor" [(ngModel)]="newGasto.valor" required></p-inputNumber><br>
     
-        <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 py-1 rounded-md mt-3" type="submit" [disabled]="!gastoForm.form.valid">Adicionar Gasto</button>
-    </form>
-</div>
+                    <label for="descricao">Descrição:</label><br>
+                    <textarea class="w-full h-10 mb-3" id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="newGasto.descricao"></textarea><br>
+                    
+                    <label for="data">Data:</label><br>
+                    <p-calendar id="data" name="data" appendTo="body" [(ngModel)]="newGasto.data" size="large" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" required /> <br><br>
+    
+                    <label for="categoriaId">Categoria:</label><br>
+                    <p-dropdown [options]="categorias" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="newGasto.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
+                    <br>
+                    
+                    <div class="flex justify-center">
+                        <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!gastoForm.form.valid">Adicionar Gasto</button>
+                    </div>
+                </form>
+            </p-dialog>
+        </div>
 
-<section class="p-5 flex flex-col justify-center items-center w-full">
-    <app-gasto
-        *ngFor="let gasto of gastos"
-        [gasto]="gasto"
-        (delete)="onDeleteGasto($event)"
-    ></app-gasto>
-</section>
+        <section class="p-5 flex flex-wrap justify-start items-center">
+            <app-gasto
+                *ngFor="let gasto of gastos"
+                [gasto]="gasto"
+                (delete)="onDeleteGasto($event)"
+            ></app-gasto>
+        </section>
+    </div>
+</body>
