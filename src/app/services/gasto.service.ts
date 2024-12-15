@@ -9,7 +9,8 @@ import { Gasto, PostGasto } from '../lib/types';
 
 export class GastoService {
   private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
-  private apiUrl = `${this.porta_da_api}/api/Gasto`;
+  private protocolo = import.meta.env.NG_APP_PROTOCOLO;
+  private apiUrl = `${this.protocolo}://localhost:${this.porta_da_api}/api/Gasto`;
 
   constructor(
     private httpClient: HttpClient

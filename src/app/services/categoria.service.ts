@@ -8,7 +8,8 @@ import { Categoria } from '../lib/types';
 })
 export class CategoriaService {
   private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
-  private apiUrl = `${this.porta_da_api}/api/Categoria`;
+  private protocolo = import.meta.env.NG_APP_PROTOCOLO;
+  private apiUrl = `${this.protocolo}://localhost:${this.porta_da_api}/api/Categoria`;
 
   constructor(
     private httpClient: HttpClient
