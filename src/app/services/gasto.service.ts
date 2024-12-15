@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Gasto, PostGasto } from '../lib/types';
@@ -15,8 +15,18 @@ export class GastoService {
     private httpClient: HttpClient
   ) { }
 
-  getGastos(): Observable<Gasto[]> {
-    return this.httpClient.get<Gasto[]>(this.apiUrl);
+  getGastos(mes?: number, ano?: number): Observable<Gasto[]> {
+    let params = new HttpParams();
+
+    if(mes) {
+      params = params.set('mes', mes.toString());
+    }
+
+    if(ano) {
+      params = params.set('ano', ano.toString());
+    }
+
+    return this.httpClient.get<Gasto[]>(this.apiUrl, { params });
   }
 
   getGastoById(id: number): Observable<Gasto> {
