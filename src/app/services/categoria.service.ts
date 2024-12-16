@@ -7,31 +7,30 @@ import { Categoria } from '../lib/types';
   providedIn: 'root'
 })
 export class CategoriaService {
-  private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
-  private protocolo = import.meta.env.NG_APP_PROTOCOLO;
-  private apiUrl = `${this.protocolo}://localhost:${this.porta_da_api}/api/Categoria`;
+  private urlDaApi = import.meta.env.NG_APP_URL_DA_API;
+  private urlDoModel = `${this.urlDaApi}/api/Categoria`;
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
   getCategorias(): Observable<Categoria[]> {
-    return this.httpClient.get<Categoria[]>(this.apiUrl);
+    return this.httpClient.get<Categoria[]>(this.urlDoModel);
   }
 
   getCategoriaById(id: number): Observable<Categoria> {
-    return this.httpClient.get<Categoria>(`${this.apiUrl}/${id}`);
+    return this.httpClient.get<Categoria>(`${this.urlDoModel}/${id}`);
   }
 
   postCategoria(categoria: Categoria): Observable<Categoria> {
-    return this.httpClient.post<Categoria>(this.apiUrl, categoria);
+    return this.httpClient.post<Categoria>(this.urlDoModel, categoria);
   }
 
   putCategoria(id: number, categoria: Categoria): Observable<Categoria> {
-    return this.httpClient.put<Categoria>(`${this.apiUrl}/${id}`, categoria);
+    return this.httpClient.put<Categoria>(`${this.urlDoModel}/${id}`, categoria);
   }
 
   deleteCategoria(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`);
   }
 }

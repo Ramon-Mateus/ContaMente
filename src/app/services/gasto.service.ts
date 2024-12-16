@@ -8,9 +8,8 @@ import { Gasto, PostGasto } from '../lib/types';
 })
 
 export class GastoService {
-  private porta_da_api = import.meta.env.NG_APP_PORTA_DA_API;
-  private protocolo = import.meta.env.NG_APP_PROTOCOLO;
-  private apiUrl = `${this.protocolo}://localhost:${this.porta_da_api}/api/Gasto`;
+  private urlDaApi = import.meta.env.NG_APP_URL_DA_API;
+  private urlDoModel = `${this.urlDaApi}/api/Gasto`;
 
   constructor(
     private httpClient: HttpClient
@@ -27,22 +26,22 @@ export class GastoService {
       params = params.set('ano', ano.toString());
     }
 
-    return this.httpClient.get<Gasto[]>(this.apiUrl, { params });
+    return this.httpClient.get<Gasto[]>(this.urlDoModel, { params });
   }
 
   getGastoById(id: number): Observable<Gasto> {
-    return this.httpClient.get<Gasto>(`${this.apiUrl}/${id}`);
+    return this.httpClient.get<Gasto>(`${this.urlDoModel}/${id}`);
   }
 
   postGasto(gasto: PostGasto): Observable<Gasto> {
-    return this.httpClient.post<Gasto>(this.apiUrl, gasto);
+    return this.httpClient.post<Gasto>(this.urlDoModel, gasto);
   }
 
   putGasto(id: number, gasto: Gasto): Observable<Gasto> {
-    return this.httpClient.put<Gasto>(`${this.apiUrl}/${id}`, gasto);
+    return this.httpClient.put<Gasto>(`${this.urlDoModel}/${id}`, gasto);
   }
 
   deleteGasto(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`);
   }
 }
