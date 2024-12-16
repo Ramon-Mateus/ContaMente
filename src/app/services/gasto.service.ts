@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Gasto, PostGasto } from '../lib/types';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class GastoService {
     private httpClient: HttpClient
   ) { }
 
-  getGastos(mes?: number, ano?: number): Observable<Gasto[]> {
+  getGastos(mes?: number, ano?: number): Observable<{ gastos: Gasto[], total: number} > {
     let params = new HttpParams();
 
     if(mes) {
@@ -26,7 +26,12 @@ export class GastoService {
       params = params.set('ano', ano.toString());
     }
 
-    return this.httpClient.get<Gasto[]>(this.urlDoModel, { params });
+    return this.httpClient.get<Gasto[]>(this.urlDoModel, { params }).pipe(
+      map((gastos: Gasto[]) => {
+        const total: number = gastos.reduce((sum: number, gasto: Gasto) => sum + gasto.valor!, 0);
+        return { gastos, total };
+      })
+    );
   }
 
   getGastoById(id: number): Observable<Gasto> {

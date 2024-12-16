@@ -34,6 +34,7 @@ export class HomeComponent {
   
   gastos: Gasto[] = [];
   categorias: Categoria[] = [];
+  totalGastos: number = 0;
   visible: boolean = false;
 
   dataDeFiltragem = new Date()
@@ -82,20 +83,9 @@ export class HomeComponent {
   }
 
   getGastos() {
-    this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(gastos => {
-      this.gastos = gastos;
+    this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
+      this.gastos = response.gastos;
+      this.totalGastos = response.total;
     });
-    console.log(this.dataDeFiltragem.getMonth());
-    console.log(this.dataDeFiltragem.getFullYear());
-    
-  }
-
-  // aumentaMes() {
-  //   if (this.mes<12) this.mes++;
-  //   else this.mes = 1;
-  //   this.getGastos()
-  // }
-  diminuiMes() {
-    
   }
 }
