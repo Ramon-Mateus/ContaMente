@@ -1,7 +1,16 @@
 <body class="flex justify-center">
     <div class="flex justify-start flex-col w-[96em]">
         <div class="flex mt-6 ml-7 justify-start">
-            <button (click)="showDialog()" class="text-zinc-800 bg-zinc-300 p-2 rounded-lg focus:outline-none">Adicionar gasto</button>
+            <button (click)="showDialog()" class="text-zinc-800 bg-zinc-300 p-2 rounded-lg focus:outline-none">
+                Adicionar gasto
+            </button>
+            <div>
+                <button>menos</button>
+                {{dataDeFiltragem}}
+                <p-calendar [(ngModel)]="dataDeFiltragem" view="month" dateFormat="M" (ngModelChange)="getGastos()"></p-calendar>
+                <button>mais</button>
+            </div>
+
             <p-dialog header="Adicionar gasto" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
                 <form (ngSubmit)="OnCreateGastoSubmit()" #gastoForm="ngForm" class="p-4 text-base w-full">
                     <label for="valor">Valor:</label><br>

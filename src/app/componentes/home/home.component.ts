@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { map } from 'rxjs';
 import { Categoria, Gasto, PostGasto } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { GastoService } from '../../services/gasto.service';
 import { GastoComponent } from '../gasto/gasto.component';
-import { DialogModule } from 'primeng/dialog';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +35,8 @@ export class HomeComponent {
   gastos: Gasto[] = [];
   categorias: Categoria[] = [];
   visible: boolean = false;
+
+  dataDeFiltragem = new Date()
 
   newGasto: PostGasto = {descricao: '', data: '', categoriaId: 0 };
   
@@ -80,8 +82,20 @@ export class HomeComponent {
   }
 
   getGastos() {
-    this.gastoService.getGastos().subscribe(gastos => {
+    this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(gastos => {
       this.gastos = gastos;
     });
+    console.log(this.dataDeFiltragem.getMonth());
+    console.log(this.dataDeFiltragem.getFullYear());
+    
+  }
+
+  // aumentaMes() {
+  //   if (this.mes<12) this.mes++;
+  //   else this.mes = 1;
+  //   this.getGastos()
+  // }
+  diminuiMes() {
+    
   }
 }
