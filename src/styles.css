@@ -2,7 +2,7 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-@import "primeng/resources/themes/lara-dark-blue/theme.css";
+@import "primeng/themes/lara-dark-blue/theme.css";
 
 @tailwind base;
 @tailwind components;
