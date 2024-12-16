@@ -2,6 +2,8 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+@import "primeng/resources/themes/lara-dark-blue/theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,4 +13,13 @@
     .dia {
         @apply w-1/6 h-[80vh] border p-3;
     }
+}
+
+.p-inputtext:focus,
+.p-inputnumber-input:focus,
+.p-dropdown:focus,
+.p-calendar input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
 }

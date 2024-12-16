@@ -1,9 +1,23 @@
-<div class="bg-blue-400 p-2 pl-4 w-56 text-black rounded-md m-2">
+<div class="bg-zinc-700 border border-zinc-600 p-2 pl-4 w-[30em] text-zinc-300 rounded-md m-2">
     <div class="flex align-middle justify-between">
-        <p>Valor: {{ gasto.valor }}</p>
-        <i class="pi pi-trash cursor-pointer" (click)="onDelete()"></i>
+        <p class="text-xl">{{ gasto.valor | currency:'BRL' }}</p>
+        <div class="card flex justify-center gap-2">
+            <p-toast />
+            <p-confirmPopup #cp>
+                <ng-template pTemplate="headless" let-message>
+                    <div class="rounded p-4 bg-zinc-400 text-zinc-800">
+                        <span>{{ message.message }}</span>
+                        <div class="flex items-center gap-2 mt-4 text-zinc-800">
+                            <p-button (onClick)="cp.accept()" label="Sim" size="small" />
+                            <p-button (onClick)="cp.reject()" label="Não" [text]="true" size="small" severity="secondary" />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-confirmPopup>
+            <i class="pi pi-trash cursor-pointer" (click)="confirm($event)"></i>
+        </div>
     </div>
-    <p>Descrição: {{ gasto.descricao }}</p>
-    <p>Data: {{ gasto.data }}</p>
-    <p>CategoriaId: {{ gasto.categoriaId }}</p>
+    <p class="text-zinc-400">{{ gasto.descricao }}</p>
+    <p>Data: {{ gasto.data | date: 'fullDate' }}</p>
+    <p>Categoria: {{ gasto.categoria.nome }}</p>
 </div>
