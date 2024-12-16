@@ -7,7 +7,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
-import { Categoria, Gasto, PostGasto } from '../../lib/types';
+import { Categoria, Gasto, PostCategoria, PostGasto } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { GastoService } from '../../services/gasto.service';
 import { GastoComponent } from '../gasto/gasto.component';
@@ -35,24 +35,28 @@ export class HomeComponent {
   gastos: Gasto[] = [];
   categorias: Categoria[] = [];
   totalGastos: number = 0;
-  visible: boolean = false;
+  visibleModalGasto: boolean = false;
+  visibleModalCategoria: boolean = false;
 
   dataDeFiltragem = new Date()
 
   newGasto: PostGasto = {descricao: '', data: '', categoriaId: 0 };
+  newCategoria: PostCategoria = { nome: ''};
   
   constructor() {}
 
-  showDialog() {
-    this.visible = true;
+  showDialogGasto() {
+    this.visibleModalGasto = true;
+  }
+
+  showDialogCategoria() {
+    this.visibleModalCategoria = true;
   }
 
   ngOnInit() {
     this.getGastos();
 
-    this.categoriaService.getCategorias().subscribe(categorias => {
-      this.categorias = categorias;
-    })
+    this.getCategorias();
   }
 
   OnCreateGastoSubmit() {
@@ -72,8 +76,18 @@ export class HomeComponent {
     ).subscribe(gasto => {
       this.getGastos();
       this.newGasto = { descricao: '', data: '', categoriaId: 0 };
-      this.visible = false;
+      this.visibleModalGasto = false;
     });
+  }
+
+  OnCreateCategoriaSubmit() {
+    this.categoriaService.postCategoria(this.newCategoria)
+      .subscribe(gasto => {
+        this.getGastos();
+        this.getCategorias();
+        this.newCategoria = { nome: '' };
+        this.visibleModalCategoria = false;
+      });
   }
 
   onDeleteGasto(id: number) {
@@ -86,6 +100,12 @@ export class HomeComponent {
     this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
       this.gastos = response.gastos;
       this.totalGastos = response.total;
+    });
+  }
+
+  getCategorias() {
+    this.categoriaService.getCategorias().subscribe(categorias => {
+      this.categorias = categorias;
     });
   }
 }
