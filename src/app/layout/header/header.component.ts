@@ -16,6 +16,14 @@ export class HeaderComponent {
 
   constructor(private authService: AutenticacaoService, private router: Router) {}
 
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  cadastro() {
+    this.router.navigate(['/cadastro']);
+  }
+
   logout() {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/login']);
