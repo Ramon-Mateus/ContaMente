@@ -21,11 +21,19 @@ export class AutenticacaoService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, {});
+    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, {}).pipe(
+      tap(() => {
+        this.isAutenticado = false;
+      })
+    );
   }
 
-  isLoggedIn(): boolean {
-    return this.isAutenticado;
+  verificarSessao(): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.urlDoModel}/Auth/verificarSessao`, { withCredentials: true }).pipe(
+      tap((autenticado) => {
+        this.isAutenticado = autenticado;
+      })
+    );
   }
 
   setAutenticado(status: boolean): void {
