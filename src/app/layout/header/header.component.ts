@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [
+    ButtonModule
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
