@@ -21,3 +21,14 @@ export interface Categoria {
 export interface PostCategoria {
     nome: string
 }
+
+export interface Usuario {
+    id: number;
+    username: string;
+    email: string;
+}
+
+export interface Usuario_login {
+    email: string;
+    password: string;
+}

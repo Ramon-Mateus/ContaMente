@@ -1,4 +1,9 @@
 <div class="w-full h-16 bg-zinc-600 flex items-center px-6 justify-between">
     <a class="text-zinc-200 text-lg" href="">ContaMente</a>
-    <i class="pi pi-user text-lg"></i>
+    <div class="flex items-center space-x-4">
+        <button class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
+        <button class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
+        <button class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Logout" (click)="logout()">Logout</button>
+        <i class="pi pi-user text-lg"></i>
+    </div>
 </div>
