@@ -27,3 +27,8 @@ export interface Usuario {
     username: string;
     email: string;
 }
+
+export interface Usuario_login {
+    email: string;
+    password: string;
+}

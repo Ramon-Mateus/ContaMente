@@ -15,22 +15,22 @@ export class CategoriaService {
   ) { }
 
   getCategorias(): Observable<Categoria[]> {
-    return this.httpClient.get<Categoria[]>(this.urlDoModel);
+    return this.httpClient.get<Categoria[]>(this.urlDoModel, { withCredentials: true });
   }
 
   getCategoriaById(id: number): Observable<Categoria> {
-    return this.httpClient.get<Categoria>(`${this.urlDoModel}/${id}`);
+    return this.httpClient.get<Categoria>(`${this.urlDoModel}/${id}`, { withCredentials: true });
   }
 
   postCategoria(categoria: Categoria): Observable<Categoria> {
-    return this.httpClient.post<Categoria>(this.urlDoModel, categoria);
+    return this.httpClient.post<Categoria>(this.urlDoModel, categoria, { withCredentials: true });
   }
 
   putCategoria(id: number, categoria: Categoria): Observable<Categoria> {
-    return this.httpClient.put<Categoria>(`${this.urlDoModel}/${id}`, categoria);
+    return this.httpClient.put<Categoria>(`${this.urlDoModel}/${id}`, categoria, { withCredentials: true });
   }
 
   deleteCategoria(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`);
+    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`, { withCredentials: true });
   }
 }

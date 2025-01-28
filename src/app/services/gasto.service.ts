@@ -26,7 +26,7 @@ export class GastoService {
       params = params.set('ano', ano.toString());
     }
 
-    return this.httpClient.get<Gasto[]>(this.urlDoModel, { params }).pipe(
+    return this.httpClient.get<Gasto[]>(this.urlDoModel, { params, withCredentials: true }).pipe(
       map((gastos: Gasto[]) => {
         const total: number = gastos.reduce((sum: number, gasto: Gasto) => sum + gasto.valor!, 0);
         return { gastos, total };
@@ -35,18 +35,18 @@ export class GastoService {
   }
 
   getGastoById(id: number): Observable<Gasto> {
-    return this.httpClient.get<Gasto>(`${this.urlDoModel}/${id}`);
+    return this.httpClient.get<Gasto>(`${this.urlDoModel}/${id}`, { withCredentials: true });
   }
 
   postGasto(gasto: PostGasto): Observable<Gasto> {
-    return this.httpClient.post<Gasto>(this.urlDoModel, gasto);
+    return this.httpClient.post<Gasto>(this.urlDoModel, gasto, { withCredentials: true });
   }
 
   putGasto(id: number, gasto: Gasto): Observable<Gasto> {
-    return this.httpClient.put<Gasto>(`${this.urlDoModel}/${id}`, gasto);
+    return this.httpClient.put<Gasto>(`${this.urlDoModel}/${id}`, gasto, { withCredentials: true });
   }
 
   deleteGasto(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`);
+    return this.httpClient.delete<void>(`${this.urlDoModel}/${id}`, { withCredentials: true });
   }
 }
