@@ -32,3 +32,9 @@ export interface Usuario_login {
     email: string;
     password: string;
 }
+
+export interface resetPasswordForm {
+    email: string;
+    token: string;
+    newPassword: string;
+  };

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { Usuario, Usuario_login } from '../lib/types';
+import { resetPasswordForm, Usuario, Usuario_login } from '../lib/types';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,14 @@ export class AutenticacaoService {
         this.isAutenticado = false;
       })
     );
+  }
+
+  forgotPassword(email: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/forgotPassword`, { email });
+  }
+
+  resetPassword(data: resetPasswordForm): Observable<void> {
+    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/resetPassword`, data);
   }
 
   verificarSessao(): Observable<boolean> {
