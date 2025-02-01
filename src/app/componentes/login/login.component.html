@@ -3,5 +3,6 @@
         <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="text" [(ngModel)]="email" placeholder="Email"><br>
         <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="password" [(ngModel)]="password" placeholder="Password"><br>
         <button class="bg-zinc-800 w-full p-2 rounded-md focus:outline-none" (click)="login()">Login</button>
+        <a class="hover:underline block text-center" [routerLink]="['/forgot-password']">Esqueceu a senha?</a>
     </div>
 </section>
