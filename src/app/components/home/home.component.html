@@ -7,11 +7,11 @@
                         Adicionar gasto
                     </button>
 
-                    <button (click)="showDialogCategoria()" class="text-zinc-800 bg-zinc-300 p-2 rounded-lg focus:outline-none ml-3">
+                    <!-- <button (click)="showDialogCategoria()" class="text-zinc-800 bg-zinc-300 p-2 rounded-lg focus:outline-none ml-3">
                         Adicionar categoria
-                    </button>
+                    </button> -->
                     
-                    <p-calendar class="ml-3" inputStyleClass="p-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getGastos()"></p-calendar>
+                    
                 </div>
 
                 <p class="mr-3 text-2xl">Total Gasto: {{ totalGastos | currency:'BRL' }}</p>
@@ -50,12 +50,33 @@
             </p-dialog>
         </div>
 
-        <section class="p-5 flex flex-wrap justify-start items-center">
-            <app-gasto
-                *ngFor="let gasto of gastos"
-                [gasto]="gasto"
-                (delete)="onDeleteGasto($event)"
-            ></app-gasto>
-        </section>
+        
+
+        <div class="flex mx-auto">
+            <div class="w-[10em] h-full bg-zinc-800 rounded border p-2">
+                <span class="font-semibold text-xl">
+                    Mês
+                </span>
+
+                <p-calendar class="" inputStyleClass="p-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getGastos()"></p-calendar>
+
+                <span class="font-semibold text-xl">
+                    Categorias
+                </span>
+
+                <div *ngFor="let categoria of categorias">• {{categoria.nome}}</div>
+                <button (click)="showDialogCategoria()" class="bg-blue-400 p-2 rounded-md">
+                    Nova categoria
+                </button>
+                
+            </div>
+            <section class="p-5 flex flex-col justify-start items-center">
+                <app-gasto
+                    *ngFor="let gasto of gastos"
+                    [gasto]="gasto"
+                    (delete)="onDeleteGasto($event)"
+                ></app-gasto>
+            </section>
+        </div>
     </div>
 </body>
