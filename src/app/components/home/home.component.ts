@@ -9,7 +9,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
 import { Categoria, Gasto, PostCategoria, PostGasto } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
-import { GastoService } from '../../services/gasto.service';
+import { GastoService } from '../../services/movimentacao.service';
 import { GastoComponent } from '../gasto/gasto.component';
 
 @Component({

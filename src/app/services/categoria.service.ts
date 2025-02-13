@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Categoria } from '../lib/types';
@@ -14,8 +14,14 @@ export class CategoriaService {
     private httpClient: HttpClient
   ) { }
 
-  getCategorias(): Observable<Categoria[]> {
-    return this.httpClient.get<Categoria[]>(this.urlDoModel, { withCredentials: true });
+  getCategorias(entrada?: boolean): Observable<Categoria[]> {
+    let params = new HttpParams();
+
+    if(entrada) {
+      params = params.set('entrada', entrada.toString());
+    }
+
+    return this.httpClient.get<Categoria[]>(this.urlDoModel, { params, withCredentials: true });
   }
 
   getCategoriaById(id: number): Observable<Categoria> {
