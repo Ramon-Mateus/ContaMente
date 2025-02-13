@@ -29,9 +29,11 @@
                     <p-calendar class="cursor-pointer" inputStyleClass="w-full cursor:pointer" styleClass="w-full cursor-pointer" id="data" name="data" appendTo="body" [(ngModel)]="newMovimentacao.data" size="large" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" required /> <br><br>
     
                     <label for="categoriaId">Categoria:</label><br>
-                    <p-dropdown class="w-full" styleClass="w-full" [options]="categorias" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="newMovimentacao.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
-                    <br>
-                    
+                    <p-dropdown class="w-full" styleClass="w-full" [options]="categorias" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="newMovimentacao.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown><br>
+
+                    <label for="tipoPagamentoId">Tipo de pagamento:</label><br>
+                    <p-dropdown class="w-full" styleClass="w-full" [options]="tiposPagamento" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="newMovimentacao.tipoPagamentoId" [ngModelOptions]="{standalone: true}" placeholder="Selecione o tipo de pagamento"></p-dropdown><br>
+                     
                     <div class="flex justify-center">
                         <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!movimentacaoForm.form.valid">Adicionar Movimentação</button>
                     </div>

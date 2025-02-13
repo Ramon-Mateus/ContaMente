@@ -7,10 +7,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
-import { Categoria, Movimentacao, PostCategoria, PostMovimentacao } from '../../lib/types';
+import { Categoria, Movimentacao, PostCategoria, PostMovimentacao, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
+import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 
 @Component({
   selector: 'app-home',
@@ -31,9 +32,11 @@ import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
 export class HomeComponent {
   movimentacaoService: MovimentacaoService = inject(MovimentacaoService);
   categoriaService: CategoriaService = inject(CategoriaService);
+  tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   
   movimentacoes: Movimentacao[] = [];
   categorias: Categoria[] = [];
+  tiposPagamento: TipoPagamento[] = [];
   totalMovimentacoes: number = 0;
   visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
@@ -55,8 +58,8 @@ export class HomeComponent {
 
   ngOnInit() {
     this.getMovimentacoes();
-
     this.getCategorias();
+    this.getTiposPagamento();
   }
 
   OnCreateMovimentacaoSubmit() {
@@ -106,6 +109,12 @@ export class HomeComponent {
   getCategorias() {
     this.categoriaService.getCategorias().subscribe(categorias => {
       this.categorias = categorias;
+    });
+  }
+
+  getTiposPagamento() {
+    this.tiposPagamentoService.getTiposPagamento().subscribe(tiposPagamento => {
+      this.tiposPagamento = tiposPagamento;
     });
   }
 }
