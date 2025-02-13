@@ -22,7 +22,8 @@ export interface PostMovimentacao {
 
 export interface TipoPagamento {
     id: number,
-    nome: string
+    nome: string,
+    movimentacoes: Movimentacao[]
 }
 
 export interface Recorrencia {
