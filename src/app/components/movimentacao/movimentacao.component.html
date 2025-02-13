@@ -1,9 +1,9 @@
 <div class="bg-zinc-700 border border-zinc-600 p-2 pl-4 w-[30em] text-zinc-300 rounded-md m-2">
     <div class="flex align-middle justify-between">
         <p class="text-xl">
-            {{ gasto.valor | currency:'BRL' }} 
+            {{ movimentacao.valor | currency:'BRL' }} 
             <span class="text-zinc-500">
-                • {{ gasto.categoria.nome }}
+                • {{ movimentacao.categoria.nome }}
             </span>
         </p>
         <div class="card flex justify-center gap-2">
@@ -22,7 +22,7 @@
             <i class="pi pi-trash cursor-pointer" (click)="confirm($event)"></i>
         </div>
     </div>
-    <p class="text-zinc-400">{{ gasto.descricao }}</p>
+    <p class="text-zinc-400">{{ movimentacao.descricao }}</p>
     <!-- <p>Data: {{ gasto.data | date: 'fullDate' }}</p> -->
     <!-- <p>Categoria: {{ gasto.categoria.nome }}</p> -->
 </div>

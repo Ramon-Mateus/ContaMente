@@ -12,7 +12,7 @@ export interface Movimentacao {
 }
 
 export interface PostMovimentacao {
-    valor: number,
+    valor?: number,
     data: string,
     descricao?: string,
     fixa: boolean,

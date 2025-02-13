@@ -7,16 +7,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
-import { Categoria, Gasto, PostCategoria, PostGasto } from '../../lib/types';
+import { Categoria, Movimentacao, PostCategoria, PostMovimentacao } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
-import { GastoService } from '../../services/movimentacao.service';
-import { GastoComponent } from '../gasto/gasto.component';
+import { MovimentacaoService } from '../../services/movimentacao.service';
+import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    GastoComponent,
+    MovimentacaoComponent,
     CommonModule,
     FormsModule,
     InputNumberModule,
@@ -24,29 +24,29 @@ import { GastoComponent } from '../gasto/gasto.component';
     CalendarModule,
     DropdownModule,
     DialogModule
-  ],
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  gastoService: GastoService = inject(GastoService);
+  movimentacaoService: MovimentacaoService = inject(MovimentacaoService);
   categoriaService: CategoriaService = inject(CategoriaService);
   
-  gastos: Gasto[] = [];
+  movimentacoes: Movimentacao[] = [];
   categorias: Categoria[] = [];
-  totalGastos: number = 0;
-  visibleModalGasto: boolean = false;
+  totalMovimentacoes: number = 0;
+  visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
 
   dataDeFiltragem = new Date()
 
-  newGasto: PostGasto = {descricao: '', data: '', categoriaId: 0 };
-  newCategoria: PostCategoria = { nome: ''};
+  newMovimentacao: PostMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+  newCategoria: PostCategoria = { nome: '', entrada: false };
   
   constructor() {}
 
-  showDialogGasto() {
-    this.visibleModalGasto = true;
+  showDialogMovimentacao() {
+    this.visibleModalMovimentacao = true;
   }
 
   showDialogCategoria() {
@@ -54,52 +54,52 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.getGastos();
+    this.getMovimentacoes();
 
     this.getCategorias();
   }
 
-  OnCreateGastoSubmit() {
-    if (this.newGasto.valor === 0) {
+  OnCreateMovimentacaoSubmit() {
+    if (this.newMovimentacao.valor === 0) {
       alert('Por favor, insira um valor maior que zero.');
       return;
     }
 
-    this.gastoService.postGasto(this.newGasto).pipe(
-      map((response: Gasto) => ({
+    this.movimentacaoService.postMovimentacao(this.newMovimentacao).pipe(
+      map((response: Movimentacao) => ({
         id: response.id,
         valor: response.valor,
         data: response.data,
         descricao: response.descricao,
         categoria: response.categoria
-      }) as Gasto)
-    ).subscribe(gasto => {
-      this.getGastos();
-      this.newGasto = { descricao: '', data: '', categoriaId: 0 };
-      this.visibleModalGasto = false;
+      }) as Movimentacao)
+    ).subscribe(movimentacao => {
+      this.getMovimentacoes();
+      this.newMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+      this.visibleModalMovimentacao = false;
     });
   }
 
   OnCreateCategoriaSubmit() {
     this.categoriaService.postCategoria(this.newCategoria)
-      .subscribe(gasto => {
-        this.getGastos();
+      .subscribe(categoria => {
+        this.getMovimentacoes();
         this.getCategorias();
-        this.newCategoria = { nome: '' };
+        this.newCategoria = { nome: '', entrada: false };
         this.visibleModalCategoria = false;
       });
   }
 
-  onDeleteGasto(id: number) {
-    this.gastoService.deleteGasto(id).subscribe(() => {
-      this.gastos = this.gastos.filter(gasto => gasto.id !== id);
+  onDeleteMovimentacao(id: number) {
+    this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
+      this.movimentacoes = this.movimentacoes.filter(movimentacao => movimentacao.id !== id);
     });
   }
 
-  getGastos() {
-    this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
-      this.gastos = response.gastos;
-      this.totalGastos = response.total;
+  getMovimentacoes() {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
+      this.movimentacoes = response.movimentacoes;
+      this.totalMovimentacoes = response.total;
     });
   }
 
