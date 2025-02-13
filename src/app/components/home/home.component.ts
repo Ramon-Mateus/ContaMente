@@ -12,6 +12,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
     FormsModule,
     InputNumberModule,
     InputTextareaModule,
+    InputSwitchModule,
     CalendarModule,
     DropdownModule,
     DialogModule

@@ -4,6 +4,7 @@
             {{ movimentacao.valor | currency:'BRL' }} 
             <span class="text-zinc-500">
                 • {{ movimentacao.categoria.nome }}
+                • {{ movimentacao.tipoPagamento.nome }}
             </span>
         </p>
         <div class="card flex justify-center gap-2">
@@ -22,7 +23,9 @@
             <i class="pi pi-trash cursor-pointer" (click)="confirm($event)"></i>
         </div>
     </div>
-    <p class="text-zinc-400">{{ movimentacao.descricao }}</p>
+    <p class="text-zinc-400">
+        {{ movimentacao.descricao ? movimentacao.descricao : 'Sem descrição' }}
+    </p>
     <!-- <p>Data: {{ gasto.data | date: 'fullDate' }}</p> -->
     <!-- <p>Categoria: {{ gasto.categoria.nome }}</p> -->
 </div>
