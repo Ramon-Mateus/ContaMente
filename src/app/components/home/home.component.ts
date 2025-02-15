@@ -43,6 +43,9 @@ export class HomeComponent {
   visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
   entradaCategoria: boolean = false;
+  movimentacaoParcelada: boolean = false;
+  numeroParcelas: number = 2;
+  valorParcela: number = 0;
 
   dataDeFiltragem = new Date()
 

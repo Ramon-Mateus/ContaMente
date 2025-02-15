@@ -1,4 +1,4 @@
-<body class="flex justify-center">
+<div class="flex justify-center">
     <div class="flex justify-start flex-col w-[96em]">
         <div class="flex mt-6 mx-7 justify-start">
             <div class="flex justify-between w-full items-center">
@@ -48,6 +48,24 @@
                         <p-dropdown class="w-full" styleClass="w-full" [options]="tiposPagamento" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="newMovimentacao.tipoPagamentoId" [ngModelOptions]="{standalone: true}" placeholder="Selecione o tipo de pagamento"></p-dropdown>
                     </div>
                      
+
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-2">
+                            <label for="parcelada">Parcelada:</label><br>
+                            <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada"></p-inputSwitch>
+                        </div>
+
+                        <div class="flex-shrink-0 mr-2">
+                            <label for="vezes">Vezes:</label><br>
+                            <p-inputNumber class="h-11 w-11" inputStyleClass="w-11 p-2" styleClass="w-11"  inputId="minmaxfraction" type="number" id="vezes" name="vezes" [(ngModel)]="numeroParcelas" [disabled]="!movimentacaoParcelada" required></p-inputNumber>
+                        </div>
+
+                        <div class="flex-grow ">
+                            <label for="valorParcela">Valor da parcela:</label><br>
+                            <p-inputNumber class="h-11 w-full" inputStyleClass="w-full p-2" styleClass="w-full"  inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valorParcela" name="valorParcela" [(ngModel)]="valorParcela" [disabled]="!movimentacaoParcelada" required></p-inputNumber>
+                        </div>
+                    </div>
+
                     <div class="flex justify-center">
                         <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!movimentacaoForm.form.valid">Adicionar Movimentação</button>
                     </div>
@@ -96,4 +114,4 @@
             </section>
         </div>
     </div>
-</body>
+</div>
