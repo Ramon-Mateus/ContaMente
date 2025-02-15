@@ -37,8 +37,9 @@ export interface Parcela {
     valorTotal: number,
     numeroParcelas: number,
     valorParcela: number,
-    DataInicio: string,
-    DataFim: string | null
+    dataInicio: string,
+    DataFim: string | null,
+    movimentacoes: Movimentacao[]
 }
 
 export interface Categoria {
@@ -50,6 +51,16 @@ export interface Categoria {
 export interface PostCategoria {
     nome: string,
     entrada: boolean
+}
+
+export interface postParcela {
+    valorTotal: number,
+    numeroParcelas: number,
+    valorParcela: number,
+    descricao: string,
+    dataInicio: string,
+    categoriaId: number,
+    tipoPagamentoId: number
 }
 
 export interface Usuario {
