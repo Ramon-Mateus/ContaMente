@@ -42,6 +42,7 @@ export class HomeComponent {
   totalMovimentacoes: number = 0;
   visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
+  entradaCategoria: boolean = false;
 
   dataDeFiltragem = new Date()
 
@@ -109,7 +110,7 @@ export class HomeComponent {
   }
 
   getCategorias() {
-    this.categoriaService.getCategorias().subscribe(categorias => {
+    this.categoriaService.getCategorias(this.entradaCategoria).subscribe(categorias => {
       this.categorias = categorias;
     });
   }
