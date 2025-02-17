@@ -7,46 +7,58 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
-import { Categoria, Gasto, PostCategoria, PostGasto } from '../../lib/types';
+import { Categoria, Movimentacao, PostCategoria, PostMovimentacao, postParcela, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
-import { GastoService } from '../../services/gasto.service';
-import { GastoComponent } from '../gasto/gasto.component';
+import { MovimentacaoService } from '../../services/movimentacao.service';
+import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
+import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { ParcelaService } from '../../services/parcela.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    GastoComponent,
+    MovimentacaoComponent,
     CommonModule,
     FormsModule,
     InputNumberModule,
     InputTextareaModule,
+    InputSwitchModule,
     CalendarModule,
     DropdownModule,
     DialogModule
-  ],
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  gastoService: GastoService = inject(GastoService);
+  movimentacaoService: MovimentacaoService = inject(MovimentacaoService);
   categoriaService: CategoriaService = inject(CategoriaService);
+  tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
+  parcelaService: ParcelaService = inject(ParcelaService);
   
-  gastos: Gasto[] = [];
+  movimentacoes: Movimentacao[] = [];
   categorias: Categoria[] = [];
-  totalGastos: number = 0;
-  visibleModalGasto: boolean = false;
+  tiposPagamento: TipoPagamento[] = [];
+  totalMovimentacoes: number = 0;
+  visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
+  entradaCategoria: boolean = false;
+  movimentacaoParcelada: boolean = false;
+  numeroParcelas: number = 2;
+  valorParcela: number = 0;
+  labelValor: string = 'Valor:';
 
   dataDeFiltragem = new Date()
 
-  newGasto: PostGasto = {descricao: '', data: '', categoriaId: 0 };
-  newCategoria: PostCategoria = { nome: ''};
+  newMovimentacao: PostMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+  newCategoria: PostCategoria = { nome: '', entrada: false };
   
   constructor() {}
 
-  showDialogGasto() {
-    this.visibleModalGasto = true;
+  showDialogMovimentacao() {
+    this.visibleModalMovimentacao = true;
   }
 
   showDialogCategoria() {
@@ -54,58 +66,95 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.getGastos();
-
+    this.getMovimentacoes();
     this.getCategorias();
+    this.getTiposPagamento();
   }
 
-  OnCreateGastoSubmit() {
-    if (this.newGasto.valor === 0) {
+  OnCreateMovimentacaoSubmit() {
+    if (this.newMovimentacao.valor === 0) {
       alert('Por favor, insira um valor maior que zero.');
       return;
     }
 
-    this.gastoService.postGasto(this.newGasto).pipe(
-      map((response: Gasto) => ({
-        id: response.id,
-        valor: response.valor,
-        data: response.data,
-        descricao: response.descricao,
-        categoria: response.categoria
-      }) as Gasto)
-    ).subscribe(gasto => {
-      this.getGastos();
-      this.newGasto = { descricao: '', data: '', categoriaId: 0 };
-      this.visibleModalGasto = false;
-    });
+    if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
+      const parcela: postParcela = {
+        valorTotal: this.newMovimentacao.valor!,
+        numeroParcelas: this.numeroParcelas,
+        valorParcela: this.valorParcela,
+        descricao: this.newMovimentacao.descricao!,
+        dataInicio: this.newMovimentacao.data,
+        categoriaId: this.newMovimentacao.categoriaId,
+        tipoPagamentoId: this.newMovimentacao.tipoPagamentoId
+    };
+      
+      this.parcelaService.postParcela(parcela).subscribe(parcela => {
+        this.getMovimentacoes();
+        this.newMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+        this.numeroParcelas= 2;
+        this.valorParcela = 0;
+        this.labelValor = 'Valor:';
+        this.movimentacaoParcelada = false;
+        this.visibleModalMovimentacao = false;
+      });
+    } else {
+
+      this.movimentacaoService.postMovimentacao(this.newMovimentacao).pipe(
+        map((response: Movimentacao) => ({
+          id: response.id,
+          valor: response.valor,
+          data: response.data,
+          descricao: response.descricao,
+          categoria: response.categoria
+        }) as Movimentacao)
+      ).subscribe(movimentacao => {
+        this.getMovimentacoes();
+        this.newMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+        this.numeroParcelas= 2;
+        this.valorParcela = 0;
+        this.labelValor = 'Valor:';
+        this.movimentacaoParcelada = false;
+        this.visibleModalMovimentacao = false;
+      });
+    }
   }
 
   OnCreateCategoriaSubmit() {
     this.categoriaService.postCategoria(this.newCategoria)
-      .subscribe(gasto => {
-        this.getGastos();
+      .subscribe(categoria => {
+        this.getMovimentacoes();
         this.getCategorias();
-        this.newCategoria = { nome: '' };
+        this.newCategoria = { nome: '', entrada: false };
         this.visibleModalCategoria = false;
       });
   }
 
-  onDeleteGasto(id: number) {
-    this.gastoService.deleteGasto(id).subscribe(() => {
-      this.gastos = this.gastos.filter(gasto => gasto.id !== id);
+  onDeleteMovimentacao(id: number) {
+    this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
+      this.movimentacoes = this.movimentacoes.filter(movimentacao => movimentacao.id !== id);
     });
   }
 
-  getGastos() {
-    this.gastoService.getGastos(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
-      this.gastos = response.gastos;
-      this.totalGastos = response.total;
+  getMovimentacoes() {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
+      this.movimentacoes = response.movimentacoes;
+      this.totalMovimentacoes = response.total;
     });
   }
 
   getCategorias() {
-    this.categoriaService.getCategorias().subscribe(categorias => {
+    this.categoriaService.getCategorias(this.entradaCategoria).subscribe(categorias => {
       this.categorias = categorias;
     });
+  }
+
+  getTiposPagamento() {
+    this.tiposPagamentoService.getTiposPagamento().subscribe(tiposPagamento => {
+      this.tiposPagamento = tiposPagamento;
+    });
+  }
+
+  parceladaOnChange() {
+    this.labelValor = this.movimentacaoParcelada ? 'Valor total da compra:' : 'Valor:';
   }
 }
