@@ -1,25 +1,66 @@
-export interface Gasto {
+export interface Movimentacao {
     id?: number,
-    valor?: number,
+    valor: number,
     data: string,
     descricao: string,
-    categoria: Categoria
+    fixa: boolean,
+    numeroParcela: number | null,
+    categoria: Categoria,
+    tipoPagamento: TipoPagamento,
+    recorrencia: Recorrencia | null,
+    parcela: Parcela | null
 }
 
-export interface PostGasto {
+export interface PostMovimentacao {
     valor?: number,
     data: string,
     descricao?: string,
-    categoriaId: number
+    fixa: boolean,
+    categoriaId: number,
+    tipoPagamentoId: number
+}
+
+export interface TipoPagamento {
+    id: number,
+    nome: string,
+    movimentacoes: Movimentacao[]
+}
+
+export interface Recorrencia {
+    id: number,
+    dataInicio: string,
+    dataFim: string
+}
+
+export interface Parcela {
+    id: number,
+    valorTotal: number,
+    numeroParcelas: number,
+    valorParcela: number,
+    dataInicio: string,
+    DataFim: string | null,
+    movimentacoes: Movimentacao[]
 }
 
 export interface Categoria {
     id?: number,
     nome?: string
+    entrada?: boolean
 }
 
 export interface PostCategoria {
-    nome: string
+    nome: string,
+    entrada: boolean
+}
+
+export interface postParcela {
+    valorTotal: number,
+    numeroParcelas: number,
+    valorParcela: number,
+    descricao: string,
+    dataInicio: string,
+    categoriaId: number,
+    tipoPagamentoId: number
 }
 
 export interface Usuario {
@@ -37,4 +78,4 @@ export interface resetPasswordForm {
     email: string;
     token: string;
     newPassword: string;
-  };
+};

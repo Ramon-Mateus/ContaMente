@@ -1,28 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { Gasto } from '../../lib/types';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
+import { Movimentacao } from '../../lib/types';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-gasto',
+  selector: 'app-movimentacao',
   standalone: true,
   imports: [
-    CommonModule,
-    CardModule,
-    ConfirmPopupModule,
-    ToastModule,
-    ButtonModule
+        CommonModule,
+        CardModule,
+        ConfirmPopupModule,
+        ToastModule,
+        ButtonModule
   ],
-  templateUrl: './gasto.component.html',
-  styleUrl: './gasto.component.css',
+  templateUrl: './movimentacao.component.html',
+  styleUrl: './movimentacao.component.css',
   providers: [ConfirmationService, MessageService]
 })
-export class GastoComponent {
-  @Input() gasto!: Gasto;
+export class MovimentacaoComponent {
+  @Input() movimentacao!: Movimentacao;
   @Output() delete = new EventEmitter<number>();
 
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {}
@@ -42,6 +42,6 @@ export class GastoComponent {
   }
 
   onDelete() {
-    this.delete.emit(this.gasto.id);
+    this.delete.emit(this.movimentacao.id);
   }
 }
