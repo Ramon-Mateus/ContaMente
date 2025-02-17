@@ -22,7 +22,7 @@
 
                         <div class="flex-shrink-0">
                             <label for="fixa">Fixa:</label><br>
-                            <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="fixa" name="fixa" [(ngModel)]="newMovimentacao.fixa"></p-inputSwitch>
+                            <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="fixa" name="fixa" [(ngModel)]="newMovimentacao.fixa" (onChange)="fixaOnChange()"></p-inputSwitch>
                         </div>
                     </div>
 
@@ -48,17 +48,17 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0 mr-2">
                             <label for="parcelada">Parcelada:</label><br>
-                            <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada" (onChange)="parceladaOnChange()"></p-inputSwitch>
+                            <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada" (onChange)="parceladaOnChange()" [disabled]="newMovimentacao.fixa"></p-inputSwitch>
                         </div>
 
                         <div class="flex-shrink-0 mr-2">
                             <label for="vezes">Vezes:</label><br>
-                            <p-inputNumber class="h-11 w-11" inputStyleClass="w-11 p-2" styleClass="w-11"  inputId="minmaxfraction" type="number" id="vezes" name="vezes" [(ngModel)]="numeroParcelas" [min]="2" [disabled]="!movimentacaoParcelada" required></p-inputNumber>
+                            <p-inputNumber class="h-11 w-11" inputStyleClass="w-11 p-2" styleClass="w-11"  inputId="minmaxfraction" type="number" id="vezes" name="vezes" [(ngModel)]="numeroParcelas" [min]="2" [disabled]="!movimentacaoParcelada || newMovimentacao.fixa" required></p-inputNumber>
                         </div>
 
                         <div class="flex-grow">
                             <label for="valorParcela">Valor da parcela:</label><br>
-                            <p-inputNumber class="h-11 w-full" inputStyleClass="w-full p-2" styleClass="w-full"  inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valorParcela" name="valorParcela" [(ngModel)]="valorParcela" [disabled]="!movimentacaoParcelada" required></p-inputNumber>
+                            <p-inputNumber class="h-11 w-full" inputStyleClass="w-full p-2" styleClass="w-full"  inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valorParcela" name="valorParcela" [(ngModel)]="valorParcela" [disabled]="!movimentacaoParcelada || newMovimentacao.fixa" required></p-inputNumber>
                         </div>
                     </div>
 

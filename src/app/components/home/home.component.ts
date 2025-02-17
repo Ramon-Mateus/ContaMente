@@ -157,4 +157,12 @@ export class HomeComponent {
   parceladaOnChange() {
     this.labelValor = this.movimentacaoParcelada ? 'Valor total da compra:' : 'Valor:';
   }
+
+  fixaOnChange() {
+    if(this.movimentacaoParcelada) {
+      this.movimentacaoParcelada = !this.newMovimentacao.fixa;
+      this.numeroParcelas = 2;
+      this.valorParcela = 0;
+    }
+  }
 }
