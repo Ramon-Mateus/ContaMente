@@ -10,7 +10,7 @@ export class AutenticacaoService {
   private urlDoModel = `${import.meta.env.NG_APP_URL_DA_API}`;
   httpClient: HttpClient = inject(HttpClient);
 
-  private isAutenticado = false;
+  public isAutenticado = false;
 
   registrar(usuario: Usuario_login): Observable<Usuario> {
     return this.httpClient.post<Usuario>(`${this.urlDoModel}/register`, usuario);
