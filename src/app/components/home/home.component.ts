@@ -39,6 +39,10 @@ export class HomeComponent {
   parcelaService: ParcelaService = inject(ParcelaService);
   
   movimentacoes: Movimentacao[] = [];
+
+  movimentacoesVisualizadas: Movimentacao[] = [];
+  dias: any [] = [];
+
   categorias: Categoria[] = [];
   tiposPagamento: TipoPagamento[] = [];
   totalMovimentacoes: number = 0;
@@ -67,8 +71,19 @@ export class HomeComponent {
 
   ngOnInit() {
     this.getMovimentacoes();
+
+    this.movimentacoesVisualizadas = this.movimentacoes;
+
+    this.movimentacoesVisualizadas.forEach((mv)=> {
+      // checa se já existe um dia para a data da mv
+      //    caso exista, adiciona ela no dia
+      //    caso não cria o dia e adiciona ela
+      // CRIAR UM COMPONENTE PARA A 
+    })
+
     this.getCategorias();
     this.getTiposPagamento();
+
   }
 
   OnCreateMovimentacaoSubmit() {
