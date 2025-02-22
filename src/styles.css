@@ -16,6 +16,12 @@
     }
 }
 
+@layer utilities {
+    .icon-cage {
+        @apply w-max mr-1;
+    }
+}
+
 .p-inputtext:focus,
 .p-inputnumber-input:focus,
 .p-dropdown:focus,
