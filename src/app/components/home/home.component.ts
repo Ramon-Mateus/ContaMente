@@ -70,20 +70,24 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.getMovimentacoes();
+    this.getMovimentacoes(this.separa);
+    
+    this.getCategorias();
+    this.getTiposPagamento();
+  }
 
-    this.movimentacoesVisualizadas = this.movimentacoes;
-
-    this.movimentacoesVisualizadas.forEach((mv)=> {
+  separa(mv:Movimentacao[], dias: string[]) {
+    mv.forEach((mv)=> {
       // checa se já existe um dia para a data da mv
       //    caso exista, adiciona ela no dia
       //    caso não cria o dia e adiciona ela
       // CRIAR UM COMPONENTE PARA A 
+
+      if (!dias.includes(mv.data)) {
+        dias.push(mv.data)
+      }
     })
-
-    this.getCategorias();
-    this.getTiposPagamento();
-
+    console.log(dias);
   }
 
   OnCreateMovimentacaoSubmit() {
@@ -150,10 +154,14 @@ export class HomeComponent {
     });
   }
 
-  getMovimentacoes() {
+  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: string[])=>void) {
     this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
       this.movimentacoes = response.movimentacoes;
       this.totalMovimentacoes = response.total;
+      
+      if (tarefaExtra) {
+        tarefaExtra(this.movimentacoes, this.dias);
+      }
     });
   }
 
