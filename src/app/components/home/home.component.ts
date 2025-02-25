@@ -80,16 +80,29 @@ export class HomeComponent {
 
   separa(mv:Movimentacao[], dias: string[]) {
     mv.forEach((mv)=> {
-      // checa se já existe um dia para a data da mv
-      //    caso exista, adiciona ela no dia
-      //    caso não cria o dia e adiciona ela
-      // CRIAR UM COMPONENTE PARA A 
+      let d = new Date(mv.data);
+      console.log(d);
 
+      
+      if (!this.diaEstaNaLista(d, dias)) console.log();
+      ;
+      
+      
+//-----------------------------
       if (!dias.includes(mv.data)) {
         dias.push(mv.data)
       }
     })
     console.log(dias);
+  }
+
+  diaEstaNaLista(dia: Date, lista: string[]): boolean {
+    let retorno = false;
+    lista.forEach((diaDaLista:string)=>{
+      if (new Date(diaDaLista).getDate() == dia.getDate()) retorno = true;
+    })
+
+    return retorno;
   }
 
   OnCreateMovimentacaoSubmit() {
