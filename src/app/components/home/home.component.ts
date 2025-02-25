@@ -14,12 +14,14 @@ import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ParcelaService } from '../../services/parcela.service';
+import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     MovimentacaoComponent,
+    DiaFiscalComponent,
     CommonModule,
     FormsModule,
     InputNumberModule,
