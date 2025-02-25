@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './dia-fiscal.component.css'
 })
 export class DiaFiscalComponent {
-  @Input() dia!: string;
+  @Input() dia!: Date;
 }

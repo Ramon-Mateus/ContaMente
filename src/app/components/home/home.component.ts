@@ -78,32 +78,29 @@ export class HomeComponent {
     this.getTiposPagamento();
   }
 
-  separa(mv:Movimentacao[], dias: string[]) {
+  separa(mv:Movimentacao[], dias: Date[]) {
+    function diaEstaNaLista(dia: Date, lista: Date[]): boolean {
+      let retorno = false;
+      lista.forEach((diaDaLista: Date)=>{
+        if (diaDaLista.getDate() == dia.getDate()) retorno = true;
+      })
+  
+      return retorno;
+    }
+
+
     mv.forEach((mv)=> {
       let d = new Date(mv.data);
       console.log(d);
 
       
-      if (!this.diaEstaNaLista(d, dias)) console.log();
-      ;
+      if (!diaEstaNaLista(d, dias)) dias.push(d);
       
-      
-//-----------------------------
-      if (!dias.includes(mv.data)) {
-        dias.push(mv.data)
-      }
     })
     console.log(dias);
   }
 
-  diaEstaNaLista(dia: Date, lista: string[]): boolean {
-    let retorno = false;
-    lista.forEach((diaDaLista:string)=>{
-      if (new Date(diaDaLista).getDate() == dia.getDate()) retorno = true;
-    })
-
-    return retorno;
-  }
+  
 
   OnCreateMovimentacaoSubmit() {
     if (this.newMovimentacao.valor === 0) {
@@ -169,7 +166,7 @@ export class HomeComponent {
     });
   }
 
-  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: string[])=>void) {
+  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: Date[])=>void) {
     this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
       this.movimentacoes = response.movimentacoes;
       this.totalMovimentacoes = response.total;
