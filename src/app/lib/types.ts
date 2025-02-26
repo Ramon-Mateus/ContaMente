@@ -11,6 +11,11 @@ export interface Movimentacao {
     parcela: Parcela | null
 }
 
+export interface DiaFiscal {
+    data: Date;
+    movimentacoes: Movimentacao[]
+}
+
 export interface PostMovimentacao {
     valor?: number,
     data: string,

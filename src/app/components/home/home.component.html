@@ -157,12 +157,13 @@
                         Estatística
                     </div>
                 </div>
+                <app-dia-fiscal
+                *ngFor="let dia of dias"
+                [dia]="dia"
+                >
 
-                <app-movimentacao
-                    *ngFor="let movimentacao of movimentacoes"
-                    [movimentacao]="movimentacao"
-                    (delete)="onDeleteMovimentacao($event)"
-                ></app-movimentacao>
+                </app-dia-fiscal>
+                
             </section>
         </div>
     </div>
