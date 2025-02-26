@@ -40,6 +40,8 @@ export class HomeComponent {
   
   movimentacoes: Movimentacao[] = [];
   categorias: Categoria[] = [];
+  categoriasSaidaFiltro: Categoria[] = [];
+  categoiriasEntradaFiltro: Categoria[] = [];
   tiposPagamento: TipoPagamento[] = [];
   totalMovimentacoes: number = 0;
   visibleModalMovimentacao: boolean = false;
@@ -145,6 +147,14 @@ export class HomeComponent {
   getCategorias() {
     this.categoriaService.getCategorias(this.entradaCategoria).subscribe(categorias => {
       this.categorias = categorias;
+    });
+
+    this.categoriaService.getCategorias(false).subscribe(categorias => {
+      this.categoriasSaidaFiltro = categorias;
+    });
+
+    this.categoriaService.getCategorias(true).subscribe(categorias => {
+      this.categoiriasEntradaFiltro = categorias;
     });
   }
 
