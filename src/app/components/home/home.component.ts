@@ -5,22 +5,21 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { map } from 'rxjs';
-import { Categoria, Movimentacao, PostCategoria, PostMovimentacao, postParcela, TipoPagamento } from '../../lib/types';
+import { Categoria, DiaFiscal, Movimentacao, PostCategoria, PostMovimentacao, postParcela, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
-import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
-import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { ParcelaService } from '../../services/parcela.service';
+import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
+import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    MovimentacaoComponent,
     DiaFiscalComponent,
     CommonModule,
     FormsModule,
@@ -43,7 +42,7 @@ export class HomeComponent {
   movimentacoes: Movimentacao[] = [];
 
   movimentacoesVisualizadas: Movimentacao[] = [];
-  dias: any [] = [];
+  dias: DiaFiscal [] = [];
 
   categorias: Categoria[] = [];
   tiposPagamento: TipoPagamento[] = [];
@@ -78,23 +77,45 @@ export class HomeComponent {
     this.getTiposPagamento();
   }
 
-  separa(mv:Movimentacao[], dias: Date[]) {
-    function diaEstaNaLista(dia: Date, lista: Date[]): boolean {
+  separa(mv:Movimentacao[], dias: DiaFiscal[]) {
+    function diaEstaNaLista(dia: Date, lista: DiaFiscal[]): boolean {
       let retorno = false;
-      lista.forEach((diaDaLista: Date)=>{
-        if (diaDaLista.getDate() == dia.getDate()) retorno = true;
+      lista.forEach((diaDaLista)=>{
+        if (diaDaLista.data.getDate() == dia.getDate()) retorno = true;
       })
   
       return retorno;
     }
 
+    function getDia(dia: Date, lista: DiaFiscal[]): DiaFiscal | null {
+      let retorno = null;
+      lista.forEach((diaDaLista)=>{
+        if (diaDaLista.data.getDate() == dia.getDate()) retorno = diaDaLista;
+      })
+  
+      return retorno;
+    }
 
-    mv.forEach((mv)=> {
-      let d = new Date(mv.data);
-      console.log(d);
+    mv.forEach((movimentacao)=> {
+      let dataDaMovimentacao = new Date(movimentacao.data);
 
       
-      if (!diaEstaNaLista(d, dias)) dias.push(d);
+      if (diaEstaNaLista(dataDaMovimentacao, dias)) {
+        // PORQUE ESSA MERDA NAO FUNCIONA?
+        //dias.find((d)=>{d.data.getDate()==dataDaMovimentacao.getDate()});
+        let dia = getDia(dataDaMovimentacao, dias) 
+        console.log(dia);
+        console.log(dataDaMovimentacao);
+        
+        
+        dia?.movimentacoes.push(movimentacao)
+        
+      }
+      else {
+        dias.push(
+          {"data":dataDaMovimentacao, "movimentacoes":[movimentacao]}
+        ); 
+      }
       
     })
     console.log(dias);
@@ -166,7 +187,7 @@ export class HomeComponent {
     });
   }
 
-  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: Date[])=>void) {
+  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: DiaFiscal[])=>void) {
     this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
       this.movimentacoes = response.movimentacoes;
       this.totalMovimentacoes = response.total;

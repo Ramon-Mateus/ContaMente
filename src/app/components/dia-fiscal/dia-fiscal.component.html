@@ -1,1 +1,5 @@
-<p>{{dia.toLocaleDateString('pt-BR', { weekday: 'long' })}}</p>
+<p>Dia {{dia.data.getDate()}} ({{dia.data.toLocaleDateString('pt-BR', { weekday: 'long' })}})</p>
+
+<app-movimentacao [movimentacao]="movimentacao"
+*ngFor="let movimentacao of dia.movimentacoes"
+></app-movimentacao>
