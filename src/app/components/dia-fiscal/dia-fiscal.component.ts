@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DiaFiscal } from '../../lib/types';
 import { MovimentacaoComponent } from '../movimentacao/movimentacao.component';
 import { CommonModule } from '@angular/common';
@@ -15,4 +15,9 @@ import { CommonModule } from '@angular/common';
 })
 export class DiaFiscalComponent {
   @Input() dia!: DiaFiscal;
+  @Output() deleteMovimentacao = new EventEmitter<number>();
+
+  onDeleteMovimentacao(id: number) {
+    this.deleteMovimentacao.emit(id);
+  }
 }

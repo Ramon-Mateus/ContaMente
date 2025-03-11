@@ -13,7 +13,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
-import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
+import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,7 @@ import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
     CalendarModule,
     DropdownModule,
     DialogModule,
-    MovimentacaoComponent
+    DiaFiscalComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -38,7 +38,6 @@ export class HomeComponent {
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
   
-  movimentacoes: Movimentacao[] = [];
   dias: DiaFiscal [] = [];
 
   categorias: Categoria[] = [];
@@ -136,13 +135,13 @@ export class HomeComponent {
 
   onDeleteMovimentacao(id: number) {
     this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
-      this.movimentacoes = this.movimentacoes.filter(movimentacao => movimentacao.id !== id);
+      this.getMovimentacoes();
     });
   }
 
   getMovimentacoes() {
     this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
-      this.movimentacoes = response.movimentacoes;
+      this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
   }
