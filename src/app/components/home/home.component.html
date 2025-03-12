@@ -1,12 +1,6 @@
 <div class="flex justify-center">
     <div class="flex justify-start flex-col w-[96em]">
         <div class="flex mt-6 mx-7 justify-start">
-            <div class="flex justify-between w-full items-center">
-                <div></div>
-
-                <p class="mr-3 text-2xl">Total Movimentações: {{ totalMovimentacoes | currency:'BRL' }}</p>
-            </div>
-
             <p-dialog header="Adicionar movimentação" [modal]="true" [(visible)]="visibleModalMovimentacao" [style]="{ width: '30rem' }">
                 <form (ngSubmit)="OnCreateMovimentacaoSubmit()" #movimentacaoForm="ngForm" class="p-4 text-base w-full">
                     <div class="mb-2 flex items-center">
@@ -148,26 +142,33 @@
                 
             </div>
 
-            <section class="px-5 flex flex-col justify-start items-center">
-                <div class="flex">
-                    <div class="flex mr-2">
-                        <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-between-horizontal-end"><rect width="13" height="7" x="3" y="3" rx="1"/><path d="m22 15-3-3 3-3"/><rect width="13" height="7" x="3" y="14" rx="1"/></svg>
-                        Gastos
-                    </div>
-
+            <section class="px-5 flex flex-col justify-start">
+                <div class="flex items-center justify-between">
                     <div class="flex">
-                        <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-combined"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
-                        Estatística
+                        <div class="flex gap-0.5">
+                            <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-between-horizontal-end"><rect width="13" height="7" x="3" y="3" rx="1"/><path d="m22 15-3-3 3-3"/><rect width="13" height="7" x="3" y="14" rx="1"/></svg>
+                            <a class="text-zinc-100">Movimentações</a>
+                        </div>
+
+                        <div class="flex gap-0.5 ml-2">
+                            <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-combined"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
+                            <a>Estatística</a>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mr-3 font-semibold text-lg">Total: {{ entradaMovimentacaoFiltro ? '' : '-' }}{{ totalMovimentacoes | currency:'BRL' }}</p>
                     </div>
                 </div>
-                <app-dia-fiscal
-                *ngFor="let dia of dias"
-                [dia]="dia"
-                (deleteMovimentacao)="onDeleteMovimentacao($event)"
-                >
 
-                </app-dia-fiscal>
-                
+                <div class="w-[31em] h-full mt-2">
+                    <app-dia-fiscal
+                    *ngFor="let dia of dias"
+                    [dia]="dia"
+                    (deleteMovimentacao)="onDeleteMovimentacao($event)"
+                    >
+                    </app-dia-fiscal>
+                </div>
+
             </section>
         </div>
     </div>
