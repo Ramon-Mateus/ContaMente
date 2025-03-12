@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
@@ -14,6 +13,7 @@ import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +39,9 @@ export class HomeComponent {
   parcelaService: ParcelaService = inject(ParcelaService);
   
   dias: DiaFiscal [] = [];
+
+  selectedCategorias: number[] = [];
+  selectedTiposPagamento: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
@@ -140,7 +143,7 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaCategoria, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
@@ -152,17 +155,17 @@ export class HomeComponent {
     });
 
     this.categoriaService.getCategorias(false).subscribe(categorias => {
-      this.categoriasSaidaFiltro = categorias;
+      this.categoriasSaidaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
     });
 
     this.categoriaService.getCategorias(true).subscribe(categorias => {
-      this.categoiriasEntradaFiltro = categorias;
+      this.categoiriasEntradaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
     });
   }
 
   getTiposPagamento() {
     this.tiposPagamentoService.getTiposPagamento().subscribe(tiposPagamento => {
-      this.tiposPagamento = tiposPagamento;
+      this.tiposPagamento = tiposPagamento.map(tipoPagamento => ({ ...tipoPagamento, selected: false }));
     });
   }
 
@@ -176,5 +179,24 @@ export class HomeComponent {
       this.numeroParcelas = 2;
       this.valorParcela = 0;
     }
+  }
+
+  onFilterChange() {
+    const categoriasEntradaSelecionadas = this.categoiriasEntradaFiltro
+    .filter(categoria => categoria.selected)
+    .map(categoria => categoria.id);
+
+    const categoriasSaidaSelecionadas = this.categoriasSaidaFiltro
+      .filter(categoria => categoria.selected)
+      .map(categoria => categoria.id);
+
+    this.selectedCategorias = [
+      ...categoriasEntradaSelecionadas,
+      ...categoriasSaidaSelecionadas
+    ].filter((id): id is number => id !== undefined);
+
+    this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
+
+    this.getMovimentacoes();
   }
 }

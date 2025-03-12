@@ -28,6 +28,7 @@ export interface PostMovimentacao {
 export interface TipoPagamento {
     id: number,
     nome: string,
+    selected?: boolean,
     movimentacoes: Movimentacao[]
 }
 
@@ -51,6 +52,7 @@ export interface Categoria {
     id?: number,
     nome?: string
     entrada?: boolean
+    selected?: boolean
 }
 
 export interface PostCategoria {
