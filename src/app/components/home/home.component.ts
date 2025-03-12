@@ -45,12 +45,13 @@ export class HomeComponent {
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
-  categoiriasEntradaFiltro: Categoria[] = [];
+  categoriasEntradaFiltro: Categoria[] = [];
   tiposPagamento: TipoPagamento[] = [];
   totalMovimentacoes: number = 0;
   visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
   entradaCategoria: boolean = false;
+  entradaMovimentacaoFiltro: boolean = false;
   movimentacaoParcelada: boolean = false;
   numeroParcelas: number = 2;
   valorParcela: number = 0;
@@ -143,10 +144,17 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaCategoria, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
+  }
+
+  onChangeEntradaMovimentacao() {
+    this.categoriasEntradaFiltro = this.categoriasEntradaFiltro.map(categoria => ({ ...categoria, selected: false }));
+    this.categoriasSaidaFiltro = this.categoriasSaidaFiltro.map(categoria => ({ ...categoria, selected: false }));
+
+    this.onFilterChange();
   }
 
   getCategorias() {
@@ -159,7 +167,7 @@ export class HomeComponent {
     });
 
     this.categoriaService.getCategorias(true).subscribe(categorias => {
-      this.categoiriasEntradaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
+      this.categoriasEntradaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
     });
   }
 
@@ -182,7 +190,7 @@ export class HomeComponent {
   }
 
   onFilterChange() {
-    const categoriasEntradaSelecionadas = this.categoiriasEntradaFiltro
+    const categoriasEntradaSelecionadas = this.categoriasEntradaFiltro
     .filter(categoria => categoria.selected)
     .map(categoria => categoria.id);
 

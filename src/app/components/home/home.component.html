@@ -103,7 +103,10 @@
                         Mês
                     </span>
     
-                    <p-calendar class="bg-secondary" inputStyleClass="p-3 bg-secondary" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
+                    <p-calendar class="bg-secondary" inputStyleClass="p-3 bg-secondary mb-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
+
+                    <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
+                    <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
                 </aside>
 
                 <aside class="bg-element rounded-lg p-4 mb-2">
@@ -116,15 +119,15 @@
                     </div>
     
                     <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
-                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
                     </div>
 
                     <div class="font-semibold text-sm mt-2">
                         Entrada
                     </div>
     
-                    <div *ngFor="let categoria of categoiriasEntradaFiltro; let index = index">
-                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                    <div *ngFor="let categoria of categoriasEntradaFiltro; let index = index">
+                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
                     </div>
     
                     <button (click)="showDialogCategoria()" class=" bg-secondary p-2 rounded-md mt-2 w-full">
