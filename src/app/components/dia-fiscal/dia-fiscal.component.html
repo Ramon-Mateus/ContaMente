@@ -3,5 +3,6 @@
 <app-movimentacao 
     [movimentacao]="movimentacao"
     *ngFor="let movimentacao of dia.movimentacoes"
+    (edit)="onEditMovimentacao($event)"
     (delete)="onDeleteMovimentacao($event)"
 ></app-movimentacao>

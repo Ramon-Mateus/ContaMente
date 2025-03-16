@@ -20,12 +20,13 @@
                     </div>
                 </ng-template>
             </p-confirmPopup>
-            <i class="pi pi-trash cursor-pointer" (click)="confirm($event)"></i>
+            <div>
+                <i class="pi pi-pencil cursor-pointer mr-2" (click)="onEdit()"></i>
+                <i class="pi pi-trash cursor-pointer" (click)="confirmDelete($event)"></i>
+            </div>
         </div>
     </div>
     <p class="text-zinc-400">
         {{ movimentacao.descricao ? movimentacao.descricao : 'Sem descrição' }}
     </p>
-    <!-- <p>Data: {{ gasto.data | date: 'fullDate' }}</p> -->
-    <!-- <p>Categoria: {{ gasto.categoria.nome }}</p> -->
 </div>

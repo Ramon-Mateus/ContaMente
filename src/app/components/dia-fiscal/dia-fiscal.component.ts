@@ -16,8 +16,13 @@ import { CommonModule } from '@angular/common';
 export class DiaFiscalComponent {
   @Input() dia!: DiaFiscal;
   @Output() deleteMovimentacao = new EventEmitter<number>();
+  @Output() editMovimentacao = new EventEmitter<number>();
 
   onDeleteMovimentacao(id: number) {
     this.deleteMovimentacao.emit(id);
+  }
+
+  onEditMovimentacao(id: number) {
+    this.editMovimentacao.emit(id);
   }
 }

@@ -55,12 +55,20 @@ export class HomeComponent {
   numeroParcelas: number = 2;
   valorParcela: number = 0;
   labelValor: string = 'Valor:';
+  idMovimentacao: number = 0;
 
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
   dataDeFiltragem = new Date()
   
   constructor() {}
+  
+  ngOnInit() {
+    this.getMovimentacoes();
+    
+    this.getCategorias();
+    this.getTiposPagamento();
+  }
 
   showDialogMovimentacao() {
     this.visibleModalMovimentacao = false;
@@ -73,11 +81,9 @@ export class HomeComponent {
     this.visibleModalCategoria = true;
   }
 
-  ngOnInit() {
-    this.getMovimentacoes();
-    
-    this.getCategorias();
-    this.getTiposPagamento();
+  onCreateMovimentacaoModal() {
+    this.idMovimentacao = 0;
+    this.showDialogMovimentacao();
   }
 
   OnCreateCategoriaSubmit() {
@@ -94,6 +100,11 @@ export class HomeComponent {
     this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
       this.getMovimentacoes();
     });
+  }
+
+  onEditMovimentacao(idMovimentacao: number) {
+    this.idMovimentacao = idMovimentacao;
+    this.showDialogMovimentacao();
   }
 
   getMovimentacoes() {

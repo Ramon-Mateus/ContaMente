@@ -24,10 +24,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class MovimentacaoComponent {
   @Input() movimentacao!: Movimentacao;
   @Output() delete = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<number>();
 
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
-  confirm(event: Event) {
+  confirmDelete(event: Event) {
     this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'Deseja excluir?',
@@ -43,5 +44,9 @@ export class MovimentacaoComponent {
 
   onDelete() {
     this.delete.emit(this.movimentacao.id);
+  }
+
+  onEdit() {
+    this.edit.emit(this.movimentacao.id);
   }
 }

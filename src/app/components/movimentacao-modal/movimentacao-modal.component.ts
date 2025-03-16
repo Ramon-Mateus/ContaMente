@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CategoriaService } from '../../services/categoria.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,24 +29,42 @@ import { map } from 'rxjs';
   templateUrl: './movimentacao-modal.component.html',
   styleUrl: './movimentacao-modal.component.css'
 })
-export class MovimentacaoModalComponent {
+export class MovimentacaoModalComponent implements OnChanges {
   categoriaService: CategoriaService = inject(CategoriaService);
   parcelaService: ParcelaService = inject(ParcelaService);
   movimentacaoService: MovimentacaoService = inject(MovimentacaoService);
   
   @Input() visible: boolean = false;
-  @Input() movimentacao: PostMovimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };;
+  @Input() movimentacao: PostMovimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
   @Input() categorias: Categoria[] = [];
   @Input() tiposPagamento: TipoPagamento[] = [];
   @Input() labelValor: string = 'Valor';
   @Input() numeroParcelas: number = 2;
   @Input() valorParcela: number = 0;
+  @Input() idMovimentacao: number = 0;
 
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<PostMovimentacao>();
 
   entradaCategoria: boolean = false;
   movimentacaoParcelada: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['visible'] && changes['visible'].currentValue === true && this.idMovimentacao > 0) {
+      this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
+        this.movimentacao = {
+          valor: movimentacao.valor,
+          descricao: movimentacao.descricao,
+          data: new Date(movimentacao.data),
+          categoriaId: movimentacao.categoria.id!,
+          fixa: movimentacao.fixa,
+          tipoPagamentoId: movimentacao.tipoPagamento.id!
+        };
+      });
+    } else {
+      this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+    }
+  }
 
   getCategorias() {
     this.categoriaService.getCategorias(this.entradaCategoria).subscribe(categorias => {
@@ -87,7 +105,7 @@ export class MovimentacaoModalComponent {
         numeroParcelas: this.numeroParcelas,
         valorParcela: this.valorParcela,
         descricao: this.movimentacao.descricao!,
-        dataInicio: this.movimentacao.data,
+        dataInicio: this.movimentacao.data.toString(),
         categoriaId: this.movimentacao.categoriaId,
         tipoPagamentoId: this.movimentacao.tipoPagamentoId
     };
@@ -111,7 +129,7 @@ export class MovimentacaoModalComponent {
         }) as Movimentacao)
       ).subscribe(movimentacao => {
         this.submit.emit();
-        this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+        this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
         this.numeroParcelas= 2;
         this.valorParcela = 0;
         this.labelValor = 'Valor:';

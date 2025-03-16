@@ -18,7 +18,7 @@ export interface DiaFiscal {
 
 export interface PostMovimentacao {
     valor?: number,
-    data: string,
+    data: string | Date,
     descricao?: string,
     fixa: boolean,
     categoriaId: number,
