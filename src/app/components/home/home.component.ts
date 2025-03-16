@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
@@ -14,13 +13,12 @@ import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
-import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    DiaFiscalComponent,
     CommonModule,
     FormsModule,
     InputNumberModule,
@@ -28,7 +26,8 @@ import { MovimentacaoComponent } from "../movimentacao/movimentacao.component";
     InputSwitchModule,
     CalendarModule,
     DropdownModule,
-    DialogModule
+    DialogModule,
+    DiaFiscalComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -39,19 +38,20 @@ export class HomeComponent {
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
   
-  movimentacoes: Movimentacao[] = [];
-
-  movimentacoesVisualizadas: Movimentacao[] = [];
   dias: DiaFiscal [] = [];
+
+  selectedCategorias: number[] = [];
+  selectedTiposPagamento: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
-  categoiriasEntradaFiltro: Categoria[] = [];
+  categoriasEntradaFiltro: Categoria[] = [];
   tiposPagamento: TipoPagamento[] = [];
   totalMovimentacoes: number = 0;
   visibleModalMovimentacao: boolean = false;
   visibleModalCategoria: boolean = false;
   entradaCategoria: boolean = false;
+  entradaMovimentacaoFiltro: boolean = false;
   movimentacaoParcelada: boolean = false;
   numeroParcelas: number = 2;
   valorParcela: number = 0;
@@ -73,57 +73,11 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.getMovimentacoes(this.separa);
+    this.getMovimentacoes();
     
     this.getCategorias();
     this.getTiposPagamento();
   }
-
-  separa(mv:Movimentacao[], dias: DiaFiscal[]) {
-    function diaEstaNaLista(dia: Date, lista: DiaFiscal[]): boolean {
-      let retorno = false;
-      lista.forEach((diaDaLista)=>{
-        if (diaDaLista.data.getDate() == dia.getDate()) retorno = true;
-      })
-  
-      return retorno;
-    }
-
-    function getDia(dia: Date, lista: DiaFiscal[]): DiaFiscal | null {
-      let retorno = null;
-      lista.forEach((diaDaLista)=>{
-        if (diaDaLista.data.getDate() == dia.getDate()) retorno = diaDaLista;
-      })
-  
-      return retorno;
-    }
-
-    mv.forEach((movimentacao)=> {
-      let dataDaMovimentacao = new Date(movimentacao.data);
-
-      
-      if (diaEstaNaLista(dataDaMovimentacao, dias)) {
-        // PORQUE ESSA MERDA NAO FUNCIONA?
-        //dias.find((d)=>{d.data.getDate()==dataDaMovimentacao.getDate()});
-        let dia = getDia(dataDaMovimentacao, dias) 
-        console.log(dia);
-        console.log(dataDaMovimentacao);
-        
-        
-        dia?.movimentacoes.push(movimentacao)
-        
-      }
-      else {
-        dias.push(
-          {"data":dataDaMovimentacao, "movimentacoes":[movimentacao]}
-        ); 
-      }
-      
-    })
-    console.log(dias);
-  }
-
-  
 
   OnCreateMovimentacaoSubmit() {
     if (this.newMovimentacao.valor === 0) {
@@ -185,19 +139,22 @@ export class HomeComponent {
 
   onDeleteMovimentacao(id: number) {
     this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
-      this.movimentacoes = this.movimentacoes.filter(movimentacao => movimentacao.id !== id);
+      this.getMovimentacoes();
     });
   }
 
-  getMovimentacoes(tarefaExtra?:(movimentacoes:Movimentacao[], dias: DiaFiscal[])=>void) {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear()).subscribe(response => {
-      this.movimentacoes = response.movimentacoes;
+  getMovimentacoes() {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
+      this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
-      
-      if (tarefaExtra) {
-        tarefaExtra(this.movimentacoes, this.dias);
-      }
     });
+  }
+
+  onChangeEntradaMovimentacao() {
+    this.categoriasEntradaFiltro = this.categoriasEntradaFiltro.map(categoria => ({ ...categoria, selected: false }));
+    this.categoriasSaidaFiltro = this.categoriasSaidaFiltro.map(categoria => ({ ...categoria, selected: false }));
+
+    this.onFilterChange();
   }
 
   getCategorias() {
@@ -206,17 +163,17 @@ export class HomeComponent {
     });
 
     this.categoriaService.getCategorias(false).subscribe(categorias => {
-      this.categoriasSaidaFiltro = categorias;
+      this.categoriasSaidaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
     });
 
     this.categoriaService.getCategorias(true).subscribe(categorias => {
-      this.categoiriasEntradaFiltro = categorias;
+      this.categoriasEntradaFiltro = categorias.map(categoria => ({ ...categoria, selected: false }));
     });
   }
 
   getTiposPagamento() {
     this.tiposPagamentoService.getTiposPagamento().subscribe(tiposPagamento => {
-      this.tiposPagamento = tiposPagamento;
+      this.tiposPagamento = tiposPagamento.map(tipoPagamento => ({ ...tipoPagamento, selected: false }));
     });
   }
 
@@ -230,5 +187,24 @@ export class HomeComponent {
       this.numeroParcelas = 2;
       this.valorParcela = 0;
     }
+  }
+
+  onFilterChange() {
+    const categoriasEntradaSelecionadas = this.categoriasEntradaFiltro
+    .filter(categoria => categoria.selected)
+    .map(categoria => categoria.id);
+
+    const categoriasSaidaSelecionadas = this.categoriasSaidaFiltro
+      .filter(categoria => categoria.selected)
+      .map(categoria => categoria.id);
+
+    this.selectedCategorias = [
+      ...categoriasEntradaSelecionadas,
+      ...categoriasSaidaSelecionadas
+    ].filter((id): id is number => id !== undefined);
+
+    this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
+
+    this.getMovimentacoes();
   }
 }

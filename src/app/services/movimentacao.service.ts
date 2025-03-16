@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Movimentacao, PostMovimentacao } from '../lib/types';
+import { DiaFiscal, Movimentacao, PostMovimentacao } from '../lib/types';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class MovimentacaoService {
     private httpClient: HttpClient
   ) { }
 
-  getMovimentacoes(mes?: number, ano?: number, entrada?: boolean): Observable<{ movimentacoes: Movimentacao[], total: number} > {
+  getMovimentacoes(mes?: number, ano?: number, entrada?: boolean, categoriasIds: number[] = [], tiposPagamentoIds: number[] = []): Observable<{ movimentacoes: DiaFiscal[], total: number} > {
     let params = new HttpParams();
 
     if(mes) {
@@ -30,9 +30,30 @@ export class MovimentacaoService {
       params = params.set('entrada', entrada.toString());
     }
 
-    return this.httpClient.get<Movimentacao[]>(this.urlDoModel, { params, withCredentials: true }).pipe(
-      map((movimentacoes: Movimentacao[]) => {
-        const total: number = movimentacoes.reduce((sum: number, movimentacao: Movimentacao) => sum + movimentacao.valor!, 0);
+    categoriasIds.forEach(id => {
+      params = params.append('categoriasIds', id.toString());
+    });
+
+    tiposPagamentoIds.forEach(id => {
+      params = params.append('tiposPagamentoIds', id.toString());
+    });
+
+    return this.httpClient.get<{ [Key: string]: Movimentacao[] }>(this.urlDoModel, { params, withCredentials: true }).pipe(
+      map((response: { [key: string]: Movimentacao[] }) => {
+        const movimentacoes: DiaFiscal[] = Object.keys(response).map(key => {
+          return {
+            data: new Date(key),
+            movimentacoes: response[key]
+          };
+        });
+
+        let total = 0;
+        movimentacoes.forEach(dia => {
+          dia.movimentacoes.forEach(movimentacao => {
+            total += movimentacao.valor;
+          });
+        });
+  
         return { movimentacoes, total };
       })
     );
