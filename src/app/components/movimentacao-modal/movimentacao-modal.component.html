@@ -1,0 +1,60 @@
+<p-dialog header="Adicionar movimentação" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
+    <form (ngSubmit)="OnCreateMovimentacaoSubmit()" #movimentacaoForm="ngForm" class="p-4 text-base w-full">
+        <div class="mb-2 flex items-center">
+            <div class="flex-grow mr-2">
+                <label for="valor">{{ labelValor }}</label><br>
+                <p-inputNumber class="h-11 w-full" inputStyleClass="w-full p-2" styleClass="w-full"  inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valor" name="valor" [(ngModel)]="movimentacao.valor" required></p-inputNumber>
+            </div>
+            
+            <div class="flex-shrink-0 mr-2">
+                <label for="entrada">Entrada:</label><br>
+                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="entrada" name="entrada" [(ngModel)]="entradaCategoria" (onChange)="getCategorias()"></p-inputSwitch>
+            </div>
+
+            <div class="flex-shrink-0">
+                <label for="fixa">Fixa:</label><br>
+                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="fixa" name="fixa" [(ngModel)]="movimentacao.fixa" (onChange)="fixaOnChange()"></p-inputSwitch>
+            </div>
+        </div>
+
+        <label for="descricao">Descrição:</label><br>
+        <textarea class="w-full h-11 mb-1 min-h-11 p-2" id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="movimentacao.descricao"></textarea>
+        
+        <div class="mb-2">
+            <label for="data">Data:</label><br>
+            <p-calendar class="cursor-pointer" inputStyleClass="h-11 w-full cursor:pointer p-2" styleClass="w-full cursor-pointer" id="data" name="data" appendTo="body" [(ngModel)]="movimentacao.data" size="large" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="categoriaId">Categoria:</label><br>
+            <p-dropdown class="w-full" styleClass="w-full" [options]="categorias" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="movimentacao.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
+        </div>
+
+        <div class="mb-3">
+            <label for="tipoPagamentoId">Tipo de pagamento:</label><br>
+            <p-dropdown class="w-full" styleClass="w-full" [options]="tiposPagamento" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="movimentacao.tipoPagamentoId" [ngModelOptions]="{standalone: true}" placeholder="Selecione o tipo de pagamento"></p-dropdown>
+        </div>
+         
+
+        <div class="flex items-center">
+            <div class="flex-shrink-0 mr-2">
+                <label for="parcelada">Parcelada:</label><br>
+                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada" (onChange)="parceladaOnChange()" [disabled]="movimentacao.fixa"></p-inputSwitch>
+            </div>
+
+            <div class="flex-shrink-0 mr-2">
+                <label for="vezes">Vezes:</label><br>
+                <p-inputNumber class="h-11 w-11" inputStyleClass="w-11 p-2" styleClass="w-11"  inputId="minmaxfraction" type="number" id="vezes" name="vezes" [(ngModel)]="numeroParcelas" [min]="2" [disabled]="!movimentacaoParcelada || movimentacao.fixa" required></p-inputNumber>
+            </div>
+
+            <div class="flex-grow">
+                <label for="valorParcela">Valor da parcela:</label><br>
+                <p-inputNumber class="h-11 w-full" inputStyleClass="w-full p-2" styleClass="w-full"  inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" type="number" id="valorParcela" name="valorParcela" [(ngModel)]="valorParcela" [disabled]="!movimentacaoParcelada || movimentacao.fixa" required></p-inputNumber>
+            </div>
+        </div>
+
+        <div class="flex justify-center">
+            <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!movimentacaoForm.form.valid">Adicionar Movimentação</button>
+        </div>
+    </form>
+</p-dialog>
