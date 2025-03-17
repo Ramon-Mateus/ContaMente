@@ -67,7 +67,7 @@ export class MovimentacaoService {
     return this.httpClient.post<Movimentacao>(this.urlDoModel, movimentacao, { withCredentials: true });
   }
 
-  putMovimentacao(id: number, movimentacao: Movimentacao): Observable<Movimentacao> {
+  putMovimentacao(id: number, movimentacao: PostMovimentacao): Observable<Movimentacao> {
     return this.httpClient.put<Movimentacao>(`${this.urlDoModel}/${id}`, movimentacao, { withCredentials: true });
   }
 

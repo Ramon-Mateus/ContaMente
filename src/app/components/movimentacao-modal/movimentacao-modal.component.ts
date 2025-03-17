@@ -99,27 +99,47 @@ export class MovimentacaoModalComponent implements OnChanges {
       return;
     }
 
-    if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
-      const parcela: postParcela = {
-        valorTotal: this.movimentacao.valor!,
-        numeroParcelas: this.numeroParcelas,
-        valorParcela: this.valorParcela,
-        descricao: this.movimentacao.descricao!,
-        dataInicio: this.movimentacao.data.toString(),
-        categoriaId: this.movimentacao.categoriaId,
-        tipoPagamentoId: this.movimentacao.tipoPagamentoId
-    };
-      this.parcelaService.postParcela(parcela).subscribe(parcela => {
-        this.submit.emit();
-        this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
-        this.numeroParcelas= 2;
-        this.valorParcela = 0;
-        this.labelValor = 'Valor:';
-        this.movimentacaoParcelada = false;
-        this.visible = false;
-      });
+    if(this.idMovimentacao === 0) {
+      if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
+        const parcela: postParcela = {
+          valorTotal: this.movimentacao.valor!,
+          numeroParcelas: this.numeroParcelas,
+          valorParcela: this.valorParcela,
+          descricao: this.movimentacao.descricao!,
+          dataInicio: this.movimentacao.data.toString(),
+          categoriaId: this.movimentacao.categoriaId,
+          tipoPagamentoId: this.movimentacao.tipoPagamentoId
+      };
+        this.parcelaService.postParcela(parcela).subscribe(parcela => {
+          this.submit.emit();
+          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+          this.numeroParcelas= 2;
+          this.valorParcela = 0;
+          this.labelValor = 'Valor:';
+          this.movimentacaoParcelada = false;
+          this.visible = false;
+        });
+      } else {
+        this.movimentacaoService.postMovimentacao(this.movimentacao).pipe(
+          map((response: Movimentacao) => ({
+            id: response.id,
+            valor: response.valor,
+            data: response.data,
+            descricao: response.descricao,
+            categoria: response.categoria
+          }) as Movimentacao)
+        ).subscribe(movimentacao => {
+          this.submit.emit();
+          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0 };
+          this.numeroParcelas= 2;
+          this.valorParcela = 0;
+          this.labelValor = 'Valor:';
+          this.movimentacaoParcelada = false;
+          this.visible = false;
+        });
+      }
     } else {
-      this.movimentacaoService.postMovimentacao(this.movimentacao).pipe(
+      this.movimentacaoService.putMovimentacao(this.idMovimentacao, this.movimentacao).pipe(
         map((response: Movimentacao) => ({
           id: response.id,
           valor: response.valor,
