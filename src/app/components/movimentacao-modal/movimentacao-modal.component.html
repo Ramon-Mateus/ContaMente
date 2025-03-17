@@ -21,7 +21,7 @@
         <textarea class="w-full h-11 mb-1 min-h-11 p-2" id="descricao" name="descricao" rows="5" cols="30" pInputTextarea [(ngModel)]="movimentacao.descricao"></textarea>
         
         <div class="mb-2">
-            <label for="data">Data:</label><br>
+            <label for="data">{{ dataLabel }}</label><br>
             <p-calendar class="cursor-pointer" inputStyleClass="h-11 w-full cursor:pointer p-2" styleClass="w-full cursor-pointer" id="data" name="data" appendTo="body" [(ngModel)]="movimentacao.data" size="large" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" required />
         </div>
 
@@ -39,7 +39,7 @@
         <div class="flex items-center">
             <div class="flex-shrink-0 mr-2">
                 <label for="parcelada">Parcelada:</label><br>
-                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada" (onChange)="parceladaOnChange()" [disabled]="movimentacao.fixa"></p-inputSwitch>
+                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="parcelada" name="parcelada" [(ngModel)]="movimentacaoParcelada" (onChange)="parceladaOnChange()" [disabled]="movimentacao.fixa || !parcelaEditable"></p-inputSwitch>
             </div>
 
             <div class="flex-shrink-0 mr-2">
