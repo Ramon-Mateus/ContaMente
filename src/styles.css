@@ -16,6 +16,12 @@
     }
 }
 
+@layer utilities {
+    .panel {
+        @apply bg-element shadow-zinc-900 shadow-lg;
+    }
+}
+
 .p-inputtext:focus,
 .p-inputnumber-input:focus,
 .p-dropdown:focus,
