@@ -13,7 +13,7 @@
 
             <div class="flex-shrink-0">
                 <label for="fixa">Fixa:</label><br>
-                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="fixa" name="fixa" [(ngModel)]="movimentacao.fixa" (onChange)="fixaOnChange()"></p-inputSwitch>
+                <p-inputSwitch class="mt-5" styleClass="mt-1.5" id="fixa" name="fixa" [(ngModel)]="movimentacao.fixa" (onChange)="fixaOnChange()" [disabled]="!parcelaEditable"></p-inputSwitch>
             </div>
         </div>
 

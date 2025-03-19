@@ -74,6 +74,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.numeroParcelas = movimentacao.parcela.numeroParcelas;
           this.valorParcela = movimentacao.parcela.valorParcela;
           this.movimentacao.valor = movimentacao.parcela.valorTotal;
+          this.parceladaOnChange();
         }
       });
     } else {
