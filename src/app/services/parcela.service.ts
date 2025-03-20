@@ -26,7 +26,7 @@ private urlDaApi = import.meta.env.NG_APP_URL_DA_API;
     return this.httpClient.post<Parcela>(this.urlDoModel, parcela, { withCredentials: true });
   }
 
-  putParcela(id: number, parcela: Parcela): Observable<Parcela> {
+  putParcela(id: number, parcela: postParcela): Observable<Parcela> {
     return this.httpClient.put<Parcela>(`${this.urlDoModel}/${id}`, parcela, { withCredentials: true });
   }
 
