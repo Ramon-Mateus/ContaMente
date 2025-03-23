@@ -16,6 +16,19 @@
     }
 }
 
+@layer utilities {
+    .panel {
+        @apply bg-element shadow-zinc-900 shadow-lg;
+    }
+    .minor-button {
+        @apply transition cursor-pointer
+        bg-ground 
+        hover:bg-grounddarker 
+        active:bg-grounddarker 
+        ;
+    }
+}
+
 .p-inputtext:focus,
 .p-inputnumber-input:focus,
 .p-dropdown:focus,

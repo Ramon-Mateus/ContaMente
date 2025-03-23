@@ -35,23 +35,23 @@
 
         <div class="flex mx-auto">
             <div class="w-[11em] h-full">
-                <button (click)="onCreateMovimentacaoModal()" class="text-zinc-800 bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none">
+                <button (click)="onCreateMovimentacaoModal()" class="text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none">
                     <i class="pi pi-plus" style="font-size: 1rem"></i>
                     <span class="ml-2 text-lg">Movimentação</span>
                 </button>
 
-                <aside class="bg-element rounded-lg p-4 mb-2">
+                <aside class="panel rounded-lg p-4 mb-2">
                     <span class="font-semibold text-xl">
                         Mês
                     </span>
     
-                    <p-calendar class="bg-secondary" inputStyleClass="p-3 bg-secondary mb-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
+                    <p-calendar  inputStyleClass="p-3 minor-button b-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
 
                     <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
                     <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
                 </aside>
 
-                <aside class="bg-element rounded-lg p-4 mb-2">
+                <aside class="panel rounded-lg p-4 mb-2">
                     <div class="font-semibold text-xl">
                         Categorias
                     </div>
@@ -72,13 +72,13 @@
                         <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
                     </div>
     
-                    <button (click)="showDialogCategoria()" class=" bg-secondary p-2 rounded-md mt-2 w-full">
+                    <button (click)="showDialogCategoria()" class=" minor-button p-2 rounded-md mt-2 w-full">
                         <i class="pi pi-plus" style="font-size: 0.8rem"></i>
                         <span class="ml-2 text-base">Nova</span>
                     </button>
                 </aside>
 
-                <aside class="bg-element rounded-lg p-4 mb-2">
+                <aside class="panel rounded-lg p-4 mb-2">
                     <div class="font-semibold text-xl mb-2">
                         Tipos de pagamento
                     </div>
