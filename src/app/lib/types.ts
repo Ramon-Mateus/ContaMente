@@ -81,6 +81,16 @@ export interface Usuario_login {
     password: string;
 }
 
+export interface Usuario_registro {
+    name: string;
+    email: string;
+    password: string;
+}
+
+
+
+
+
 export interface resetPasswordForm {
     email: string;
     token: string;

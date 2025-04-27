@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { resetPasswordForm, Usuario, Usuario_login } from '../lib/types';
+import { resetPasswordForm, Usuario, Usuario_login, Usuario_registro } from '../lib/types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class AutenticacaoService {
 
   public isAutenticado = false;
 
-  registrar(usuario: Usuario_login): Observable<Usuario> {
-    return this.httpClient.post<Usuario>(`${this.urlDoModel}/register`, usuario);
+  registrar(usuario: Usuario_registro): Observable<Usuario> {
+    return this.httpClient.post<Usuario>(`${this.urlDoModel}/Auth/register`, usuario);
   }
 
   login(usuario: Usuario_login, useCookies: boolean = true): Observable<any> {
