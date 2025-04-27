@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./cadastro.component.css']
 })
 export class CadastroComponent {
+  name: string = '';
   email: string = '';
   password: string = '';
 
@@ -31,7 +32,7 @@ export class CadastroComponent {
 
   registro() {
     if (this.isPasswordStrong(this.password)) {
-      this.authService.registrar({ email: this.email, password: this.password }).subscribe(() => {
+      this.authService.registrar({ name: this.name, email: this.email, password: this.password }).subscribe(() => {
         this.router.navigate(['/login']);
       });
     } else {
