@@ -1,9 +1,16 @@
-<div class="w-full h-16 flex items-center px-6 justify-between">
+<div class="w-full h-16 flex items-center px-6 pt-10 justify-between">
     <a class="text-zinc-200 text-lg" href="">ContaMente</a>
+    
     <div class="flex items-center space-x-4">
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
-        <button *ngIf="authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Logout" (click)="logout()">Logout</button>
-        <i class="pi pi-user text-lg"></i>
+        
+        <div class="flex" (click)="logout()" *ngIf="authService.isAutenticado">
+        <div>
+            Hello 👋 <br>
+            <div class="font-semibold">Masqueico</div>
+        </div>
+        <img class="h-12 w-12 ml-2 object-cover rounded-md" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fbackground%2F20230401%2Foriginal%2Fpngtree-cool-monkey-wearing-sunglasses-and-modern-clothes-picture-image_2229218.jpg&f=1&nofb=1&ipt=4efcbecbb26a89379636e408d3223a9bfada5311036ddce87f6ef8129f2d5c89" alt="">
+        </div>
     </div>
 </div>
