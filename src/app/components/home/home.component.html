@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <div class="sm:hidden px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium">
+                <div class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium">
                     Filtros e categorias
                 </div>
 
@@ -143,13 +143,24 @@
         </div>
     </div>
     <button (click)="onCreateMovimentacaoModal()" class="
-                text-ground bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none
-                fixed md:hidden bottom-5 right-5  h-16 flex items-center
+                text-ground z-10 bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none
+                fixed md:hidden bottom-7 right-7  h-16 flex items-center
     ">
         <div>
             <i class="pi pi-plus text-4xl font-bold"></i>
         </div>
         <div class="text-left ml-3 font-bold">
+            Registrar <br> movimentação
+        </div>
+    </button>
+    <button (click)="onCreateMovimentacaoModal()" class="
+                text-ground z-0 bg-zinc-500 p-2 pb-3 mb-2 rounded-lg focus:outline-none
+                fixed md:hidden bottom-5 right-5  h-16 flex items-center
+    ">
+        <div class="invisible">
+            <i class="pi pi-plus text-4xl font-bold"></i>
+        </div>
+        <div class="invisible" class="text-left ml-3 font-bold">
             Registrar <br> movimentação
         </div>
     </button>
