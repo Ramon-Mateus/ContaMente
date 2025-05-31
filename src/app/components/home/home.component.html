@@ -33,8 +33,8 @@
             </p-dialog>
         </div>
 
-        <div class="flex mx-auto">
-            <div class="w-[11em] h-full hidden md:block">
+        <div class="flex mx-auto md:w-[43em] justify-between">
+            <aside id="filtros" class="w-[11em] h-full hidden md:block">
                 <button (click)="onCreateMovimentacaoModal()" class="
                 text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none
                 
@@ -90,9 +90,9 @@
                         <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
                     </div>
                 </aside>
-            </div>
+            </aside>
 
-            <section class="md:px-5 flex flex-col justify-start">
+            <section id="lista-movs" class="w-80 sm:w-auto flex flex-col justify-start">
                 <div class="hidden sm:flex flex-row-reverse md:flex-row items-center justify-between">
                     <div class="flex">
                         <div class="flex gap-0.5 text-zinc-300">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="sm:hidden mt-10 px-10 py-5 font-bold text-white bg-[#4A4C5D] rounded-md text-center">
+                <div class="sm:hidden mt-10 py-5 font-bold text-white bg-[#4A4C5D] rounded-md text-center">
                     <span class="text-slate-300 font-medium">
                         Balanço do mês
                     </span> <br>
@@ -126,11 +126,49 @@
                     </div>
                 </div>
 
-                <div class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium">
+                <p-sidebar [(visible)]="sidebarVisible">
+                    <div class="font-semibold text-xl">
+                        Categorias
+                    </div>
+
+                    <div class="font-semibold text-sm mt-2">
+                        Saída
+                    </div>
+    
+                    <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
+                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                    </div>
+
+                    <div class="font-semibold text-sm mt-2">
+                        Entrada
+                    </div>
+    
+                    <div *ngFor="let categoria of categoriasEntradaFiltro; let index = index">
+                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                    </div>
+    
+                    <button (click)="showDialogCategoria()" class=" minor-button p-2 rounded-md mt-2 w-full">
+                        <i class="pi pi-plus" style="font-size: 0.8rem"></i>
+                        <span class="ml-2 text-base">Nova</span>
+                    </button>
+                
+
+                <aside class="panel rounded-lg p-4 mb-2">
+                    <div class="font-semibold text-xl mb-2">
+                        Tipos de pagamento
+                    </div>
+
+                    <div *ngFor="let tipoPagamento of tiposPagamento; let index = index">
+                        <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
+                    </div>
+                </aside>
+                </p-sidebar>
+
+                <div (click)="sidebarVisible = true" class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium">
                     Filtros e categorias
                 </div>
 
-                <div class=" md:w-[31em] h-full mt-10 md:mt-2">
+                <div class=" md:w-full h-full mt-10 md:mt-2">
                     <app-dia-fiscal
                     *ngFor="let dia of dias"
                     [dia]="dia"
@@ -142,9 +180,10 @@
             </section>
         </div>
     </div>
+
     <button (click)="onCreateMovimentacaoModal()" class="
                 text-ground z-10 bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none
-                fixed md:hidden bottom-7 right-7  h-16 flex items-center
+                fixed md:hidden bottom-12 right-12  h-16 flex items-center
     ">
         <div>
             <i class="pi pi-plus text-4xl font-bold"></i>
@@ -155,7 +194,7 @@
     </button>
     <button (click)="onCreateMovimentacaoModal()" class="
                 text-ground z-0 bg-zinc-500 p-2 pb-3 mb-2 rounded-lg focus:outline-none
-                fixed md:hidden bottom-5 right-5  h-16 flex items-center
+                fixed md:hidden bottom-10 right-10  h-16 flex items-center
     ">
         <div class="invisible">
             <i class="pi pi-plus text-4xl font-bold"></i>
