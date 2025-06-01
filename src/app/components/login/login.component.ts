@@ -26,15 +26,15 @@ export class LoginComponent {
   login() {
     if (this.submitted) return;
     if (this.email == "" || this.password == "") {
-      this.setMessage("Credenciais vazias.")
-      return
+      this.setMessage("Credenciais vazias.");
+      return;
     }
 
     this.submitted = true;
 
     this.authService.login({ email: this.email, password: this.password }).subscribe(
       () => {
-        this.trataSucesso()
+        this.trataSucesso();
         this.submitted = false;
       },
       (errorResponse) => {
@@ -47,11 +47,9 @@ export class LoginComponent {
   trataSucesso() {
     this.authService.setAutenticado(true);
     this.router.navigate(['/']);
-
-
   }
 
-  trataErro(errorResponse: any) {
+  trataErro(errorResponse: Response) {
     if (errorResponse.status == 401) 
       this.setMessage("Credenciais inválidas!")
     else 
@@ -60,8 +58,6 @@ export class LoginComponent {
 
   setMessage(message: string) {
     this.message = message
-    setTimeout(() => {
-      this.message = ""
-    }, 5000);
+    setTimeout(() => this.message = "", 5000);
   }
 }
