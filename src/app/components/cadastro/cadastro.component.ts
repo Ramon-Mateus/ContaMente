@@ -39,6 +39,8 @@ export class CadastroComponent {
       return;
     }
 
+    this.submitted = true;
+
     this.authService.registrar({ name: this.name, email: this.email, password: this.password }).subscribe(
       () => {
         this.trataSucesso();

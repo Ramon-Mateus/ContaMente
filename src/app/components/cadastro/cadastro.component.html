@@ -1,5 +1,5 @@
 <section class="flex justify-center items-center mt-52">
-    <form class="bg-zinc-600 p-5 space-y-3 w-80 rounded-md">    
+    <form (submit)="registro()" class="bg-zinc-600 p-5 space-y-3 w-80 rounded-md">    
         <div class="text-red-500 {{message ? '' : 'hidden'}}">
             {{message}}
         </div>
