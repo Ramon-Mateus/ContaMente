@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Categoria, PutCategoria } from '../../lib/types';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
@@ -34,6 +34,7 @@ import { CategoriaService } from '../../services/categoria.service';
 })
 export class CategoriaComponent {
   @Input() categoria!: Categoria;
+  @Output() editOrDelete = new EventEmitter<boolean>();
 
   editCategoria: PutCategoria = {};
 
@@ -60,7 +61,11 @@ export class CategoriaComponent {
   }
 
   onDelete() {
-    this.categoriaService.deleteCategoria(this.categoria.id!);
+    this.categoriaService.deleteCategoria(this.categoria.id!).subscribe({
+      next: () => {
+        this.editOrDelete.emit(true);
+      }
+    })
   }
 
   showDialogCategoria() {
@@ -79,6 +84,7 @@ export class CategoriaComponent {
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Categoria editada com sucesso' });
         this.visibleModalCategoria = false;
+        this.editOrDelete.emit(true);
       }
     });
   }
