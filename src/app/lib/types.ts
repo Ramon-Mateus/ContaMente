@@ -60,6 +60,11 @@ export interface PostCategoria {
     entrada: boolean
 }
 
+export interface PutCategoria {
+    nome?: string,
+    entrada?: boolean
+}
+
 export interface postParcela {
     valorTotal: number,
     numeroParcelas: number,
@@ -71,8 +76,8 @@ export interface postParcela {
 }
 
 export interface Usuario {
-    id: number;
-    username: string;
+    id: string;
+    name: string;
     email: string;
 }
 

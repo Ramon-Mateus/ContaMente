@@ -5,12 +5,14 @@
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
         
-        <div class="flex" (click)="logout()" *ngIf="authService.isAutenticado">
-        <div>
-            Hello 👋 <br>
-            <div class="font-semibold">Masqueico</div>
-        </div>
-        <img class="h-12 w-12 ml-2 object-cover rounded-md" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fbackground%2F20230401%2Foriginal%2Fpngtree-cool-monkey-wearing-sunglasses-and-modern-clothes-picture-image_2229218.jpg&f=1&nofb=1&ipt=4efcbecbb26a89379636e408d3223a9bfada5311036ddce87f6ef8129f2d5c89" alt="">
+        <div class="flex" (click)="menu.toggle($event)" *ngIf="authService.isAutenticado">
+            <div>
+                Hello 👋 <br>
+                <div class="font-semibold">Masqueico</div>
+            </div>
+            <img class="h-12 w-12 ml-2 object-cover rounded-md" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fbackground%2F20230401%2Foriginal%2Fpngtree-cool-monkey-wearing-sunglasses-and-modern-clothes-picture-image_2229218.jpg&f=1&nofb=1&ipt=4efcbecbb26a89379636e408d3223a9bfada5311036ddce87f6ef8129f2d5c89" alt="">
+
+            <p-menu #menu [model]="items" styleClass="panel" [popup]="true"/>
         </div>
     </div>
 </div>
