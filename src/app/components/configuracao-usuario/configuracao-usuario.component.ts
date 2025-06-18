@@ -4,15 +4,14 @@ import { Categoria, Usuario } from '../../lib/types';
 import { CommonModule } from '@angular/common';
 import { CategoriaComponent } from '../categoria/categoria.component';
 import { AutenticacaoService } from '../../services/autenticacao.service';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-configuracao-usuario',
   standalone: true,
   imports: [
     CommonModule,
-    CategoriaComponent,
-    RouterModule
+    CategoriaComponent
   ],
   templateUrl: './configuracao-usuario.component.html',
   styleUrl: './configuracao-usuario.component.css'
@@ -20,6 +19,7 @@ import { RouterModule } from '@angular/router';
 export class ConfiguracaoUsuarioComponent {
   categoriaService: CategoriaService = inject(CategoriaService);
   autenticacaoService: AutenticacaoService = inject(AutenticacaoService);
+  router: Router = inject(Router);
 
   categoriasSaida: Categoria[] = [];
   categoriasEntrada: Categoria[] = [];
@@ -53,6 +53,8 @@ export class ConfiguracaoUsuarioComponent {
   }
 
   logout() {
-    this.autenticacaoService.logout();
+    this.autenticacaoService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }

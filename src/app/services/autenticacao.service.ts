@@ -21,7 +21,7 @@ export class AutenticacaoService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, { withCredentials: true }).pipe(
+    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, null, { withCredentials: true }).pipe(
       tap(() => {
         this.isAutenticado = false;
       })
