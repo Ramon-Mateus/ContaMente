@@ -4,8 +4,8 @@
         <div class="text-red-500 {{message ? '' : 'hidden'}}">
             {{message}}
         </div>
-        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="text" [(ngModel)]="email" placeholder="Email" [ngModelOptions]="{standalone: true}"><br>
-        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="password" [(ngModel)]="password" placeholder="Password" [ngModelOptions]="{standalone: true}"><br>
+        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="email" name="email" [(ngModel)]="email" placeholder="Email" [ngModelOptions]="{standalone: true}"><br>
+        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="password" name="password" [(ngModel)]="password" placeholder="Password" [ngModelOptions]="{standalone: true}"><br>
         <button class="bg-zinc-800 w-full p-2 rounded-md focus:outline-none">
             <span [hidden]="submitted">
                 Login
