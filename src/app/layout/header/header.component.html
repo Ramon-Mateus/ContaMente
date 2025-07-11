@@ -1,8 +1,10 @@
 <div class="w-full h-16 flex items-center px-6 justify-between">
-    <a class="text-zinc-200 text-lg" href="">ContaMente</a>
+    <a class="text-zinc-200 text-lg flex items-center" [routerLink]="['movimentacoes']"> <img class="h-[1em] mr-1" src="contamente.webp" alt=""> ContaMente</a>
+
     <div class="flex items-center space-x-4">
-        <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
+        <button *ngIf="!authService.isAutenticado" class="bg-zinc-200 hover:bg-zinc-400 transition text-ground rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
+        <!-- <button *ngIf="authService.isAutenticado" class="bg-zinc-200 hover:bg-zinc-400 transition text-ground rounded px-4 py-1" type="button" label="Login" (click)="minhasMovimentacoes()">Minhas movimentações</button> -->
         <button *ngIf="authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Logout" (click)="logout()">Logout</button>
         <i class="pi pi-user text-lg"></i>
     </div>

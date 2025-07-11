@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AutenticacaoService } from '../../services/autenticacao.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +9,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     ButtonModule,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -30,5 +31,9 @@ export class HeaderComponent {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/login']);
     });
+  }
+
+  minhasMovimentacoes() {
+    this.router.navigate(['movimentacoes'])
   }
 }

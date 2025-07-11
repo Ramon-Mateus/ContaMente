@@ -27,6 +27,10 @@
         active:bg-grounddarker 
         ;
     }
+
+    .botaoSimples {
+        @apply bg-;
+    }
 }
 
 .p-inputtext:focus,

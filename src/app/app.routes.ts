@@ -5,10 +5,15 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 export const routes: Routes = [
     {
         path: '',
+        component: LandingComponent,
+    },
+    {
+        path: 'movimentacoes',
         component: HomeComponent,
         canActivate: [AuthGuard]
     },
@@ -27,5 +32,9 @@ export const routes: Routes = [
     {
         path: 'forgot-password',
         component: ForgotPasswordComponent
+    },
+    {
+        path: 'landing',
+        component: LandingComponent
     }
 ];
