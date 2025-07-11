@@ -1,8 +1,19 @@
 <section class="flex justify-center items-center mt-52">
-    <div class="bg-zinc-600 p-5 space-y-3 w-80 rounded-md">    
-        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="text" [(ngModel)]="email" placeholder="Email"><br>
-        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="password" [(ngModel)]="password" placeholder="Password"><br>
-        <button class="bg-zinc-800 w-full p-2 rounded-md focus:outline-none" (click)="login()">Login</button>
+    
+    <form (submit)="login()" class="bg-zinc-600 p-5 space-y-3 w-80 rounded-md">    
+        <div class="text-red-500 {{message ? '' : 'hidden'}}">
+            {{message}}
+        </div>
+        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="text" [(ngModel)]="email" placeholder="Email" [ngModelOptions]="{standalone: true}"><br>
+        <input class="rounded-md w-full h-9 pl-2 focus:outline-none" type="password" [(ngModel)]="password" placeholder="Password" [ngModelOptions]="{standalone: true}"><br>
+        <button class="bg-zinc-800 w-full p-2 rounded-md focus:outline-none">
+            <span [hidden]="submitted">
+                Login
+            </span>
+            <span [hidden]="!submitted">
+                <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i> Aguarde.
+            </span>
+        </button>
         <a class="hover:underline block text-center" [routerLink]="['/forgot-password']">Esqueceu a senha?</a>
-    </div>
+    </form>
 </section>

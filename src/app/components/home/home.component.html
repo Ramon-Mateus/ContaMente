@@ -33,9 +33,12 @@
             </p-dialog>
         </div>
 
-        <div class="flex mx-auto">
-            <div class="w-[11em] h-full">
-                <button (click)="onCreateMovimentacaoModal()" class="text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none">
+        <div class="flex mx-auto md:w-[43em] justify-between">
+            <aside id="filtros" class="w-[11em] h-full hidden md:block">
+                <button (click)="onCreateMovimentacaoModal()" class="
+                text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none
+                
+                ">
                     <i class="pi pi-plus" style="font-size: 1rem"></i>
                     <span class="ml-2 text-lg">Movimentação</span>
                 </button>
@@ -87,19 +90,19 @@
                         <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
                     </div>
                 </aside>
-            </div>
+            </aside>
 
-            <section class="px-5 flex flex-col justify-start">
-                <div class="flex items-center justify-between">
+            <section id="lista-movs" class="w-80 sm:w-auto flex flex-col justify-start">
+                <div class="hidden sm:flex flex-row-reverse md:flex-row items-center justify-between">
                     <div class="flex">
-                        <div class="flex gap-0.5">
+                        <div class="flex gap-0.5 text-zinc-300">
                             <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-between-horizontal-end"><rect width="13" height="7" x="3" y="3" rx="1"/><path d="m22 15-3-3 3-3"/><rect width="13" height="7" x="3" y="14" rx="1"/></svg>
-                            <a class="text-zinc-100">Movimentações</a>
+                            <a class="text-zinc-100 hidden md:inline">Movimentações</a>
                         </div>
 
                         <div class="flex gap-0.5 ml-2">
                             <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-combined"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
-                            <a>Estatística</a>
+                            <a class="hidden md:inline">Estatística</a>
                         </div>
                     </div>
                     <div>
@@ -107,7 +110,83 @@
                     </div>
                 </div>
 
-                <div class="w-[31em] h-full mt-2">
+                <div class="sm:hidden mt-10 py-5 font-bold text-white bg-[#4A4C5D] rounded-md text-center">
+                    <span class="text-slate-300 font-medium">
+                        Balanço do mês
+                    </span> <br>
+                    <div class="text-xl flex mx-auto w-max">
+                        
+
+                        {{ entradaMovimentacaoFiltro ? '' : '-' }}{{ totalMovimentacoes | currency:'BRL' }}
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z" clip-rule="evenodd"/>
+                            <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <p-sidebar [(visible)]="sidebarVisible" styleClass="bg-grounddarker">
+
+                    <section>
+                        <div class="font-semibold text-xl">
+                            Mês
+                        </div>
+                    
+                        <p-calendar  inputStyleClass="p-3 minor-button b-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
+                    </section>
+
+                    <section class="mt-6">
+                        <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
+                        <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
+                    </section>
+                    
+
+                    <section class="mt-6">
+                        <div class="font-semibold text-xl">
+                            Categorias
+                        </div>
+
+                        <div class="font-semibold text-sm mt-2">
+                            Saída
+                        </div>
+        
+                        <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
+                            <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                        </div>
+
+                        <div class="font-semibold text-sm mt-2">
+                            Entrada
+                        </div>
+        
+                        <div *ngFor="let categoria of categoriasEntradaFiltro; let index = index">
+                            <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                        </div>
+        
+                        <button (click)="showDialogCategoria()" class=" minor-button p-2 rounded-md mt-2 w-full">
+                            <i class="pi pi-plus" style="font-size: 0.8rem"></i>
+                            <span class="ml-2 text-base">Nova</span>
+                        </button>
+                    </section>
+                
+                <section class="mt-6">
+                    <div class="font-semibold text-xl mb-2">
+                        Tipos de pagamento
+                    </div>
+
+                    <div *ngFor="let tipoPagamento of tiposPagamento; let index = index">
+                        <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
+                    </div>
+                </section>
+                
+                </p-sidebar>
+
+                <div (click)="sidebarVisible = true" class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal-icon lucide-sliders-horizontal inline mr-2"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
+                    Filtros e categorias
+                </div>
+
+                <div class=" md:w-full h-full mt-10 md:mt-2">
                     <app-dia-fiscal
                     *ngFor="let dia of dias"
                     [dia]="dia"
@@ -119,4 +198,27 @@
             </section>
         </div>
     </div>
+
+    <button (click)="onCreateMovimentacaoModal()" class="
+                text-ground z-10 bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none
+                fixed md:hidden bottom-12 right-12  h-16 flex items-center
+    ">
+        <div>
+            <i class="pi pi-plus text-4xl font-bold"></i>
+        </div>
+        <div class="text-left ml-3 font-bold">
+            Registrar <br> movimentação
+        </div>
+    </button>
+    <button (click)="onCreateMovimentacaoModal()" class="
+                text-ground z-0 bg-zinc-500 p-2 pb-3 mb-2 rounded-lg focus:outline-none
+                fixed md:hidden bottom-10 right-10  h-16 flex items-center
+    ">
+        <div class="invisible">
+            <i class="pi pi-plus text-4xl font-bold"></i>
+        </div>
+        <div class="invisible" class="text-left ml-3 font-bold">
+            Registrar <br> movimentação
+        </div>
+    </button>
 </div>
