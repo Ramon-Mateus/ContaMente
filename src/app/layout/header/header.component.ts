@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { Usuario } from '../../lib/types';
 
 @Component({
   selector: 'app-header',
@@ -30,8 +31,13 @@ export class HeaderComponent {
       command: () => this.logout()
     }
   ];
+  usuarioLogado: Usuario = { id: '', name: '', email: '' };
 
   constructor(public authService: AutenticacaoService, private router: Router) {}
+
+  ngOnInit() {
+    this.getUsuarioLogado();
+  }
 
   login() {
     this.router.navigate(['/login']);
@@ -49,5 +55,13 @@ export class HeaderComponent {
 
   perfil() {
     this.router.navigate(['/configuracao-usuario']);
+  }
+
+  getUsuarioLogado() {
+    this.authService.getUser().subscribe({
+      next: (usuario) => {
+        this.usuarioLogado = usuario;
+      }
+    });
   }
 }
