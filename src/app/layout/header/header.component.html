@@ -1,11 +1,9 @@
-
-<div class="w-full h-16 flex items-center px-6 justify-between">
-    <a class="text-zinc-200 text-lg flex items-center" [routerLink]="['movimentacoes']"> <img class="h-[1em] mr-1" src="contamente.webp" alt=""> ContaMente</a>
-
+<div class="mx-auto w-80 sm:w-[43em] h-16 flex items-center mt-12 sm:mt-8 mb-15 sm:mb-12 justify-between ">
+    <a class="text-zinc-200 text-lg block" href="">ContaMente</a>
+    
     <div class="flex items-center space-x-4">
-        <button *ngIf="!authService.isAutenticado" class="bg-zinc-200 hover:bg-zinc-400 transition text-ground rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
+        <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
-
         
         <div class="flex" (click)="menu.toggle($event)" *ngIf="authService.isAutenticado">
             <div>
