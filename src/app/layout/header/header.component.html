@@ -1,5 +1,5 @@
 <div class="mx-auto w-80 sm:w-[43em] h-16 flex items-center mt-4 mb-15 sm:mb-12 justify-between ">
-    <a class="text-zinc-200 text-lg block" href="">ContaMente</a>
+    <a [routerLink]="['']" class="text-zinc-200 text-lg block" href="">ContaMente</a>
     
     <div class="flex items-center space-x-4">
         <button *ngIf="!authService.isAutenticado" class="focus:outline-none border border-gray-400 rounded px-4 py-1 " type="button" label="Login" (click)="login()">Login</button>
