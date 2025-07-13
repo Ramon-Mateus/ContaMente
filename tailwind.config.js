@@ -9,7 +9,10 @@ module.exports = {
 
         element:"#202127",
         elementdarker:"#101117",
-        secondary: "#909090"
+        secondary: "#909090",
+
+        groundl: "#EEEEEE",
+        elementl: "#979797",
       }
     }
 
