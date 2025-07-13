@@ -39,6 +39,13 @@
     bg-ground text-white hover:bg-grounddarker
     dark:bg-white dark:text-ground dark:hover:bg-zinc-300;
   }
+
+  .base-botao-lined {
+    @apply transition border font-semibold
+      border-ground text-ground
+      dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-ground
+      ;
+  }
 }
 
 .p-inputtext:focus,
