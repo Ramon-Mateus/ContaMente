@@ -5,6 +5,15 @@
 
 frontend do projeto de finanças pessoais ([api](https://github.com/Ramon-Mateus/ContaMente-API))
 
+## Sitemap
+
+```mermaid
+flowchart LR
+
+Landing --> Login --> Movimentações --> perfcon['Perfil e Configurações']
+Landing --> Cadastro --> Login
+```
+
 ## Libs
 
 - [Primeng](https://primeng.org/) - Ícones e componentes
@@ -23,6 +32,6 @@ depois crie um arquivo .env e dentro insira a porta que o dotnet está usando no
     NG_APP_PORTA_DA_API=????
     NG_APP_PROTOCOLO=????
 
-onde "????" é... A porta da api. Depois é só rodar:
+Depois é só rodar:
 
     npm run ng serve
