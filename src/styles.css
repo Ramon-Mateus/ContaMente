@@ -15,7 +15,7 @@
   }
 
   .landing-card {
-    @apply w-60;
+    @apply w-60 text-center;
   }
 
   .landing-illustration {
@@ -38,14 +38,6 @@
     @apply font-semibold w-max transition
     bg-ground text-white hover:bg-grounddarker
     dark:bg-white dark:text-ground dark:hover:bg-zinc-300;
-  }
-
-  .tema-bi {
-    @apply bg-groundl text-ground dark:bg-ground dark:text-zinc-400;
-  }
-
-  .tema-claro {
-    @apply bg-groundl text-ground;
   }
 }
 
