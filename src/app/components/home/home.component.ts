@@ -14,7 +14,6 @@ import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
 import { Component, inject } from '@angular/core';
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
-import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-home',
@@ -27,8 +26,7 @@ import { SidebarModule } from 'primeng/sidebar';
     CalendarModule,
     DialogModule,
     DiaFiscalComponent,
-    MovimentacaoModalComponent,
-    SidebarModule
+    MovimentacaoModalComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -62,8 +60,6 @@ export class HomeComponent {
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
   dataDeFiltragem = new Date()
-
-  sidebarVisible = false;
   
   constructor() {}
   

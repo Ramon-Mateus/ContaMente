@@ -21,7 +21,7 @@ export class AutenticacaoService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, null, { withCredentials: true }).pipe(
+    return this.httpClient.post<void>(`${this.urlDoModel}/Auth/logout`, {}, { withCredentials: true }).pipe(
       tap(() => {
         this.isAutenticado = false;
       })
@@ -48,7 +48,5 @@ export class AutenticacaoService {
     this.isAutenticado = status;
   }
 
-  getUser(): Observable<Usuario> {
-    return this.httpClient.get<Usuario>(`${this.urlDoModel}/Auth/getUser`, { withCredentials: true });
-  }
+  constructor() { }
 }

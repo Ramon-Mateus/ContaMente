@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Categoria, PutCategoria } from '../lib/types';
+import { Categoria } from '../lib/types';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class CategoriaService {
     return this.httpClient.post<Categoria>(this.urlDoModel, categoria, { withCredentials: true });
   }
 
-  putCategoria(id: number, categoria: PutCategoria): Observable<Categoria> {
+  putCategoria(id: number, categoria: Categoria): Observable<Categoria> {
     return this.httpClient.put<Categoria>(`${this.urlDoModel}/${id}`, categoria, { withCredentials: true });
   }
 

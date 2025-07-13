@@ -3,8 +3,6 @@ import { AutenticacaoService } from '../../services/autenticacao.service';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -12,26 +10,12 @@ import { MenuItem } from 'primeng/api';
   imports: [
     ButtonModule,
     CommonModule,
-    RouterLink,
-
-    MenuModule
+    RouterLink
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  items: MenuItem[] = [
-    {
-      label: 'Perfil',
-      icon: 'pi pi-user',
-      command: () => this.perfil()
-    },
-    {
-      label: 'Logout',
-      icon: 'pi pi-sign-out',
-      command: () => this.logout()
-    }
-  ];
 
   constructor(public authService: AutenticacaoService, private router: Router) {}
 
@@ -51,9 +35,5 @@ export class HeaderComponent {
 
   minhasMovimentacoes() {
     this.router.navigate(['movimentacoes'])
-  }
-  
-  perfil() {
-    this.router.navigate(['/configuracao-usuario']);
   }
 }

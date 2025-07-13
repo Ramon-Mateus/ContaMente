@@ -10,8 +10,6 @@ frontend do projeto de finanças pessoais ([api](https://github.com/Ramon-Mateus
 - [Primeng](https://primeng.org/) - Ícones e componentes
 - [ngx-env/builder](https://www.npmjs.com/package/@ngx-env/builder) - Gerenciamento de variáveis de ambiente
 
-- preview do código: https://github1s.com/ramon-Mateus/contamente
-
 ## Como rodar
 
 Primeiro, estando no diretório raiz, instale os pacotes relacionados ao projeto:
