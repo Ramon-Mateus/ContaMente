@@ -92,12 +92,20 @@ export interface Usuario_registro {
     password: string;
 }
 
-
-
-
-
 export interface resetPasswordForm {
     email: string;
     token: string;
     newPassword: string;
 };
+
+export interface Responsavel {
+    id: number,
+    nome: string,
+    userId: string,
+    user: Usuario,
+    movimentacoes: Movimentacao[]
+}
+
+export interface PostPutResponsavel {
+    nome: string
+}
