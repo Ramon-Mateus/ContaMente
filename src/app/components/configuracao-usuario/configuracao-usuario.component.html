@@ -11,6 +11,12 @@
     </div>
 </div>
 
+<app-responsavel-modal
+    [visible]="visibleModalResponsavel"
+    [responsavelId]="responsavelId"
+    (submit)="getResponsaveis()"
+></app-responsavel-modal>
+
 <div class="flex flex-col items-center h-screen">
     <div class="flex flex-col lg:flex-row w-full max-w-[60em] panel p-4 rounded-lg">
         <div class="w-full p-2 pr-3">
@@ -27,10 +33,14 @@
         <div class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l">
             <div class="flex flex-row w-full justify-between mb-3">
                 <h1 class="text-3xl">Responsáveis</h1>
-                <button class="text-1xl p-2 minor-button rounded-md">Adicionar</button>
+                <button (click)="onCreateResponsavelModal()" class="text-1xl p-2 minor-button rounded-md">Adicionar</button>
             </div>
             <div *ngFor="let responsavel of responsaveis">
-                <app-responsavel [responsavel]="responsavel" (editOrDelete)="getResponsaveis()"></app-responsavel>
+                <app-responsavel 
+                    [responsavel]="responsavel" 
+                    (Delete)="getResponsaveis()"
+                    (Edit)="onEditResponsavel($event)"
+                ></app-responsavel>
             </div>
         </div>
     </div>

@@ -34,11 +34,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 })
 export class ResponsavelComponent {
   @Input() responsavel!: Responsavel;
-  @Output() editOrDelete = new EventEmitter<boolean>();
+  @Output() Delete = new EventEmitter<boolean>();
+  @Output() Edit = new EventEmitter<number>();
 
-  editResponsavel: PostPutResponsavel = { nome: "" };
-
-  visibleModalResponsavel: boolean = false;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -48,13 +46,13 @@ export class ResponsavelComponent {
   confirmDelete(event: Event) {
     this.confirmationService.confirm({
         target: event.target as EventTarget,
-        message: 'Todas as movimentações associadas a essa categoria também serão excluídas! Tem certeza que deseja excluir essa categoria?',
+        message: 'Todas as movimentações associadas a esse responsável também serão excluídas! Tem certeza que deseja excluir esse responsável?',
         accept: () => {
             this.onDelete();
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Categoria excluída com sucesso', life: 3000 });
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Responsável excluído com sucesso', life: 3000 });
         },
         reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Categoria não excluída', life: 3000 });
+            this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Responsável não excluído', life: 3000 });
         }
     });
   }
@@ -62,27 +60,12 @@ export class ResponsavelComponent {
   onDelete() {
     this.responsavelService.deleteResponsavel(this.responsavel.id!).subscribe({
       next: () => {
-        this.editOrDelete.emit(true);
+        this.Delete.emit(true);
       }
     })
   }
 
-  showDialogResponsavel() {
-    this.editResponsavel = {
-      nome: this.responsavel.nome
-    };
-    this.visibleModalResponsavel = true;
-  }
-
-  OnEditResponsavel() {
-    this.responsavelService.putResponsavel(this.responsavel.id!, {
-      nome: this.editResponsavel.nome
-    } as PostPutResponsavel).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Responsável editado com sucesso' });
-        this.visibleModalResponsavel = false;
-        this.editOrDelete.emit(true);
-      }
-    });
+  onEdit() {
+    this.Edit.emit(this.responsavel.id);
   }
 }

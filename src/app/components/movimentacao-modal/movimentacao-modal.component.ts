@@ -44,7 +44,6 @@ export class MovimentacaoModalComponent implements OnChanges {
   @Input() idMovimentacao: number = 0;
   @Input() parcelaEditable: boolean = true;
 
-  @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<PostMovimentacao>();
 
   entradaCategoria: boolean = false;
@@ -101,15 +100,6 @@ export class MovimentacaoModalComponent implements OnChanges {
   parceladaOnChange() {
     this.labelValor = this.movimentacaoParcelada ? 'Valor total da compra:' : 'Valor:';
     this.dataLabel = this.movimentacaoParcelada ? 'Data de início:' : 'Data:';
-  }
-
-  onSubmit() {
-    if (this.movimentacao.valor === 0) {
-      alert('Por favor, insira um valor maior que zero.');
-      return;
-    }
-
-    this.submit.emit(this.movimentacao);
   }
 
   OnCreateMovimentacaoSubmit() {
