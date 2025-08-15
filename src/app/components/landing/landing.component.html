@@ -1,43 +1,44 @@
 <main class="">
   <section
-    class="px-20 py-10 flex flex-col md:flex-row md:justify-around md:w-[60em] mx-auto items-center md:items-start"
+    class="py-10 flex flex-col md:flex-row md:justify-around md:w-[43em] mx-auto items-center md:items-start"
   >
     <div class="w-[18em] md:w-[30em] mt-20 text-center md:text-left mb-10 md:mb-0">
-      <div class="text-3xl font-semibold text-white mb-5">
-        A forma prática de gerenciar suas finanças.
+      <div class="text-3xl font-medium text-white mb-5">
+        A forma <span class="font-bold bg-gradient-to-r from-red-400 to-purple-400 bg-clip-text text-transparent">prática</span> de gerenciar suas finanças.
       </div>
       <p>
-        No ContaMente, você registra seus gastos de acordo com suas
-        classificações.
+        Seu controle financeiro, do seu jeito.
       </p>
+      <div class="justify-center sm:justify-start flex gap-3 mt-3">
+        <button *ngIf="!authService.isAutenticado" class="base-botao rounded-md px-4 py-1" type="button" label="Cadastro" (click)="this.router.navigate(['/cadastro'])">Crie uma conta</button>
+        <button *ngIf="!authService.isAutenticado" class="base-botao-lined rounded-md px-4 py-1" type="button" label="Login" (click)="this.router.navigate(['/login'])">Entrar</button>
+      </div>
+        
     </div>
-    <div class="mb-20 w-max">
-      <img class="h-80" src="figura1.svg" alt="" />
+    <div class="mb-12 w-max">
+      <img class="h-80" src="/landing/mulher_relogio_porco.png" alt="" />
     </div>
   </section>
 
-  <section class="grid grid-cols-1 md:grid-cols-3 gap-10 w-max mx-auto">
+  <!-- <section class="grid grid-cols-1 md:grid-cols-3 gap-10 w-max mx-auto">
     <div class="landing-card">
       <div class="landing-illustration"></div>
       <p>
-        Use categorias para agrupar cada gasto e saber quanto você usou em cada
-        uma.
+        Use categorias personalizáveis para agrupar cada gasto.
       </p>
     </div>
 
     <div class="landing-card">
       <div class="landing-illustration"></div>
       <p>
-        Gastos recorrentes como contas de streamings e compras parceladas podem
-        ser facilmente gerenciados na nossa interface.
+        Facilmente gerencie gastos e recebimentos recorrentes.
       </p>
     </div>
 
     <div class="landing-card">
       <div class="landing-illustration"></div>
       <p>
-        Seja lembrado de aniversários e pessoas a pagar, para não se pego de
-        surpresa.
+        Te ajudamos a não ser pego de surpresa por dívidas a amigos ou aniversários.
       </p>
     </div>
   </section>
@@ -69,5 +70,5 @@
         Criar conta
       </button>
     </a>
-  </section>
+  </section> -->
 </main>

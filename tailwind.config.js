@@ -10,6 +10,7 @@ module.exports = {
         element:"#202127",
         elementdarker:"#101117",
         secondary: "#909090",
+        highsec: "#575757",
 
         groundl: "#EEEEEE",
         elementl: "#979797",
