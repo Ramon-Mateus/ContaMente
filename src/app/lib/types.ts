@@ -102,7 +102,7 @@ export interface Responsavel {
     id: number,
     nome: string,
     userId: string,
-    user: Usuario,
+    user: Usuario | null,
     movimentacoes: Movimentacao[]
 }
 

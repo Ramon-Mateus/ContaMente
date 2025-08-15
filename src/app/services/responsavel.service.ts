@@ -14,7 +14,7 @@ export class ResponsavelService {
     private httpClient: HttpClient
   ) { }
 
-  getReponsaveis(): Observable<Responsavel[]> {
+  getResponsaveis(): Observable<Responsavel[]> {
     return this.httpClient.get<Responsavel[]>(this.urlDoModel, { withCredentials: true });
   }
 

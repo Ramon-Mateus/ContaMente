@@ -1,32 +1,40 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CategoriaService } from '../../services/categoria.service';
-import { Categoria, Usuario } from '../../lib/types';
+import { Categoria, Responsavel, Usuario } from '../../lib/types';
 import { CommonModule } from '@angular/common';
 import { CategoriaComponent } from '../categoria/categoria.component';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { Router } from '@angular/router';
+import { ResponsavelService } from '../../services/responsavel.service';
+import { ResponsavelComponent } from '../responsavel/responsavel.component';
 
 @Component({
   selector: 'app-configuracao-usuario',
   standalone: true,
   imports: [
     CommonModule,
-    CategoriaComponent
+    CategoriaComponent,
+    ResponsavelComponent
   ],
   templateUrl: './configuracao-usuario.component.html',
   styleUrl: './configuracao-usuario.component.css'
 })
-export class ConfiguracaoUsuarioComponent {
+export class ConfiguracaoUsuarioComponent implements OnInit {
   categoriaService: CategoriaService = inject(CategoriaService);
   autenticacaoService: AutenticacaoService = inject(AutenticacaoService);
+  responsavelService: ResponsavelService = inject(ResponsavelService);
+
   router: Router = inject(Router);
 
   categoriasSaida: Categoria[] = [];
   categoriasEntrada: Categoria[] = [];
   usuarioLogado: Usuario = { id: '', name: '', email: '' };
+  responsaveis: Responsavel[] = [];
+  algodanado: any = { nome: "Ramon" }
 
   ngOnInit() {
     this.getCategorias();
+    this.getResponsaveis();
     this.getUsuarioLogado();
   }
 
@@ -40,6 +48,16 @@ export class ConfiguracaoUsuarioComponent {
     this.categoriaService.getCategorias(true).subscribe({
       next: (categorias) => {
         this.categoriasEntrada = categorias;
+      }
+    });
+  }
+
+  getResponsaveis() {
+    this.responsavelService.getResponsaveis().subscribe({
+      next: (responsaveis) => {
+        this.responsaveis = responsaveis;
+        console.log("Responsaveis: ", this.responsaveis);
+        console.log("Tamanho de responsaveis: ", this.responsaveis.length);
       }
     });
   }

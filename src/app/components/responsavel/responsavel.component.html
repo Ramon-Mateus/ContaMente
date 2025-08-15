@@ -1,0 +1,40 @@
+<p-dialog header="Adicionar categoria" [modal]="true" [(visible)]="visibleModalResponsavel" [style]="{ width: '30rem' }">
+    <form (ngSubmit)="OnEditResponsavel()" #responsavelForm="ngForm" class="p-4 text-base w-full">
+        <div class="mb-2 flex items-center">
+            <div class="flex-grow mr-2">
+                <label for="nome">Nome:</label><br>
+                <textarea class="w-full h-11 mb-1 min-h-11 p-2" id="nome" name="nome" rows="5" cols="30" pInputTextarea [(ngModel)]="editResponsavel.nome"></textarea>
+            </div>
+        </div>
+
+        <div class="flex justify-center">
+            <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!responsavelForm.form.valid">Salvar Responsável</button>
+        </div>
+    </form>
+</p-dialog>
+
+<div>
+    <div class="flex align-middle justify-between">
+        <p class="text-base md:text-xl">
+            {{  responsavel.nome }}
+        </p>
+        <div class="card flex justify-center gap-2">
+            <p-toast />
+            <p-confirmPopup #cp>
+                <ng-template pTemplate="headless" let-message>
+                    <div class="rounded p-4 bg-zinc-400 text-zinc-800">
+                        <span>{{ message.message }}</span>
+                        <div class="flex items-center gap-2 mt-4 text-zinc-800">
+                            <p-button (onClick)="cp.accept()" label="Sim" size="small" />
+                            <p-button (onClick)="cp.reject()" label="Não" [text]="true" size="small" severity="secondary" />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-confirmPopup>
+            <div>
+                <i class="pi pi-pencil cursor-pointer mr-2" (click)="showDialogResponsavel()"></i>
+                <i class="pi pi-trash cursor-pointer" (click)="confirmDelete($event)"></i>
+            </div>
+        </div>
+    </div>
+</div>
