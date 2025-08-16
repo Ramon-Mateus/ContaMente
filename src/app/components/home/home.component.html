@@ -4,11 +4,11 @@
             <app-movimentacao-modal
                 [visible]="visibleModalMovimentacao"
                 [categorias]="categorias"
+                [responsaveis]="responsaveis"
                 [tiposPagamento]="tiposPagamento"
                 [labelValor]="'Valor'"
                 [idMovimentacao]="idMovimentacao"
                 [parcelaEditable]="true"
-                (close)="visibleModalMovimentacao = false"
                 (submit)="getMovimentacoes()">
             </app-movimentacao-modal>
 
@@ -90,6 +90,16 @@
                         <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
                     </div>
                 </aside>
+
+                <aside class="panel rounded-lg p-4 mb-2">
+                    <div class="font-semibold text-xl mb-2">
+                        Responsáveis
+                    </div>
+
+                    <div *ngFor="let responsavel of responsaveis; let index = index">
+                        <input type="checkbox" name="" id="responsavel{{index}}" [(ngModel)]="responsavel.selected" (change)="onFilterChange()"> <label for="responsavel{{index}}" class="select-none"> {{responsavel.nome.split(' ')[0]}}</label>
+                    </div>
+                </aside>
             </aside>
 
             <section id="lista-movs" class="w-80 sm:w-auto flex flex-col justify-start">
@@ -115,7 +125,6 @@
                         Balanço do mês
                     </span> <br>
                     <div class="text-xl flex mx-auto w-max">
-                        
 
                         {{ entradaMovimentacaoFiltro ? '' : '-' }}{{ totalMovimentacoes | currency:'BRL' }}
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -140,7 +149,6 @@
                         <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
                         <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
                     </section>
-                    
 
                     <section class="mt-6">
                         <div class="font-semibold text-xl">

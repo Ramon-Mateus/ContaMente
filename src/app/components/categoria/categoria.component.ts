@@ -48,15 +48,15 @@ export class CategoriaComponent {
  
   confirmDelete(event: Event) {
     this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Todas as movimentações associadas a essa categoria também serão excluídas! Tem certeza que deseja excluir essa categoria?',
-        accept: () => {
-            this.onDelete();
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Categoria excluída com sucesso', life: 3000 });
-        },
-        reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Categoria não excluída', life: 3000 });
-        }
+      target: event.target as EventTarget,
+      message: 'Todas as movimentações associadas a essa categoria também serão excluídas! Tem certeza que deseja excluir essa categoria?',
+      accept: () => {
+        this.onDelete();
+        this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Categoria excluída com sucesso', life: 3000 });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Categoria não excluída', life: 3000 });
+      }
     });
   }
 

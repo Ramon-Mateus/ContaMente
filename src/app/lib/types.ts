@@ -7,6 +7,7 @@ export interface Movimentacao {
     numeroParcela: number | null,
     categoria: Categoria,
     tipoPagamento: TipoPagamento,
+    responsavel: Responsavel | null,
     recorrencia: Recorrencia | null,
     parcela: Parcela | null
 }
@@ -22,7 +23,8 @@ export interface PostMovimentacao {
     descricao?: string,
     fixa: boolean,
     categoriaId: number,
-    tipoPagamentoId: number
+    tipoPagamentoId: number,
+    responsavelId: number | null
 }
 
 export interface TipoPagamento {
@@ -92,12 +94,21 @@ export interface Usuario_registro {
     password: string;
 }
 
-
-
-
-
 export interface resetPasswordForm {
     email: string;
     token: string;
     newPassword: string;
 };
+
+export interface Responsavel {
+    id: number,
+    nome: string,
+    userId: string,
+    user: Usuario | null,
+    movimentacoes: Movimentacao[],
+    selected?: boolean
+}
+
+export interface PostPutResponsavel {
+    nome: string
+}
