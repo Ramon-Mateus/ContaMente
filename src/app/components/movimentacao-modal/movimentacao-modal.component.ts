@@ -68,9 +68,6 @@ export class MovimentacaoModalComponent implements OnChanges {
           responsavelId: movimentacao.responsavel ? movimentacao.responsavel.id : null
         };
 
-        console.log("Movimentacao consulta: ", movimentacao);
-        console.log("PostMovimentacao: ", this.movimentacao);
-
         if(movimentacao.parcela !== null) {
           this.movimentacaoParcelada = true;
           this.parcelaEditable = false;

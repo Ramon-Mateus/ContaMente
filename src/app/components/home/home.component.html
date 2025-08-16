@@ -115,7 +115,6 @@
                         Balanço do mês
                     </span> <br>
                     <div class="text-xl flex mx-auto w-max">
-                        
 
                         {{ entradaMovimentacaoFiltro ? '' : '-' }}{{ totalMovimentacoes | currency:'BRL' }}
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -140,7 +139,6 @@
                         <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
                         <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
                     </section>
-                    
 
                     <section class="mt-6">
                         <div class="font-semibold text-xl">
