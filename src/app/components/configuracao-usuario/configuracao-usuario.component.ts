@@ -60,8 +60,6 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     this.responsavelService.getResponsaveis().subscribe({
       next: (responsaveis) => {
         this.responsaveis = responsaveis;
-        console.log("Responsaveis: ", this.responsaveis);
-        console.log("Tamanho de responsaveis: ", this.responsaveis.length);
       }
     });
   }

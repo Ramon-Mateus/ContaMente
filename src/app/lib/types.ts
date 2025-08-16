@@ -7,6 +7,7 @@ export interface Movimentacao {
     numeroParcela: number | null,
     categoria: Categoria,
     tipoPagamento: TipoPagamento,
+    responsavel: Responsavel | null,
     recorrencia: Recorrencia | null,
     parcela: Parcela | null
 }
@@ -22,7 +23,8 @@ export interface PostMovimentacao {
     descricao?: string,
     fixa: boolean,
     categoriaId: number,
-    tipoPagamentoId: number
+    tipoPagamentoId: number,
+    responsavelId: number | null
 }
 
 export interface TipoPagamento {

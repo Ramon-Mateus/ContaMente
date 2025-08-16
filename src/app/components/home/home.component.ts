@@ -6,7 +6,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Categoria, DiaFiscal, PostCategoria, TipoPagamento } from '../../lib/types';
+import { Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
@@ -15,6 +15,7 @@ import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
 import { Component, inject } from '@angular/core';
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { ResponsavelService } from '../../services/responsavel.service';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +39,8 @@ export class HomeComponent {
   categoriaService: CategoriaService = inject(CategoriaService);
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
-  
+  responsavelService: ResponsavelService = inject(ResponsavelService);
+
   dias: DiaFiscal [] = [];
 
   selectedCategorias: number[] = [];
@@ -58,6 +60,7 @@ export class HomeComponent {
   valorParcela: number = 0;
   labelValor: string = 'Valor:';
   idMovimentacao: number = 0;
+  responsaveis: Responsavel[] = [];
 
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
@@ -72,6 +75,7 @@ export class HomeComponent {
     
     this.getCategorias();
     this.getTiposPagamento();
+    this.getResponsaveis();
   }
 
   showDialogMovimentacao() {
@@ -142,6 +146,12 @@ export class HomeComponent {
   getTiposPagamento() {
     this.tiposPagamentoService.getTiposPagamento().subscribe(tiposPagamento => {
       this.tiposPagamento = tiposPagamento.map(tipoPagamento => ({ ...tipoPagamento, selected: false }));
+    });
+  }
+
+  getResponsaveis() {
+    this.responsavelService.getResponsaveis().subscribe(responsaveis => {
+      this.responsaveis = responsaveis;
     });
   }
 
