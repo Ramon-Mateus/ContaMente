@@ -31,20 +31,20 @@ export class MovimentacaoComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   ngOnInit() {
-    this.nomeResponsavel = this.movimentacao.responsavel ? '• ' + this.movimentacao.responsavel.nome : '';
+    this.nomeResponsavel = this.movimentacao.responsavel ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0] : '';
   }
 
   confirmDelete(event: Event) {
     this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Deseja excluir?',
-        accept: () => {
-            this.onDelete();
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Registro excluído com sucesso', life: 3000 });
-        },
-        reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Registro não excluído', life: 3000 });
-        }
+      target: event.target as EventTarget,
+      message: 'Deseja excluir?',
+      accept: () => {
+        this.onDelete();
+        this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Registro excluído com sucesso', life: 3000 });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Registro não excluído', life: 3000 });
+      }
     });
   }
 

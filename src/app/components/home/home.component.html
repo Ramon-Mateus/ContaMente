@@ -90,6 +90,16 @@
                         <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
                     </div>
                 </aside>
+
+                <aside class="panel rounded-lg p-4 mb-2">
+                    <div class="font-semibold text-xl mb-2">
+                        Responsáveis
+                    </div>
+
+                    <div *ngFor="let responsavel of responsaveis; let index = index">
+                        <input type="checkbox" name="" id="responsavel{{index}}" [(ngModel)]="responsavel.selected" (change)="onFilterChange()"> <label for="responsavel{{index}}" class="select-none"> {{responsavel.nome.split(' ')[0]}}</label>
+                    </div>
+                </aside>
             </aside>
 
             <section id="lista-movs" class="w-80 sm:w-auto flex flex-col justify-start">

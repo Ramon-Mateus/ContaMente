@@ -45,6 +45,7 @@ export class HomeComponent {
 
   selectedCategorias: number[] = [];
   selectedTiposPagamento: number[] = [];
+  selectedResponsaveis: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
@@ -72,7 +73,6 @@ export class HomeComponent {
   
   ngOnInit() {
     this.getMovimentacoes();
-    
     this.getCategorias();
     this.getTiposPagamento();
     this.getResponsaveis();
@@ -116,7 +116,7 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
@@ -151,7 +151,7 @@ export class HomeComponent {
 
   getResponsaveis() {
     this.responsavelService.getResponsaveis().subscribe(responsaveis => {
-      this.responsaveis = responsaveis;
+      this.responsaveis = responsaveis.map(responsavel => ({ ...responsavel, selected: false }));
     });
   }
 
@@ -170,6 +170,8 @@ export class HomeComponent {
     ].filter((id): id is number => id !== undefined);
 
     this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
+
+    this.selectedResponsaveis = this.responsaveis.filter(r => r.selected).map(r => r.id);
 
     this.getMovimentacoes();
   }

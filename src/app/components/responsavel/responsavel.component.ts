@@ -45,15 +45,15 @@ export class ResponsavelComponent {
  
   confirmDelete(event: Event) {
     this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Todas as movimentações associadas a esse responsável também serão excluídas! Tem certeza que deseja excluir esse responsável?',
-        accept: () => {
-            this.onDelete();
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Responsável excluído com sucesso', life: 3000 });
-        },
-        reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Responsável não excluído', life: 3000 });
-        }
+      target: event.target as EventTarget,
+      message: 'Todas as movimentações associadas a esse responsável também serão excluídas! Tem certeza que deseja excluir esse responsável?',
+      accept: () => {
+        this.onDelete();
+        this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Responsável excluído com sucesso', life: 3000 });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Responsável não excluído', life: 3000 });
+      }
     });
   }
 

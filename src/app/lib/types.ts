@@ -105,7 +105,8 @@ export interface Responsavel {
     nome: string,
     userId: string,
     user: Usuario | null,
-    movimentacoes: Movimentacao[]
+    movimentacoes: Movimentacao[],
+    selected?: boolean
 }
 
 export interface PostPutResponsavel {
