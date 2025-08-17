@@ -28,6 +28,11 @@ export class HeaderComponent {
       command: () => this.perfil()
     },
     {
+      label: 'Movimentações',
+      icon: 'pi pi-list',
+      command: () => this.movimentacoes()
+    },
+    {
       label: 'Logout',
       icon: 'pi pi-sign-out',
       command: () => this.logout()
@@ -65,6 +70,10 @@ export class HeaderComponent {
   
   perfil() {
     this.router.navigate(['/configuracao-usuario']);
+  }
+
+  movimentacoes() {
+    this.router.navigate(['/movimentacoes']);
   }
 
   getUsuarioLogado() {
