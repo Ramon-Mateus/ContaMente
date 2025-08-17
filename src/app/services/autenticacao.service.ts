@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { resetPasswordForm, Usuario, Usuario_login, Usuario_registro } from '../lib/types';
 
@@ -11,6 +11,7 @@ export class AutenticacaoService {
   httpClient: HttpClient = inject(HttpClient);
 
   public isAutenticado = false;
+  atualizarHeader = new EventEmitter<void>();
 
   registrar(usuario: Usuario_registro): Observable<Usuario> {
     return this.httpClient.post<Usuario>(`${this.urlDoModel}/Auth/register`, usuario);

@@ -6,7 +6,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Categoria, DiaFiscal, PostCategoria, TipoPagamento } from '../../lib/types';
+import { Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
@@ -15,6 +15,7 @@ import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
 import { Component, inject } from '@angular/core';
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { ResponsavelService } from '../../services/responsavel.service';
 
 @Component({
   selector: 'app-home',
@@ -38,11 +39,13 @@ export class HomeComponent {
   categoriaService: CategoriaService = inject(CategoriaService);
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
-  
+  responsavelService: ResponsavelService = inject(ResponsavelService);
+
   dias: DiaFiscal [] = [];
 
   selectedCategorias: number[] = [];
   selectedTiposPagamento: number[] = [];
+  selectedResponsaveis: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
@@ -58,6 +61,7 @@ export class HomeComponent {
   valorParcela: number = 0;
   labelValor: string = 'Valor:';
   idMovimentacao: number = 0;
+  responsaveis: Responsavel[] = [];
 
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
@@ -69,9 +73,9 @@ export class HomeComponent {
   
   ngOnInit() {
     this.getMovimentacoes();
-    
     this.getCategorias();
     this.getTiposPagamento();
+    this.getResponsaveis();
   }
 
   showDialogMovimentacao() {
@@ -112,7 +116,7 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
@@ -145,6 +149,12 @@ export class HomeComponent {
     });
   }
 
+  getResponsaveis() {
+    this.responsavelService.getResponsaveis().subscribe(responsaveis => {
+      this.responsaveis = responsaveis.map(responsavel => ({ ...responsavel, selected: false }));
+    });
+  }
+
   onFilterChange() {
     const categoriasEntradaSelecionadas = this.categoriasEntradaFiltro
     .filter(categoria => categoria.selected)
@@ -160,6 +170,8 @@ export class HomeComponent {
     ].filter((id): id is number => id !== undefined);
 
     this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
+
+    this.selectedResponsaveis = this.responsaveis.filter(r => r.selected).map(r => r.id);
 
     this.getMovimentacoes();
   }

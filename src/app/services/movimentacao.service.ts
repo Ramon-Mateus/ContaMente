@@ -15,7 +15,7 @@ export class MovimentacaoService {
     private httpClient: HttpClient
   ) { }
 
-  getMovimentacoes(mes?: number, ano?: number, entrada?: boolean, categoriasIds: number[] = [], tiposPagamentoIds: number[] = []): Observable<{ movimentacoes: DiaFiscal[], total: number} > {
+  getMovimentacoes(mes?: number, ano?: number, entrada?: boolean, categoriasIds: number[] = [], tiposPagamentoIds: number[] = [], responsaveisIds: number[] = []): Observable<{ movimentacoes: DiaFiscal[], total: number} > {
     let params = new HttpParams();
 
     if(mes) {
@@ -36,6 +36,10 @@ export class MovimentacaoService {
 
     tiposPagamentoIds.forEach(id => {
       params = params.append('tiposPagamentoIds', id.toString());
+    });
+
+    responsaveisIds.forEach(id => {
+      params = params.append('responsaveisIds', id.toString());
     });
 
     return this.httpClient.get<{ [Key: string]: Movimentacao[] }>(this.urlDoModel, { params, withCredentials: true }).pipe(

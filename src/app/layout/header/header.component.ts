@@ -38,6 +38,10 @@ export class HeaderComponent {
   constructor(public authService: AutenticacaoService, private router: Router) {}
 
   ngOnInit() {
+    this.authService.atualizarHeader.subscribe(() => {
+      this.getUsuarioLogado();
+    });
+
     this.getUsuarioLogado();
   }
 
