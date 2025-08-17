@@ -49,6 +49,7 @@ export class MovimentacaoModalComponent implements OnChanges {
 
   entradaCategoria: boolean = false;
   movimentacaoParcelada: boolean = false;
+  responsaveisDropdown: Responsavel[] = [];
   dataLabel: string = 'Data:';
   idParcela: number = 0;
   datePipe = new DatePipe('en-us');
@@ -56,6 +57,10 @@ export class MovimentacaoModalComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0;
     this.numeroParcelas = 2;
+    this.responsaveisDropdown = [
+    { id: 0, nome: 'Nenhum responsável', userId: '', user: null, movimentacoes: [] },
+    ...this.responsaveis
+    ];
     if (changes['visible'] && changes['visible'].currentValue === true && this.idMovimentacao > 0) {
       this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
         this.movimentacao = {
@@ -108,6 +113,10 @@ export class MovimentacaoModalComponent implements OnChanges {
     if (this.movimentacao.valor === 0) {
       alert('Por favor, insira um valor maior que zero.');
       return;
+    }
+
+    if (this.movimentacao.responsavelId === 0) {
+      this.movimentacao.responsavelId = null;
     }
 
     const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd');
