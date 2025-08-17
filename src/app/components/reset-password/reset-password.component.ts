@@ -37,7 +37,7 @@ export class ResetPasswordComponent implements OnInit {
       this.email = params['email'];
       this.token = params['token'];
       if (!this.email || !this.token) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/movimentacoes']);
       }
     });
   }

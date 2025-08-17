@@ -46,8 +46,8 @@ export class LoginComponent {
 
   trataSucesso() {
     this.authService.setAutenticado(true);
+    this.router.navigate(['/movimentacoes']);
     this.authService.atualizarHeader.emit();
-    this.router.navigate(['/']);
   }
 
   trataErro(errorResponse: Response) {

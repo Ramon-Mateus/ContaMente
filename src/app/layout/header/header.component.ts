@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AutenticacaoService } from '../../services/autenticacao.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { MenuModule } from 'primeng/menu';
@@ -13,6 +13,8 @@ import { Usuario } from '../../lib/types';
   imports: [
     ButtonModule,
     CommonModule,
+    RouterLink,
+
     MenuModule
   ],
   templateUrl: './header.component.html',
@@ -57,6 +59,10 @@ export class HeaderComponent {
     });
   }
 
+  minhasMovimentacoes() {
+    this.router.navigate(['movimentacoes'])
+  }
+  
   perfil() {
     this.router.navigate(['/configuracao-usuario']);
   }
