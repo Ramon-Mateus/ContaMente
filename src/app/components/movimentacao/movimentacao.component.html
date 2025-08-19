@@ -6,7 +6,7 @@
             {{ movimentacao.valor | currency:'BRL' }} 
             <span class="text-zinc-500 block md:inline">
                 • {{ movimentacao.categoria.nome }}
-                • {{ movimentacao.tipoPagamento.nome }}
+                • {{ movimentacao.tipoPagamento.nome }} {{ parcelaFormatada }}
                 {{ nomeResponsavel }}
             </span>
         </p>
