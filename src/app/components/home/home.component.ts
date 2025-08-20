@@ -151,7 +151,12 @@ export class HomeComponent {
 
   getResponsaveis() {
     this.responsavelService.getResponsaveis().subscribe(responsaveis => {
-      this.responsaveis = responsaveis.map(responsavel => ({ ...responsavel, selected: false }));
+      this.responsaveis = [
+        { id: 0, nome: 'Eu', userId: '', user: null, movimentacoes: [] },
+        ...responsaveis
+      ];
+
+      this.responsaveis = this.responsaveis.map(responsavel => ({ ...responsavel, selected: false }));
     });
   }
 
