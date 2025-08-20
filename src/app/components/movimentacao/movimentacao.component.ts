@@ -36,7 +36,7 @@ export class MovimentacaoComponent implements OnInit {
       this.parcelaFormatada = this.movimentacao.numeroParcela!.toString().padStart(2, '0') +  '/' + this.movimentacao.parcela.numeroParcelas!.toString().padStart(2, '0');
     }
 
-    this.nomeResponsavel = this.movimentacao.responsavel ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0] : '';
+    this.nomeResponsavel = this.movimentacao.responsavel ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0] : '• Eu';
   }
 
   confirmDelete(event: Event) {

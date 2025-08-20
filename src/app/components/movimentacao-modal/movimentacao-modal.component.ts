@@ -57,10 +57,9 @@ export class MovimentacaoModalComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0;
     this.numeroParcelas = 2;
-    this.responsaveisDropdown = [
-    { id: 0, nome: 'Nenhum responsável', userId: '', user: null, movimentacoes: [] },
-    ...this.responsaveis
-    ];
+
+    this.carregaResponsaveis();
+
     if (changes['visible'] && changes['visible'].currentValue === true && this.idMovimentacao > 0) {
       this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
         this.movimentacao = {
@@ -88,6 +87,17 @@ export class MovimentacaoModalComponent implements OnChanges {
       this.parcelaEditable = true;
       this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
     }
+  }
+
+  carregaResponsaveis() {
+    this.responsaveisDropdown = [
+      { id: 0, nome: 'Eu', userId: '', user: null, movimentacoes: [] },
+      ...this.responsaveis
+      ];
+    
+    setTimeout(() => {
+      this.movimentacao.responsavelId = 0;
+    });
   }
 
   getCategorias() {
