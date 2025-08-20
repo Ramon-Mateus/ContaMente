@@ -114,6 +114,27 @@ export class MovimentacaoModalComponent implements OnChanges {
   parceladaOnChange() {
     this.labelValor = this.movimentacaoParcelada ? 'Valor total da compra:' : 'Valor:';
     this.dataLabel = this.movimentacaoParcelada ? 'Data de início:' : 'Data:';
+    this.valorChange();
+  }
+
+  valorChange() {
+    setTimeout(() => {
+      if (this.movimentacaoParcelada && this.movimentacao.valor) {
+        this.valorParcela = this.movimentacao.valor! / this.numeroParcelas;
+      } else {
+        this.valorParcela = 0;
+      }
+    });
+  }
+
+  valorParcelaOnChange() {
+    setTimeout(() => {
+      if (this.movimentacaoParcelada) {
+        this.movimentacao.valor = this.valorParcela * this.numeroParcelas;
+      } else {
+        this.movimentacao.valor = 0;
+      }
+    });
   }
 
   OnCreateMovimentacaoSubmit() {
