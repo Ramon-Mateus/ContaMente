@@ -90,10 +90,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   }
 
   carregaResponsaveis() {
-    this.responsaveisDropdown = [
-      { id: 0, nome: 'Eu', userId: '', user: null, movimentacoes: [] },
-      ...this.responsaveis
-      ];
+    this.responsaveisDropdown = [...this.responsaveis];
     
     setTimeout(() => {
       this.movimentacao.responsavelId = 0;
