@@ -30,8 +30,7 @@ export interface PostMovimentacao {
 export interface TipoPagamento {
     id: number,
     nome: string,
-    selected?: boolean,
-    movimentacoes: Movimentacao[]
+    selected?: boolean
 }
 
 export interface Recorrencia {
