@@ -69,7 +69,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           categoriaId: movimentacao.categoria.id!,
           fixa: movimentacao.fixa,
           tipoPagamentoId: movimentacao.tipoPagamento.id!,
-          responsavelId: movimentacao.responsavel ? movimentacao.responsavel.id : null
+          responsavelId: movimentacao.responsavel ? movimentacao.responsavel.id : 0
         };
 
         if(movimentacao.parcela !== null) {
