@@ -9,7 +9,8 @@ export interface Movimentacao {
     tipoPagamento: TipoPagamento,
     responsavel: Responsavel | null,
     recorrencia: Recorrencia | null,
-    parcela: Parcela | null
+    parcela: Parcela | null,
+    cartao: Cartao | null
 }
 
 export interface DiaFiscal {
@@ -111,4 +112,15 @@ export interface Responsavel {
 
 export interface PostPutResponsavel {
     nome: string
+}
+
+export interface Cartao {
+    id: number,
+    apelido: string,
+    diaFechamento: number
+}
+
+export interface PostPutCartao {
+    apelido: string,
+    diaFechamento: number
 }
