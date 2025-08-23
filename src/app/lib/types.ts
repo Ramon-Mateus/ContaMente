@@ -25,7 +25,8 @@ export interface PostMovimentacao {
     fixa: boolean,
     categoriaId: number,
     tipoPagamentoId: number,
-    responsavelId: number | null
+    responsavelId: number | null,
+    cartaoId: number | null
 }
 
 export interface TipoPagamento {
@@ -117,7 +118,8 @@ export interface PostPutResponsavel {
 export interface Cartao {
     id: number,
     apelido: string,
-    diaFechamento: number
+    diaFechamento: number,
+    selected?: boolean
 }
 
 export interface PostPutCartao {

@@ -6,7 +6,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
+import { Cartao, Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
@@ -16,6 +16,7 @@ import { Component, inject } from '@angular/core';
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { ResponsavelService } from '../../services/responsavel.service';
+import { CartaoService } from '../../services/cartao.service';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +41,7 @@ export class HomeComponent {
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
   responsavelService: ResponsavelService = inject(ResponsavelService);
+  cartaoService: CartaoService = inject(CartaoService);
 
   dias: DiaFiscal [] = [];
 
@@ -62,6 +64,7 @@ export class HomeComponent {
   labelValor: string = 'Valor:';
   idMovimentacao: number = 0;
   responsaveis: Responsavel[] = [];
+  cartoes: Cartao[] = [];
 
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
@@ -76,6 +79,7 @@ export class HomeComponent {
     this.getCategorias();
     this.getTiposPagamento();
     this.getResponsaveis();
+    this.getCartoes();
   }
 
   showDialogMovimentacao() {
@@ -157,6 +161,19 @@ export class HomeComponent {
       ];
 
       this.responsaveis = this.responsaveis.map(responsavel => ({ ...responsavel, selected: false }));
+    });
+  }
+
+  getCartoes() {
+    this.cartaoService.getCartoes().subscribe(cartoes => {
+      this.cartoes = [
+        { id: 0, apelido: 'Nenhum', diaFechamento: 0 },
+        ...cartoes
+      ];
+
+      this.cartoes = this.cartoes.map(cartao => ({ ...cartao, selected: false }));
+
+      console.log(this.cartoes);
     });
   }
 

@@ -8,7 +8,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
-import { Categoria, Movimentacao, PostMovimentacao, postParcela, Responsavel, TipoPagamento } from '../../lib/types';
+import { Cartao, Categoria, Movimentacao, PostMovimentacao, postParcela, Responsavel, TipoPagamento } from '../../lib/types';
 import { ParcelaService } from '../../services/parcela.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { map } from 'rxjs';
@@ -35,9 +35,10 @@ export class MovimentacaoModalComponent implements OnChanges {
   movimentacaoService: MovimentacaoService = inject(MovimentacaoService);
   
   @Input() visible: boolean = false;
-  @Input() movimentacao: PostMovimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+  @Input() movimentacao: PostMovimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
   @Input() categorias: Categoria[] = [];
   @Input() responsaveis: Responsavel[] = [];
+  @Input() cartoes: Cartao[] = [];
   @Input() tiposPagamento: TipoPagamento[] = [];
   @Input() labelValor: string = 'Valor';
   @Input() numeroParcelas: number = 2;
@@ -50,6 +51,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   entradaCategoria: boolean = false;
   movimentacaoParcelada: boolean = false;
   responsaveisDropdown: Responsavel[] = [];
+  cartoesDropdown: Cartao[] = []
   dataLabel: string = 'Data:';
   idParcela: number = 0;
   datePipe = new DatePipe('en-us');
@@ -59,6 +61,7 @@ export class MovimentacaoModalComponent implements OnChanges {
     this.numeroParcelas = 2;
 
     this.carregaResponsaveis();
+    this.carregaCartoes();
 
     if (changes['visible'] && changes['visible'].currentValue === true && this.idMovimentacao > 0) {
       this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
@@ -69,7 +72,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           categoriaId: movimentacao.categoria.id!,
           fixa: movimentacao.fixa,
           tipoPagamentoId: movimentacao.tipoPagamento.id!,
-          responsavelId: movimentacao.responsavel ? movimentacao.responsavel.id : 0
+          responsavelId: movimentacao.responsavel ? movimentacao.responsavel.id : 0,
+          cartaoId: movimentacao.cartao ? movimentacao.cartao.id : 0
         };
 
         if(movimentacao.parcela !== null) {
@@ -85,7 +89,7 @@ export class MovimentacaoModalComponent implements OnChanges {
     } else {
       this.movimentacaoParcelada = false;
       this.parcelaEditable = true;
-      this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+      this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
     }
   }
 
@@ -94,6 +98,14 @@ export class MovimentacaoModalComponent implements OnChanges {
     
     setTimeout(() => {
       this.movimentacao.responsavelId = 0;
+    });
+  }
+
+  carregaCartoes() {
+    this.cartoesDropdown = [...this.cartoes];
+    
+    setTimeout(() => {
+      this.movimentacao.cartaoId = 0;
     });
   }
 
@@ -163,7 +175,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       };
         this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.labelValor = 'Valor:';
@@ -181,7 +193,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           }) as Movimentacao)
         ).subscribe(movimentacao => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.labelValor = 'Valor:';
@@ -203,7 +215,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       };
         this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.movimentacaoParcelada = false;
@@ -221,7 +233,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           }) as Movimentacao)
         ).subscribe(movimentacao => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null };
+          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.movimentacaoParcelada = false;
