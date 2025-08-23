@@ -24,7 +24,7 @@ export class CartaoModalComponent {
   cartaoService: CartaoService = inject(CartaoService);
 
   @Input() visible: boolean = false;
-  @Input() cartao: PostPutCartao = { apelido: "", diaFechamento: 0 };
+  @Input() cartao: PostPutCartao = { apelido: "", diaFechamento: 1 };
   @Input() cartaoId: number = 0;
 
   @Output() submit = new EventEmitter<void>();
@@ -35,7 +35,7 @@ export class CartaoModalComponent {
         this.cartao = cartao;
       });
     } else {
-      this.cartao = { apelido: "", diaFechamento: 0  };
+      this.cartao = { apelido: "", diaFechamento: 1 };
     }
   }
 

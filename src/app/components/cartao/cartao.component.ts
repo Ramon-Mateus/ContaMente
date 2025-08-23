@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Cartao } from '../../lib/types';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ResponsavelService } from '../../services/responsavel.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +10,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
+import { CartaoService } from '../../services/cartao.service';
 
 @Component({
   selector: 'app-cartao',
@@ -38,7 +38,7 @@ export class CartaoComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private responsavelService: ResponsavelService
+    private CartaoService: CartaoService
   ) {}
  
   confirmDelete(event: Event) {
@@ -56,7 +56,7 @@ export class CartaoComponent {
   }
 
   onDelete() {
-    this.responsavelService.deleteResponsavel(this.cartao.id!).subscribe({
+    this.CartaoService.deleteCartao(this.cartao.id!).subscribe({
       next: () => {
         this.Delete.emit(true);
       }

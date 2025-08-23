@@ -17,6 +17,12 @@
     (submit)="getResponsaveis()"
 ></app-responsavel-modal>
 
+<app-cartao-modal
+    [visible]="visibleModalCartao"
+    [cartaoId]="cartaoId"
+    (submit)="getCartoes()"
+></app-cartao-modal>
+
 <div class="flex flex-col items-center h-screen">
     <div class="flex flex-col lg:flex-row w-full max-w-[60em] panel p-4 rounded-lg">
         <div class="w-full p-2 pr-3">
@@ -42,6 +48,29 @@
                     (Edit)="onEditResponsavel($event)"
                 ></app-responsavel>
             </div>
+        </div>
+    </div>
+    <div class="flex flex-col lg:flex-row w-full max-w-[60em] panel p-4 rounded-lg mt-3">
+        <div class="w-full p-2 pr-3">
+            <div class="flex flex-row w-full justify-between mb-3">
+                <h1 class="text-3xl">Cartões</h1>
+                <button (click)="onCreateCartaoModal()" class="text-1xl p-2 minor-button rounded-md">Adicionar</button>
+            </div>
+            <div *ngFor="let cartao of cartoes">
+                <app-cartao 
+                    [cartao]="cartao" 
+                    (Delete)="getCartoes()"
+                    (Edit)="onEditCartao($event)"
+                ></app-cartao>
+            </div>
+        </div>
+        <div class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l">
+            <div class="flex flex-row w-full justify-between mb-3">
+                <h1 class="text-3xl">Configurações</h1>
+            </div>
+            <p class="text-lg">
+                Em breve...
+            </p>
         </div>
     </div>
 </div>
