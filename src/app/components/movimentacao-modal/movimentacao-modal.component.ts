@@ -60,8 +60,8 @@ export class MovimentacaoModalComponent implements OnChanges {
     this.valorParcela = 0;
     this.numeroParcelas = 2;
 
-    this.carregaResponsaveis();
     this.carregaCartoes();
+    this.carregaResponsaveis();
 
     if (changes['visible'] && changes['visible'].currentValue === true && this.idMovimentacao > 0) {
       this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
@@ -157,6 +157,10 @@ export class MovimentacaoModalComponent implements OnChanges {
 
     if (this.movimentacao.responsavelId === 0) {
       this.movimentacao.responsavelId = null;
+    }
+
+    if (this.movimentacao.cartaoId === 0) {
+      this.movimentacao.cartaoId = null;
     }
 
     const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd');

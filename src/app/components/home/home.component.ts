@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Cartao, Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
@@ -172,8 +170,6 @@ export class HomeComponent {
       ];
 
       this.cartoes = this.cartoes.map(cartao => ({ ...cartao, selected: false }));
-
-      console.log(this.cartoes);
     });
   }
 
