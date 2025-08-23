@@ -1,0 +1,25 @@
+<div>
+    <div class="flex align-middle justify-between">
+        <p class="text-base md:text-xl">
+            {{  cartao.apelido }} - dia {{ cartao.diaFechamento }}
+        </p>
+        <div class="card flex justify-center gap-2">
+            <p-toast />
+            <p-confirmPopup #cp>
+                <ng-template pTemplate="headless" let-message>
+                    <div class="rounded p-4 bg-zinc-400 text-zinc-800">
+                        <span>{{ message.message }}</span>
+                        <div class="flex items-center gap-2 mt-4 text-zinc-800">
+                            <p-button (onClick)="cp.accept()" label="Sim" size="small" />
+                            <p-button (onClick)="cp.reject()" label="Não" [text]="true" size="small" severity="secondary" />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-confirmPopup>
+            <div>
+                <i class="pi pi-pencil cursor-pointer mr-2" (click)="onEdit()"></i>
+                <i class="pi pi-trash cursor-pointer" (click)="confirmDelete($event)"></i>
+            </div>
+        </div>
+    </div>
+</div>
