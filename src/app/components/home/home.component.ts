@@ -46,6 +46,7 @@ export class HomeComponent {
   selectedCategorias: number[] = [];
   selectedTiposPagamento: number[] = [];
   selectedResponsaveis: number[] = [];
+  selectedCartoes: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
@@ -118,7 +119,7 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis, this.selectedCartoes).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
@@ -190,6 +191,8 @@ export class HomeComponent {
     this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
 
     this.selectedResponsaveis = this.responsaveis.filter(r => r.selected).map(r => r.id);
+
+    this.selectedCartoes = this.cartoes.filter(c => c.selected).map(c => c.id);
 
     this.getMovimentacoes();
   }
