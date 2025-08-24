@@ -68,9 +68,10 @@
             <div class="flex flex-row w-full justify-between mb-3">
                 <h1 class="text-3xl">Configurações</h1>
             </div>
-            <p class="text-lg">
-                Em breve...
-            </p>
+            <div class="">
+                <label for="listagemPorFatura">Listagem por fatura:</label><br>
+                <p-inputSwitch id="listagemPorFatura" name="listagemPorFatura" (onChange)="userConfigurationOnChange()" [(ngModel)]="userConfiguration.listagemPorFatura"></p-inputSwitch>
+            </div>
         </div>
     </div>
 </div>

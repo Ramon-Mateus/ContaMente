@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CategoriaService } from '../../services/categoria.service';
-import { Cartao, Categoria, PostPutCartao, PostPutResponsavel, Responsavel, Usuario } from '../../lib/types';
+import { Cartao, Categoria, PostPutCartao, PostPutResponsavel, Responsavel, UserConfiguration, Usuario } from '../../lib/types';
 import { CommonModule } from '@angular/common';
 import { CategoriaComponent } from '../categoria/categoria.component';
 import { AutenticacaoService } from '../../services/autenticacao.service';
@@ -11,6 +11,9 @@ import { ResponsavelModalComponent } from "../responsavel-modal/responsavel-moda
 import { CartaoComponent } from '../cartao/cartao.component';
 import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component';
 import { CartaoService } from '../../services/cartao.service';
+import { UserConfigurationService } from '../../services/user-configuration.service';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-configuracao-usuario',
@@ -21,7 +24,9 @@ import { CartaoService } from '../../services/cartao.service';
     ResponsavelComponent,
     ResponsavelModalComponent,
     CartaoComponent,
-    CartaoModalComponent
+    CartaoModalComponent,
+    InputSwitchModule,
+    FormsModule
 ],
   templateUrl: './configuracao-usuario.component.html',
   styleUrl: './configuracao-usuario.component.css'
@@ -31,6 +36,7 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
   autenticacaoService: AutenticacaoService = inject(AutenticacaoService);
   responsavelService: ResponsavelService = inject(ResponsavelService);
   cartaoService: CartaoService = inject(CartaoService);
+  userConfigurationService: UserConfigurationService = inject(UserConfigurationService);
 
   router: Router = inject(Router);
 
@@ -43,7 +49,9 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
   responsavel: PostPutResponsavel = { nome: "" };
   responsavelId: number = 0;
   visibleModalResponsavel: boolean = false;
-  
+
+  userConfiguration: UserConfiguration = { listagemPorFatura: false };
+
   cartoes: Cartao[] = [];
   cartao: PostPutCartao = { apelido: "", diaFechamento: 0 };
   cartaoId: number = 0;
@@ -54,6 +62,7 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     this.getResponsaveis();
     this.getCartoes();
     this.getUsuarioLogado();
+    this.getUserConfiguration();
   }
 
   getCategorias() {
@@ -82,6 +91,14 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     this.cartaoService.getCartoes().subscribe({
       next: (cartoes) => {
         this.cartoes = cartoes;
+      }
+    });
+  }
+
+  getUserConfiguration() {
+    this.userConfigurationService.getUserConfiguration().subscribe({
+      next: (config) => {
+        this.userConfiguration = config;
       }
     });
   }
@@ -132,5 +149,9 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
   onEditCartao(idCartao: number) {
     this.cartaoId = idCartao;
     this.showDialogCartao();
+  }
+
+  userConfigurationOnChange() {
+    this.userConfigurationService.putUserConfiguration(this.userConfiguration).subscribe();
   }
 }

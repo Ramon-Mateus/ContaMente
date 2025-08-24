@@ -126,3 +126,7 @@ export interface PostPutCartao {
     apelido: string,
     diaFechamento: number
 }
+
+export interface UserConfiguration {
+    listagemPorFatura: boolean
+}
