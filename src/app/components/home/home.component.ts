@@ -2,11 +2,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
+import { Cartao, Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
@@ -16,6 +14,7 @@ import { Component, inject } from '@angular/core';
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { ResponsavelService } from '../../services/responsavel.service';
+import { CartaoService } from '../../services/cartao.service';
 
 @Component({
   selector: 'app-home',
@@ -40,12 +39,14 @@ export class HomeComponent {
   tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService);
   parcelaService: ParcelaService = inject(ParcelaService);
   responsavelService: ResponsavelService = inject(ResponsavelService);
+  cartaoService: CartaoService = inject(CartaoService);
 
   dias: DiaFiscal [] = [];
 
   selectedCategorias: number[] = [];
   selectedTiposPagamento: number[] = [];
   selectedResponsaveis: number[] = [];
+  selectedCartoes: number[] = [];
 
   categorias: Categoria[] = [];
   categoriasSaidaFiltro: Categoria[] = [];
@@ -62,6 +63,7 @@ export class HomeComponent {
   labelValor: string = 'Valor:';
   idMovimentacao: number = 0;
   responsaveis: Responsavel[] = [];
+  cartoes: Cartao[] = [];
 
   newCategoria: PostCategoria = { nome: '', entrada: false };
 
@@ -76,6 +78,7 @@ export class HomeComponent {
     this.getCategorias();
     this.getTiposPagamento();
     this.getResponsaveis();
+    this.getCartoes();
   }
 
   showDialogMovimentacao() {
@@ -116,7 +119,7 @@ export class HomeComponent {
   }
 
   getMovimentacoes() {
-    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis).subscribe(response => {
+    this.movimentacaoService.getMovimentacoes(this.dataDeFiltragem.getMonth()+1, this.dataDeFiltragem.getFullYear(), this.entradaMovimentacaoFiltro, this.selectedCategorias, this.selectedTiposPagamento, this.selectedResponsaveis, this.selectedCartoes).subscribe(response => {
       this.dias = response.movimentacoes;
       this.totalMovimentacoes = response.total;
     });
@@ -160,6 +163,17 @@ export class HomeComponent {
     });
   }
 
+  getCartoes() {
+    this.cartaoService.getCartoes().subscribe(cartoes => {
+      this.cartoes = [
+        { id: 0, apelido: 'Nenhum', diaFechamento: 0 },
+        ...cartoes
+      ];
+
+      this.cartoes = this.cartoes.map(cartao => ({ ...cartao, selected: false }));
+    });
+  }
+
   onFilterChange() {
     const categoriasEntradaSelecionadas = this.categoriasEntradaFiltro
     .filter(categoria => categoria.selected)
@@ -177,6 +191,8 @@ export class HomeComponent {
     this.selectedTiposPagamento = this.tiposPagamento.filter(t => t.selected).map(t => t.id);
 
     this.selectedResponsaveis = this.responsaveis.filter(r => r.selected).map(r => r.id);
+
+    this.selectedCartoes = this.cartoes.filter(c => c.selected).map(c => c.id);
 
     this.getMovimentacoes();
   }

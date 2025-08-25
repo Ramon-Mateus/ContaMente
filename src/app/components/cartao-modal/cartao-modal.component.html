@@ -1,0 +1,19 @@
+<p-dialog header="Adicionar cartão" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
+    <form (ngSubmit)="OnCreateCartaoSubmit()" #cartaoForm="ngForm" class="p-4 text-base w-full">
+        <div class="mb-2 flex items-center">
+            <div class="flex-grow mr-2">
+                <label for="apelido">Apelido:</label><br>
+                <textarea class="w-full h-11 mb-1 min-h-11 p-2" id="apelido" name="apelido" rows="5" cols="30" pInputTextarea [(ngModel)]="cartao.apelido"></textarea>
+            </div>
+        </div>
+
+        <div class="flex-shrink-0">
+            <label for="entrada">Fechamento fatura:</label><br>
+            <p-inputNumber class="h-11 w-11" inputStyleClass="w-11 p-2" styleClass="w-11" id="entrada" name="entrada" [min]="1" [max]="31" [(ngModel)]="cartao.diaFechamento"></p-inputNumber>
+        </div>
+
+        <div class="flex justify-center">
+            <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!cartaoForm.form.valid">Salvar Cartão</button>
+        </div>
+    </form>
+</p-dialog>

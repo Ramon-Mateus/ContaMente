@@ -31,6 +31,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="cartaoId">Cartão:</label><br>
+            <p-dropdown class="w-full" styleClass="w-full" [options]="cartoesDropdown" optionLabel="apelido" appendTo="body" optionValue="id" [(ngModel)]="movimentacao.cartaoId" [ngModelOptions]="{standalone: true}" placeholder="Selecione o cartão"></p-dropdown>
+        </div>
+
+        <div class="mb-3">
             <label for="categoriaId">Categoria:</label><br>
             <p-dropdown class="w-full" styleClass="w-full" [options]="categorias" optionLabel="nome" appendTo="body" optionValue="id" [(ngModel)]="movimentacao.categoriaId" [ngModelOptions]="{standalone: true}" placeholder="Selecione a categoria"></p-dropdown>
         </div>

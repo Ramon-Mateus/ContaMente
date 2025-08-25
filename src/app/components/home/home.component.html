@@ -5,6 +5,7 @@
                 [visible]="visibleModalMovimentacao"
                 [categorias]="categorias"
                 [responsaveis]="responsaveis"
+                [cartoes]="cartoes"
                 [tiposPagamento]="tiposPagamento"
                 [labelValor]="'Valor'"
                 [idMovimentacao]="idMovimentacao"
@@ -98,6 +99,16 @@
 
                     <div *ngFor="let responsavel of responsaveis; let index = index">
                         <input type="checkbox" name="" id="responsavel{{index}}" [(ngModel)]="responsavel.selected" (change)="onFilterChange()"> <label for="responsavel{{index}}" class="select-none"> {{responsavel.nome.split(' ')[0]}}</label>
+                    </div>
+                </aside>
+
+                <aside class="panel rounded-lg p-4 mb-2">
+                    <div class="font-semibold text-xl mb-2">
+                        Cartões
+                    </div>
+
+                    <div *ngFor="let cartao of cartoes; let index = index">
+                        <input type="checkbox" name="" id="cartao{{index}}" [(ngModel)]="cartao.selected" (change)="onFilterChange()"> <label for="cartao{{index}}" class="select-none"> {{cartao.apelido}}</label>
                     </div>
                 </aside>
             </aside>

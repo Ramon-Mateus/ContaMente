@@ -28,12 +28,19 @@ export class MovimentacaoComponent implements OnInit {
 
   nomeResponsavel: string = '';
   parcelaFormatada: string = '';
+  cartaoFormatado: string = '';
 
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   ngOnInit() {
     if(this.movimentacao.parcela != null) {
       this.parcelaFormatada = this.movimentacao.numeroParcela!.toString().padStart(2, '0') +  '/' + this.movimentacao.parcela.numeroParcelas!.toString().padStart(2, '0');
+    }
+
+    if(this.movimentacao.cartao == null) {
+      this.cartaoFormatado = '';
+    } else {
+      this.cartaoFormatado = "• " + this.movimentacao.cartao.apelido;
     }
 
     this.nomeResponsavel = this.movimentacao.responsavel ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0] : '• Eu';
