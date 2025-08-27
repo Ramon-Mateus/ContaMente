@@ -208,6 +208,7 @@
                     [dia]="dia"
                     (editMovimentacao)="onEditMovimentacao($event)"
                     (deleteMovimentacao)="onDeleteMovimentacao($event)"
+                    [ehUltimo]="dias.indexOf(dia) == dias.length-1"
                     >
                     </app-dia-fiscal>
                 </div>

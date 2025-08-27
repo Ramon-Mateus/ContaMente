@@ -8,4 +8,4 @@
     (delete)="onDeleteMovimentacao($event)"
 ></app-movimentacao>
 
-<hr class="border-highsec">
+<hr *ngIf="!this.ehUltimo" class="border-highsec">
