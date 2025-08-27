@@ -56,19 +56,19 @@
                 </aside>
 
                 <aside class="panel rounded-lg p-4 mb-2">
-                    <div class="font-semibold text-xl">
+                    <div class="font-semibold text-xl mb-2">
                         Categorias
                     </div>
 
-                    <div class="font-semibold text-sm mt-2">
+                    <div *ngIf="categoriasEntradaFiltro.length > 0" class="font-semibold text-sm mt-2">
                         Saída
                     </div>
     
                     <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
-                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
+                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none text-zinc-300"> {{categoria.nome}}</label>
                     </div>
 
-                    <div class="font-semibold text-sm mt-2">
+                    <div *ngIf="categoriasEntradaFiltro.length > 0" class="font-semibold text-sm mt-2">
                         Entrada
                     </div>
     
