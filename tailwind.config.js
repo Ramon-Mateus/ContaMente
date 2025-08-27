@@ -14,8 +14,6 @@ module.exports = {
 
         groundl: "#EEEEEE",
         elementl: "#979797",
-
-        highsec: "#575757"
       }
     }
 
