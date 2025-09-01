@@ -39,7 +39,12 @@ export class MovimentacaoComponent implements OnInit {
                 this.onEdit()
             },
         },
-        { label: 'Deletar', command: (event)=>{this.confirmDelete(event as Event)} },
+        {
+            label: 'Deletar',
+            command: (event) => {
+                this.confirmDelete(event as Event)
+            },
+        },
     ]
 
     constructor(
@@ -98,5 +103,12 @@ export class MovimentacaoComponent implements OnInit {
 
     onEdit() {
         this.edit.emit(this.movimentacao.id)
+    }
+
+    normalizeString(text: string): string {
+        return text
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
     }
 }
