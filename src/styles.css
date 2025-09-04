@@ -23,7 +23,7 @@
     }
 
     .mov-att {
-        @apply bg-element text-xs  h-max px-2 py-1 mr-2 rounded-md flex items-center;
+        @apply bg-element text-xs h-max px-2 py-1  rounded-md flex items-center sm:mb-0 ;
     }
 }
 

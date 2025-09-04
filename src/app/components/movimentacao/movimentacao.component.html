@@ -3,17 +3,12 @@
 >
     <div class="flex items-center">
         <img src="{{normalizeString(movimentacao.tipoPagamento.nome)}}.svg" class="block w-11 mr-3" alt="">
-        <div class="flex flex-col">
-            <div class="flex flex-wrap">
-                <p class="text-base md:text-xl font-medium mr-3">
+        <div class="flex flex-col justify-center">
+            <div class="flex flex-wrap gap-1">
+                <p class="text-base md:text-xl font-medium mr-1 sm:mb-0">
                     {{ movimentacao.valor | currency : 'BRL' }}
-                    <!-- <span class="text-zinc-500 block md:inline">
-                • {{ movimentacao.categoria.nome }}
-                • {{ movimentacao.tipoPagamento.nome }} {{ parcelaFormatada }}
-                {{ cartaoFormatado }}
-                {{ nomeResponsavel }}
-            </span> -->
                 </p>
+
                 <div class="mov-att">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt-text-icon lucide-receipt-text h-3 mr-1"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
                     {{movimentacao.categoria.nome}}
@@ -23,11 +18,12 @@
                     {{parcelaFormatada}}
                 </div>
                 <div *ngIf="movimentacao.responsavel" class="mov-att">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user h-3"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user h-3 mr-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     {{movimentacao.responsavel.nome.split(" ")[0]}}
                 </div>
                 
                 <div *ngIf="movimentacao.cartao != null" class="mov-att">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card-icon lucide-credit-card h-3 w-min mr-1"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                     {{movimentacao.cartao.apelido}}
                 </div>
             </div>
@@ -64,7 +60,7 @@
             </ng-template>
         </p-confirmPopup>
         <p-menu #menu [model]="items" [popup]="true" />
-        <div>
+        <div class="flex items-center">
             <svg (click)="menu.toggle($event)" class="lucide lucide-ellipsis-icon lucide-ellipsis cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
             <i hidden class="pi pi-pencil cursor-pointer mr-2" (click)="onEdit()"></i>
             <i hidden
