@@ -55,11 +55,10 @@ export class MovimentacaoComponent implements OnInit {
     ngOnInit() {
         if (this.movimentacao.parcela != null) {
             this.parcelaFormatada =
-                this.movimentacao.numeroParcela!.toString().padStart(2, '0') +
+                this.movimentacao.numeroParcela!.toString() +
                 '/' +
                 this.movimentacao.parcela
                     .numeroParcelas!.toString()
-                    .padStart(2, '0')
         }
 
         if (this.movimentacao.cartao == null) {

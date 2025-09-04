@@ -1,58 +1,61 @@
-@import "../node_modules/ngx-toastr/toastr.css";
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css";
+@import '../node_modules/ngx-toastr/toastr.css';
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
 
-@import "primeng/resources/themes/lara-dark-blue/theme.css";
+@import 'primeng/resources/themes/lara-dark-blue/theme.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-  .dia {
-    @apply w-1/6 h-[80vh] border p-3;
-  }
+    .dia {
+        @apply w-1/6 h-[80vh] border p-3;
+    }
 
-  .landing-card {
-    @apply w-60 text-center;
-  }
+    .landing-card {
+        @apply w-60 text-center;
+    }
 
-  .landing-illustration {
-    @apply bg-red-400 w-60 h-60 mb-4;
-  }
+    .landing-illustration {
+        @apply bg-red-400 w-60 h-60 mb-4;
+    }
+
+    .mov-att {
+        @apply bg-element text-xs  h-max px-2 py-1 mr-2 rounded-md flex items-center;
+    }
 }
 
 @layer utilities {
-  .panel {
-    @apply bg-element shadow-zinc-900 shadow-lg;
-  }
-  .minor-button {
-    @apply transition cursor-pointer
+    .panel {
+        @apply bg-element shadow-zinc-900 shadow-lg;
+    }
+    .minor-button {
+        @apply transition cursor-pointer
         bg-ground 
         hover:bg-grounddarker 
         active:bg-grounddarker;
-  }
+    }
 
-  .base-botao {
-    @apply font-semibold w-max transition
+    .base-botao {
+        @apply font-semibold w-max transition
     bg-ground text-white hover:bg-grounddarker
     dark:bg-white dark:text-ground dark:hover:bg-zinc-300;
-  }
+    }
 
-  .base-botao-lined {
-    @apply transition border font-semibold
+    .base-botao-lined {
+        @apply transition border font-semibold
       border-ground text-ground
-      dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-ground
-      ;
-  }
+      dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-ground;
+    }
 }
 
 .p-inputtext:focus,
 .p-inputnumber-input:focus,
 .p-dropdown:focus,
 .p-calendar input:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
 }

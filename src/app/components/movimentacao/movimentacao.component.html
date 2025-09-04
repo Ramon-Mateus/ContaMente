@@ -4,8 +4,8 @@
     <div class="flex items-center">
         <img src="{{normalizeString(movimentacao.tipoPagamento.nome)}}.svg" class="block w-11 mr-3" alt="">
         <div class="flex flex-col">
-            <div class="flex">
-                <p class="text-base md:text-xl font-medium">
+            <div class="flex flex-wrap">
+                <p class="text-base md:text-xl font-medium mr-3">
                     {{ movimentacao.valor | currency : 'BRL' }}
                     <!-- <span class="text-zinc-500 block md:inline">
                 • {{ movimentacao.categoria.nome }}
@@ -14,13 +14,21 @@
                 {{ nomeResponsavel }}
             </span> -->
                 </p>
-                <div class="bg-element text-xs leading-[0.7] px-2 ml-3 rounded-md flex items-center">
+                <div class="mov-att">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt-text-icon lucide-receipt-text h-3 mr-1"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
                     {{movimentacao.categoria.nome}}
                 </div>
-                <div *ngIf="movimentacao.responsavel" class="bg-element text-xs leading-[0.7] px-2 ml-2 rounded-md flex items-center">
+
+                <div *ngIf="movimentacao.parcela" class="mov-att">
+                    {{parcelaFormatada}}
+                </div>
+                <div *ngIf="movimentacao.responsavel" class="mov-att">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user h-3"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     {{movimentacao.responsavel.nome.split(" ")[0]}}
+                </div>
+                
+                <div *ngIf="movimentacao.cartao != null" class="mov-att">
+                    {{movimentacao.cartao.apelido}}
                 </div>
             </div>
             <p class="text-zinc-400">
