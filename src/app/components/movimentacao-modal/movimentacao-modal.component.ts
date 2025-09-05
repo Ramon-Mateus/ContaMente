@@ -54,7 +54,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   cartoesDropdown: Cartao[] = []
   dataLabel: string = 'Data:';
   idParcela: number = 0;
-  datePipe = new DatePipe('en-us');
+  datePipe = new DatePipe('pt-BR');
 
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0;
@@ -163,7 +163,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       this.movimentacao.cartaoId = null;
     }
 
-    const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd');
+    const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd', 'America/Sao_Paulo');
 
     if(this.idMovimentacao === 0) {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
