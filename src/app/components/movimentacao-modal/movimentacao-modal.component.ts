@@ -175,7 +175,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           dataInicio: dataFormatada!,
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
-          responsavelId: this.movimentacao.responsavelId
+          responsavelId: this.movimentacao.responsavelId,
+          cartaoId: this.movimentacao.cartaoId
       };
         this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
@@ -215,7 +216,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           dataInicio: dataFormatada!,
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
-          responsavelId: this.movimentacao.responsavelId
+          responsavelId: this.movimentacao.responsavelId,
+          cartaoId: this.movimentacao.cartaoId
       };
         this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
           this.submit.emit();

@@ -75,8 +75,9 @@ export interface postParcela {
     descricao: string,
     dataInicio: string,
     categoriaId: number,
-    tipoPagamentoId: number
-    responsavelId: number | null
+    tipoPagamentoId: number,
+    responsavelId: number | null,
+    cartaoId: number | null
 }
 
 export interface Usuario {
