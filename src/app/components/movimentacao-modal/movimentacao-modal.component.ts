@@ -208,6 +208,17 @@ export class MovimentacaoModalComponent implements OnChanges {
       }
     } else {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
+
+        let isMovimentacaoParcelada = false;
+
+        this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
+          if(movimentacao.parcela !== null) {
+            isMovimentacaoParcelada = true;
+          }
+        });
+
+        this.movimentacaoService.deleteMovimentacao(this.idMovimentacao).subscribe();
+
         const parcela: postParcela = {
           valorTotal: this.movimentacao.valor!,
           numeroParcelas: this.numeroParcelas,
@@ -218,17 +229,31 @@ export class MovimentacaoModalComponent implements OnChanges {
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
           responsavelId: this.movimentacao.responsavelId,
           cartaoId: this.movimentacao.cartaoId
-      };
-        this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
+        };
+
+        if(isMovimentacaoParcelada) {
+          this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
+            this.submit.emit();
+            this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+            this.numeroParcelas= 2;
+            this.valorParcela = 0;
+            this.movimentacaoParcelada = false;
+            this.parceladaOnChange();
+            this.visible = false;
+          });
+        } else {
+          this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
           this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
+          this.labelValor = 'Valor:';
           this.movimentacaoParcelada = false;
-          this.parceladaOnChange();
           this.visible = false;
-        });
-      } else {
+          });
+        }
+      } else 
+        {
         this.movimentacaoService.putMovimentacao(this.idMovimentacao, this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
