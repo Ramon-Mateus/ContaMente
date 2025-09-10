@@ -15,6 +15,7 @@ import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-m
 import { SidebarModule } from 'primeng/sidebar';
 import { ResponsavelService } from '../../services/responsavel.service';
 import { CartaoService } from '../../services/cartao.service';
+import { FiltrosComponent } from '../filtros/filtros.component';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,8 @@ import { CartaoService } from '../../services/cartao.service';
     DialogModule,
     DiaFiscalComponent,
     MovimentacaoModalComponent,
-    SidebarModule
+    SidebarModule,
+    FiltrosComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -74,6 +76,20 @@ export class HomeComponent {
   constructor() {}
   
   ngOnInit() {
+    this.movimentacaoService.modificouFiltros.subscribe((dias)=>{
+      this.dias = dias
+
+      let somaMovs = 0
+
+      dias.forEach((d)=>{
+        d.movimentacoes.forEach((mov)=>{
+          somaMovs += mov.valor
+        })
+      })
+
+      this.totalMovimentacoes
+    })
+
     this.getMovimentacoes();
     this.getCategorias();
     this.getTiposPagamento();

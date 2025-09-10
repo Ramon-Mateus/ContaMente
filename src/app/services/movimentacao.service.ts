@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DiaFiscal, Movimentacao, PostMovimentacao } from '../lib/types';
 
@@ -10,6 +10,8 @@ import { DiaFiscal, Movimentacao, PostMovimentacao } from '../lib/types';
 export class MovimentacaoService {
   private urlDaApi = import.meta.env.NG_APP_URL_DA_API;
   private urlDoModel = `${this.urlDaApi}/api/Movimentacao`;
+
+  public modificouFiltros = new EventEmitter<DiaFiscal[]>()
 
   constructor(
     private httpClient: HttpClient
