@@ -58,7 +58,7 @@ export class FiltrosComponent {
 
     tiposPagamento: TipoPagamento[] = []
 
-    trigger() {
+    getMovimentacoesAndEmiteEvento() {
         // dispara para atualizar a listagem de movs
         // (estou colocando no lugar de getMovimentacoes())
 
@@ -73,10 +73,9 @@ export class FiltrosComponent {
                 this.selectedCartoes
             )
             .subscribe((response) => {
-                this.movimentacaoService.modificouFiltros.emit(response.movimentacoes)
-
-                // this.dias = response.movimentacoes
-                // this.totalMovimentacoes = response.total
+                this.movimentacaoService.modificouFiltros.emit(
+                    response.movimentacoes
+                )
             })
     }
 
@@ -91,7 +90,7 @@ export class FiltrosComponent {
         this.categoriaService
             .postCategoria(this.newCategoria)
             .subscribe((categoria) => {
-                this.trigger()
+                this.getMovimentacoesAndEmiteEvento()
                 this.getCategorias()
                 this.newCategoria = { nome: '', entrada: false }
                 this.visibleModalCategoria = false
@@ -206,6 +205,6 @@ export class FiltrosComponent {
             .filter((c) => c.selected)
             .map((c) => c.id)
 
-        this.trigger()
+        this.getMovimentacoesAndEmiteEvento()
     }
 }

@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { SidebarModule } from 'primeng/sidebar';
 import { Cartao, Categoria, DiaFiscal, PostCategoria, Responsavel, TipoPagamento } from '../../lib/types';
+import { CartaoService } from '../../services/cartao.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { ParcelaService } from '../../services/parcela.service';
+import { ResponsavelService } from '../../services/responsavel.service';
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service';
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component';
-import { Component, inject } from '@angular/core';
-import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
-import { SidebarModule } from 'primeng/sidebar';
-import { ResponsavelService } from '../../services/responsavel.service';
-import { CartaoService } from '../../services/cartao.service';
 import { FiltrosComponent } from '../filtros/filtros.component';
+import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component';
 
 @Component({
   selector: 'app-home',

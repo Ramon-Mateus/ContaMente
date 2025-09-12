@@ -6,7 +6,7 @@
         [(ngModel)]="dataDeFiltragem"
         view="month"
         dateFormat="MM/yy"
-        (ngModelChange)="trigger()"
+        (ngModelChange)="getMovimentacoesAndEmiteEvento()"
     ></p-calendar>
 
     <label for="entrada" class="font-semibold text-xl">Entrada</label><br />
