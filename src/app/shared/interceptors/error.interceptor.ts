@@ -25,7 +25,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         const apiError = error.error as ApiErrorResponse;
         
         if (apiError?.mensagem) {
-          errorMessage = apiError.mensagem;
+          errorMessage = apiError.detalhe;
           errorTitle = getErrorTitle(error.status);
           
           if (apiError.detalhe) {
