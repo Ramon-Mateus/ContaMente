@@ -7,6 +7,7 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup'
 import { MenuModule } from 'primeng/menu'
 import { ToastModule } from 'primeng/toast'
 import { Movimentacao } from '../../lib/types'
+import { DialogModule } from 'primeng/dialog'
 
 @Component({
     selector: 'app-movimentacao',
@@ -18,6 +19,7 @@ import { Movimentacao } from '../../lib/types'
         ToastModule,
         ButtonModule,
         MenuModule,
+        DialogModule
     ],
     templateUrl: './movimentacao.component.html',
     styleUrl: './movimentacao.component.css',
@@ -32,6 +34,7 @@ export class MovimentacaoComponent implements OnInit {
     parcelaFormatada: string = ''
     cartaoFormatado: string = ''
 
+    deleteModalVisivel = false
     items: MenuItem[] = [
         {
             label: 'Editar',
@@ -42,7 +45,8 @@ export class MovimentacaoComponent implements OnInit {
         {
             label: 'Deletar',
             command: (event) => {
-                this.confirmDelete(event as Event)
+                this.deleteModalToggle()
+                //this.confirmDelete(event as Event)
             },
         },
     ]
@@ -96,6 +100,27 @@ export class MovimentacaoComponent implements OnInit {
         })
     }
 
+    onDeleteRejection() {
+        this.deleteModalVisivel = false
+
+        this.messageService.add({
+                    severity: 'error',
+                    summary: 'Rejeitado',
+                    detail: 'Registro não excluído',
+                    life: 3000,
+                })
+    }
+
+    onDeleteConfirmation(){
+        this.messageService.add({
+                    severity: 'info',
+                    summary: 'Confirmado',
+                    detail: 'Registro excluído com sucesso',
+                    life: 3000,
+                })
+        this.onDelete()
+    }
+
     onDelete() {
         this.delete.emit(this.movimentacao.id)
     }
@@ -109,5 +134,9 @@ export class MovimentacaoComponent implements OnInit {
             .toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
+    }
+
+    deleteModalToggle() {
+        this.deleteModalVisivel = !this.deleteModalVisivel
     }
 }

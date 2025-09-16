@@ -77,6 +77,8 @@ export class HomeComponent {
   
   ngOnInit() {
     this.movimentacaoService.modificouFiltros.subscribe((dias)=>{
+      console.log("modificou filtros!");
+      
       this.dias = dias
 
       let somaMovs = 0
@@ -87,7 +89,7 @@ export class HomeComponent {
         })
       })
 
-      this.totalMovimentacoes
+      this.totalMovimentacoes = somaMovs
     })
 
     this.getMovimentacoes();
