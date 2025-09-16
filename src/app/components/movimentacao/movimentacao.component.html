@@ -95,6 +95,10 @@
                 R$ {{ movimentacao.valor }} - "{{ movimentacao.descricao }}"
             </div>
 
+            <div *ngIf="movimentacao.numeroParcela" class="text-red-500 text-sm">
+                AVISO: Como esta movimentação é parcelada, apagá-la irá apagar todas as outras parcelas também.
+            </div>
+
             <div class="flex items-center gap-2 mt-4 text-zinc-200">
                 <p-button
                     (onClick)="onDeleteConfirmation()"
