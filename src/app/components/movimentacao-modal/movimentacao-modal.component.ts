@@ -53,6 +53,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   responsaveisDropdown: Responsavel[] = [];
   cartoesDropdown: Cartao[] = []
   dataLabel: string = 'Data:';
+  dataValue: string = '';
   idParcela: number = 0;
   datePipe = new DatePipe('pt-BR');
 
@@ -84,6 +85,10 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.valorParcela = movimentacao.parcela.valorParcela;
           this.movimentacao.valor = movimentacao.parcela.valorTotal;
           this.parceladaOnChange();
+
+          this.movimentacaoParcelada
+            ? this.dataValue = new Date(movimentacao.parcela!.dataInicio!).toLocaleDateString('pt-BR')
+            : this.dataValue = new Date(movimentacao.data).toLocaleDateString('pt-BR');
         }
       });
     } else {
