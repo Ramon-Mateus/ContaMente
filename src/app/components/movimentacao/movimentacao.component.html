@@ -2,11 +2,13 @@
     class="md:w-[30em] text-zinc-300 rounded-md my-4 flex align-middle justify-between"
 >
     <div class="flex items-center">
-        <img
+        <div class="p-2 rounded-md bg-element mr-3 w-11 h-11 flex justify-center items-center">
+            <img
             src="{{ normalizeString(movimentacao.tipoPagamento.nome) }}.svg"
-            class="block w-20 md:w-11 mr-3"
+            class="block w-20 md:w-8"
             alt=""
         />
+        </div>
         <div class="flex flex-col justify-center">
             <div class="flex flex-wrap gap-1 w-max">
                 <p class="text-base block md:text-xl font-medium mr-1 sm:mb-0">
