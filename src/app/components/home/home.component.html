@@ -45,76 +45,6 @@
                 </button>
 
                 <app-filtros></app-filtros>
-
-                <hr class="border-pink-400 border-2 mb-1">
-
-                <aside class="panel rounded-lg p-4 mb-2">
-                    <span class="font-semibold text-xl">
-                        Mês
-                    </span>
-    
-                    <p-calendar  inputStyleClass="p-3 minor-button b-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
-
-                    <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
-                    <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
-                </aside>
-
-                <aside class="panel rounded-lg p-4 mb-2">
-                    <div class="font-semibold text-xl mb-2">
-                        Categorias
-                    </div>
-
-                    <div *ngIf="categoriasEntradaFiltro.length > 0" class="font-semibold text-sm mt-2">
-                        Saída
-                    </div>
-    
-                    <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
-                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none text-zinc-300"> {{categoria.nome}}</label>
-                    </div>
-
-                    <div *ngIf="categoriasEntradaFiltro.length > 0" class="font-semibold text-sm mt-2">
-                        Entrada
-                    </div>
-    
-                    <div *ngFor="let categoria of categoriasEntradaFiltro; let index = index">
-                        <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
-                    </div>
-    
-                    <button (click)="showDialogCategoria()" class=" minor-button p-2 rounded-md mt-2 w-full">
-                        <i class="pi pi-plus" style="font-size: 0.8rem"></i>
-                        <span class="ml-2 text-base">Nova</span>
-                    </button>
-                </aside>
-
-                <aside class="panel rounded-lg p-4 mb-2">
-                    <div class="font-semibold text-xl mb-2">
-                        Tipos de pagamento
-                    </div>
-
-                    <div *ngFor="let tipoPagamento of tiposPagamento; let index = index">
-                        <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
-                    </div>
-                </aside>
-
-                <aside class="panel rounded-lg p-4 mb-2">
-                    <div class="font-semibold text-xl mb-2">
-                        Responsáveis
-                    </div>
-
-                    <div *ngFor="let responsavel of responsaveis; let index = index">
-                        <input type="checkbox" name="" id="responsavel{{index}}" [(ngModel)]="responsavel.selected" (change)="onFilterChange()"> <label for="responsavel{{index}}" class="select-none"> {{responsavel.nome.split(' ')[0]}}</label>
-                    </div>
-                </aside>
-
-                <aside class="panel rounded-lg p-4 mb-2">
-                    <div class="font-semibold text-xl mb-2">
-                        Cartões
-                    </div>
-
-                    <div *ngFor="let cartao of cartoes; let index = index">
-                        <input type="checkbox" name="" id="cartao{{index}}" [(ngModel)]="cartao.selected" (change)="onFilterChange()"> <label for="cartao{{index}}" class="select-none"> {{cartao.apelido}}</label>
-                    </div>
-                </aside>
             </aside>
 
             <section id="lista-movs" class="w-80 sm:w-[33em] flex flex-col justify-start">
@@ -148,57 +78,7 @@
                 </div>
 
                 <p-sidebar [(visible)]="sidebarVisible" styleClass="bg-grounddarker">
-
-                    <section>
-                        <div class="font-semibold text-xl">
-                            Mês
-                        </div>
-                    
-                        <p-calendar  inputStyleClass="p-3 minor-button b-3" [(ngModel)]="dataDeFiltragem" view="month" dateFormat="MM/yy" (ngModelChange)="getMovimentacoes()"></p-calendar>
-                    </section>
-
-                    <section class="mt-6">
-                        <label for="entrada" class="font-semibold text-xl">Entrada</label><br>
-                        <p-inputSwitch class="mt-5" styleClass="" id="entrada" name="entrada" [(ngModel)]="entradaMovimentacaoFiltro" (onChange)="onChangeEntradaMovimentacao()"></p-inputSwitch>
-                    </section>
-
-                    <section class="mt-6">
-                        <div class="font-semibold text-xl">
-                            Categorias
-                        </div>
-
-                        <div class="font-semibold text-sm mt-2">
-                            Saída
-                        </div>
-        
-                        <div *ngFor="let categoria of categoriasSaidaFiltro; let index = index">
-                            <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
-                        </div>
-
-                        <div class="font-semibold text-sm mt-2">
-                            Entrada
-                        </div>
-        
-                        <div *ngFor="let categoria of categoriasEntradaFiltro; let index = index">
-                            <input type="checkbox" name="" id="categoria{{index}}" [(ngModel)]="categoria.selected" (change)="onFilterChange()" [disabled]="!entradaMovimentacaoFiltro"> <label for="categoria{{index}}" class="select-none"> {{categoria.nome}}</label>
-                        </div>
-        
-                        <button (click)="showDialogCategoria()" class=" minor-button p-2 rounded-md mt-2 w-full">
-                            <i class="pi pi-plus" style="font-size: 0.8rem"></i>
-                            <span class="ml-2 text-base">Nova</span>
-                        </button>
-                    </section>
-                
-                <section class="mt-6">
-                    <div class="font-semibold text-xl mb-2">
-                        Tipos de pagamento
-                    </div>
-
-                    <div *ngFor="let tipoPagamento of tiposPagamento; let index = index">
-                        <input type="checkbox" name="" id="tipoPagamento{{index}}" [(ngModel)]="tipoPagamento.selected" (change)="onFilterChange()"> <label for="tipoPagamento{{index}}" class="select-none"> {{tipoPagamento.nome}}</label>
-                    </div>
-                </section>
-                
+                    <app-filtros></app-filtros>
                 </p-sidebar>
 
                 <div (click)="sidebarVisible = true" class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium flex items-center">
