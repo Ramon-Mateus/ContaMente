@@ -1,157 +1,196 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CategoriaService } from '../../services/categoria.service';
-import { Cartao, Categoria, PostPutCartao, PostPutResponsavel, Responsavel, UserConfiguration, Usuario } from '../../lib/types';
-import { CommonModule } from '@angular/common';
-import { CategoriaComponent } from '../categoria/categoria.component';
-import { AutenticacaoService } from '../../services/autenticacao.service';
-import { Router } from '@angular/router';
-import { ResponsavelService } from '../../services/responsavel.service';
-import { ResponsavelComponent } from '../responsavel/responsavel.component';
-import { ResponsavelModalComponent } from "../responsavel-modal/responsavel-modal.component";
-import { CartaoComponent } from '../cartao/cartao.component';
-import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component';
-import { CartaoService } from '../../services/cartao.service';
-import { UserConfigurationService } from '../../services/user-configuration.service';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'
+import { Component, inject, OnInit } from '@angular/core'
+import { FormsModule } from '@angular/forms'
+import { Router } from '@angular/router'
+import {
+    BookMarkedIcon,
+    BookUserIcon,
+    ChevronRightIcon,
+    ChevronDownIcon,
+    FileIcon,
+    LayoutListIcon,
+    LucideAngularModule,
+    SquareUserRoundIcon,
+    WalletCardsIcon,
+} from 'lucide-angular'
+import { InputSwitchModule } from 'primeng/inputswitch'
+import {
+    Cartao,
+    Categoria,
+    PostPutCartao,
+    PostPutResponsavel,
+    Responsavel,
+    UserConfiguration,
+    Usuario,
+} from '../../lib/types'
+import { AutenticacaoService } from '../../services/autenticacao.service'
+import { CartaoService } from '../../services/cartao.service'
+import { CategoriaService } from '../../services/categoria.service'
+import { ResponsavelService } from '../../services/responsavel.service'
+import { UserConfigurationService } from '../../services/user-configuration.service'
+import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component'
+import { CartaoComponent } from '../cartao/cartao.component'
+import { CategoriaComponent } from '../categoria/categoria.component'
+import { ResponsavelModalComponent } from '../responsavel-modal/responsavel-modal.component'
+import { ResponsavelComponent } from '../responsavel/responsavel.component'
 
 @Component({
-  selector: 'app-configuracao-usuario',
-  standalone: true,
-  imports: [
-    CommonModule,
-    CategoriaComponent,
-    ResponsavelComponent,
-    ResponsavelModalComponent,
-    CartaoComponent,
-    CartaoModalComponent,
-    InputSwitchModule,
-    FormsModule
-],
-  templateUrl: './configuracao-usuario.component.html',
-  styleUrl: './configuracao-usuario.component.css'
+    selector: 'app-configuracao-usuario',
+    standalone: true,
+    imports: [
+        CommonModule,
+        CategoriaComponent,
+        ResponsavelComponent,
+        ResponsavelModalComponent,
+        CartaoComponent,
+        CartaoModalComponent,
+        InputSwitchModule,
+        FormsModule,
+        LucideAngularModule,
+    ],
+    templateUrl: './configuracao-usuario.component.html',
+    styleUrl: './configuracao-usuario.component.css',
 })
 export class ConfiguracaoUsuarioComponent implements OnInit {
-  categoriaService: CategoriaService = inject(CategoriaService);
-  autenticacaoService: AutenticacaoService = inject(AutenticacaoService);
-  responsavelService: ResponsavelService = inject(ResponsavelService);
-  cartaoService: CartaoService = inject(CartaoService);
-  userConfigurationService: UserConfigurationService = inject(UserConfigurationService);
+    readonly SquareUserRoundIcon = SquareUserRoundIcon
+    readonly FileIcon = FileIcon
+    readonly ChevronRightIcon = ChevronRightIcon
+    readonly ChevronDownIcon = ChevronDownIcon
+    readonly BookMarkedIcon = BookMarkedIcon
+    readonly BookUserIcon = BookUserIcon
+    readonly WalletCardsIcon = WalletCardsIcon
+    readonly LayoutListIcon = LayoutListIcon
 
-  router: Router = inject(Router);
+    categoriaService: CategoriaService = inject(CategoriaService)
+    autenticacaoService: AutenticacaoService = inject(AutenticacaoService)
+    responsavelService: ResponsavelService = inject(ResponsavelService)
+    cartaoService: CartaoService = inject(CartaoService)
+    userConfigurationService: UserConfigurationService = inject(
+        UserConfigurationService
+    )
 
-  usuarioLogado: Usuario = { id: '', name: '', email: '' };
-  
-  categoriasSaida: Categoria[] = [];
-  categoriasEntrada: Categoria[] = [];
-  
-  responsaveis: Responsavel[] = [];
-  responsavel: PostPutResponsavel = { nome: "" };
-  responsavelId: number = 0;
-  visibleModalResponsavel: boolean = false;
+    isPerfilCollapsed = true
+    isVisualizacaoCollapsed = true
+    isCategoriasCollapsed = true
+    isResponsaveisCollapsed = true
+    isCartoesCollapsed = true
 
-  userConfiguration: UserConfiguration = { listagemPorFatura: false };
+    router: Router = inject(Router)
 
-  cartoes: Cartao[] = [];
-  cartao: PostPutCartao = { apelido: "", diaFechamento: 0 };
-  cartaoId: number = 0;
-  visibleModalCartao: boolean = false;
+    usuarioLogado: Usuario = { id: '', name: '', email: '' }
 
-  ngOnInit() {
-    this.getCategorias();
-    this.getResponsaveis();
-    this.getCartoes();
-    this.getUsuarioLogado();
-    this.getUserConfiguration();
-  }
+    categoriasSaida: Categoria[] = []
+    categoriasEntrada: Categoria[] = []
 
-  getCategorias() {
-    this.categoriaService.getCategorias(false).subscribe({
-      next: (categorias) => {
-        this.categoriasSaida = categorias;
-      }
-    });
+    responsaveis: Responsavel[] = []
+    responsavel: PostPutResponsavel = { nome: '' }
+    responsavelId: number = 0
+    visibleModalResponsavel: boolean = false
 
-    this.categoriaService.getCategorias(true).subscribe({
-      next: (categorias) => {
-        this.categoriasEntrada = categorias;
-      }
-    });
-  }
+    userConfiguration: UserConfiguration = { listagemPorFatura: false }
 
-  getResponsaveis() {
-    this.responsavelService.getResponsaveis().subscribe({
-      next: (responsaveis) => {
-        this.responsaveis = responsaveis;
-      }
-    });
-  }
+    cartoes: Cartao[] = []
+    cartao: PostPutCartao = { apelido: '', diaFechamento: 0 }
+    cartaoId: number = 0
+    visibleModalCartao: boolean = false
 
-  getCartoes() {
-    this.cartaoService.getCartoes().subscribe({
-      next: (cartoes) => {
-        this.cartoes = cartoes;
-      }
-    });
-  }
+    ngOnInit() {
+        this.getCategorias()
+        this.getResponsaveis()
+        this.getCartoes()
+        this.getUsuarioLogado()
+        this.getUserConfiguration()
+    }
 
-  getUserConfiguration() {
-    this.userConfigurationService.getUserConfiguration().subscribe({
-      next: (config) => {
-        this.userConfiguration = config;
-      }
-    });
-  }
+    getCategorias() {
+        this.categoriaService.getCategorias(false).subscribe({
+            next: (categorias) => {
+                this.categoriasSaida = categorias
+            },
+        })
 
-  getUsuarioLogado() {
-    this.autenticacaoService.getUser().subscribe({
-      next: (usuario) => {
-        this.usuarioLogado = usuario;
-      }
-    });
-  }
+        this.categoriaService.getCategorias(true).subscribe({
+            next: (categorias) => {
+                this.categoriasEntrada = categorias
+            },
+        })
+    }
 
-  logout() {
-    this.autenticacaoService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
-  }
+    getResponsaveis() {
+        this.responsavelService.getResponsaveis().subscribe({
+            next: (responsaveis) => {
+                this.responsaveis = responsaveis
+            },
+        })
+    }
 
-  onCreateResponsavelModal() {
-    this.responsavelId = 0;
-    this.showDialogResponsavel();
-  }
+    getCartoes() {
+        this.cartaoService.getCartoes().subscribe({
+            next: (cartoes) => {
+                this.cartoes = cartoes
+            },
+        })
+    }
 
-  showDialogResponsavel() {
-    this.visibleModalResponsavel = false;
-    setTimeout(() => {
-      this.visibleModalResponsavel = true;
-    }, 0);
-  }
+    getUserConfiguration() {
+        this.userConfigurationService.getUserConfiguration().subscribe({
+            next: (config) => {
+                this.userConfiguration = config
+            },
+        })
+    }
 
-  onEditResponsavel(idResponsavel: number) {
-    this.responsavelId = idResponsavel;
-    this.showDialogResponsavel();
-  }
+    getUsuarioLogado() {
+        this.autenticacaoService.getUser().subscribe({
+            next: (usuario) => {
+                this.usuarioLogado = usuario
+            },
+        })
+    }
 
-  onCreateCartaoModal() {
-    this.cartaoId = 0;
-    this.showDialogCartao();
-  }
+    logout() {
+        this.autenticacaoService.logout().subscribe(() => {
+            this.router.navigate(['/login'])
+        })
+    }
 
-  showDialogCartao() {
-    this.visibleModalCartao = false;
-    setTimeout(() => {
-      this.visibleModalCartao = true;
-    }, 0);
-  }
+    onCreateResponsavelModal() {
+        this.responsavelId = 0
+        this.showDialogResponsavel()
+    }
 
-  onEditCartao(idCartao: number) {
-    this.cartaoId = idCartao;
-    this.showDialogCartao();
-  }
+    showDialogResponsavel() {
+        this.visibleModalResponsavel = false
+        setTimeout(() => {
+            this.visibleModalResponsavel = true
+        }, 0)
+    }
 
-  userConfigurationOnChange() {
-    this.userConfigurationService.putUserConfiguration(this.userConfiguration).subscribe();
-  }
+    onEditResponsavel(idResponsavel: number) {
+        this.responsavelId = idResponsavel
+        this.showDialogResponsavel()
+    }
+
+    onCreateCartaoModal() {
+        this.cartaoId = 0
+        this.showDialogCartao()
+    }
+
+    showDialogCartao() {
+        this.visibleModalCartao = false
+        setTimeout(() => {
+            this.visibleModalCartao = true
+        }, 0)
+    }
+
+    onEditCartao(idCartao: number) {
+        this.cartaoId = idCartao
+        this.showDialogCartao()
+    }
+
+    userConfigurationOnChange() {
+        this.userConfigurationService
+            .putUserConfiguration(this.userConfiguration)
+            .subscribe()
+    }
 }

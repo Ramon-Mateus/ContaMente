@@ -1,77 +1,216 @@
-<div class="flex flex-col items-center">
-    <div class="flex flex-col justify-center items-center mb-4">
-        <i class="pi pi-user text-3xl"></i>
-        <h1 class="text-xl">{{ usuarioLogado.name }}</h1>
-        <h2 class="text-lg">{{ usuarioLogado.email }}</h2>
+<main class="w-80 sm:w-[43em] mx-auto">
+    <div class="flex flex-col items-center">
+        <div class="flex items-start mb-4">
+            <img
+                class="h-12 w-12 ml-2 object-cover rounded-md mr-2"
+                src="carinha.png"
+                alt=""
+            />
+            <h1 class="">{{ usuarioLogado.name }}</h1>
+        </div>
     </div>
-    <div class="mb-5">
-        <button class="text-center px-4 py-3 bg-element rounded-lg hover:bg-elementdarker" (click)="logout()">
-            <i class="pi pi-sign-out"></i> Logout
+
+    <app-responsavel-modal
+        [visible]="visibleModalResponsavel"
+        [responsavelId]="responsavelId"
+        (submit)="getResponsaveis()"
+    ></app-responsavel-modal>
+
+    <app-cartao-modal
+        [visible]="visibleModalCartao"
+        [cartaoId]="cartaoId"
+        (submit)="getCartoes()"
+    ></app-cartao-modal>
+
+    <div class="flex flex-col items-center h-screen">
+        <button
+            (click)="this.isPerfilCollapsed = !this.isPerfilCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="SquareUserRoundIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Perfil
+            </div>
+
+            <lucide-angular
+                *ngIf="this.isPerfilCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!this.isPerfilCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
         </button>
-    </div>
-</div>
 
-<app-responsavel-modal
-    [visible]="visibleModalResponsavel"
-    [responsavelId]="responsavelId"
-    (submit)="getResponsaveis()"
-></app-responsavel-modal>
+        <button
+            (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="LayoutListIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Visualização
+            </div>
 
-<app-cartao-modal
-    [visible]="visibleModalCartao"
-    [cartaoId]="cartaoId"
-    (submit)="getCartoes()"
-></app-cartao-modal>
+            <lucide-angular
+                *ngIf="this.isVisualizacaoCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!this.isVisualizacaoCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
+        </button>
+        <div *ngIf="!isVisualizacaoCollapsed" class="">
+            <label for="listagemPorFatura">Listagem por fatura:</label><br />
+            <p-inputSwitch
+                id="listagemPorFatura"
+                name="listagemPorFatura"
+                (onChange)="userConfigurationOnChange()"
+                [(ngModel)]="userConfiguration.listagemPorFatura"
+            ></p-inputSwitch>
+        </div>
 
-<div class="flex flex-col items-center h-screen">
-    <div class="flex flex-col lg:flex-row w-full max-w-[60em] panel p-4 rounded-lg">
-        <div class="w-full p-2 pr-3">
+        <button
+            (click)="isCategoriasCollapsed = !isCategoriasCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="BookMarkedIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Categorias
+            </div>
+            <lucide-angular
+                *ngIf="isCategoriasCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!isCategoriasCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
+        </button>
+
+        <div class="w-full p-2 pr-3" *ngIf="!isCategoriasCollapsed">
             <h1 class="text-3xl">Suas categorias</h1>
             <p class="text-2xl mt-3">Saída:</p>
             <div *ngFor="let categoria of categoriasSaida">
-                <app-categoria [categoria]="categoria" (editOrDelete)="getCategorias()"></app-categoria>
+                <app-categoria
+                    [categoria]="categoria"
+                    (editOrDelete)="getCategorias()"
+                ></app-categoria>
             </div>
             <p class="text-2xl mt-2">Entrada:</p>
             <div *ngFor="let categoria of categoriasEntrada">
-                <app-categoria [categoria]="categoria" (editOrDelete)="getCategorias()"></app-categoria>
+                <app-categoria
+                    [categoria]="categoria"
+                    (editOrDelete)="getCategorias()"
+                ></app-categoria>
             </div>
         </div>
-        <div class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l">
+
+        <button
+            (click)="isResponsaveisCollapsed = !isResponsaveisCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="BookUserIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Responsáveis
+            </div>
+            <lucide-angular
+                *ngIf="isResponsaveisCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!isResponsaveisCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
+        </button>
+        <div
+            *ngIf="!isResponsaveisCollapsed"
+            class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
+        >
             <div class="flex flex-row w-full justify-between mb-3">
                 <h1 class="text-3xl">Responsáveis</h1>
-                <button (click)="onCreateResponsavelModal()" class="text-1xl p-2 minor-button rounded-md">Adicionar</button>
+                <button
+                    (click)="onCreateResponsavelModal()"
+                    class="text-1xl p-2 minor-button rounded-md"
+                >
+                    Adicionar
+                </button>
             </div>
             <div *ngFor="let responsavel of responsaveis">
-                <app-responsavel 
-                    [responsavel]="responsavel" 
+                <app-responsavel
+                    [responsavel]="responsavel"
                     (Delete)="getResponsaveis()"
                     (Edit)="onEditResponsavel($event)"
                 ></app-responsavel>
             </div>
         </div>
-    </div>
-    <div class="flex flex-col lg:flex-row w-full max-w-[60em] panel p-4 rounded-lg mt-3">
-        <div class="w-full p-2 pr-3">
+
+        <button
+            (click)="isCartoesCollapsed = !isCartoesCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="WalletCardsIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Cartões
+            </div>
+            <lucide-angular
+                *ngIf="isCartoesCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!isCartoesCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
+        </button>
+        <div *ngIf="!isCartoesCollapsed" class="w-full p-2 pr-3">
             <div class="flex flex-row w-full justify-between mb-3">
                 <h1 class="text-3xl">Cartões</h1>
-                <button (click)="onCreateCartaoModal()" class="text-1xl p-2 minor-button rounded-md">Adicionar</button>
+                <button
+                    (click)="onCreateCartaoModal()"
+                    class="text-1xl p-2 minor-button rounded-md"
+                >
+                    Adicionar
+                </button>
             </div>
             <div *ngFor="let cartao of cartoes">
-                <app-cartao 
-                    [cartao]="cartao" 
+                <app-cartao
+                    [cartao]="cartao"
                     (Delete)="getCartoes()"
                     (Edit)="onEditCartao($event)"
                 ></app-cartao>
             </div>
         </div>
-        <div class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l">
-            <div class="flex flex-row w-full justify-between mb-3">
-                <h1 class="text-3xl">Configurações</h1>
-            </div>
-            <div class="">
-                <label for="listagemPorFatura">Listagem por fatura:</label><br>
-                <p-inputSwitch id="listagemPorFatura" name="listagemPorFatura" (onChange)="userConfigurationOnChange()" [(ngModel)]="userConfiguration.listagemPorFatura"></p-inputSwitch>
-            </div>
-        </div>
+
+        
     </div>
-</div>
+</main>
