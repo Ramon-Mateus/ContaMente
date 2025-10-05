@@ -77,6 +77,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           cartaoId: movimentacao.cartao ? movimentacao.cartao.id : 0
         };
 
+        this.dataValue = new Date(movimentacao.data);
+
         if(movimentacao.parcela !== null) {
           this.movimentacaoParcelada = true;
           this.parcelaEditable = false;
@@ -84,11 +86,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.numeroParcelas = movimentacao.parcela.numeroParcelas;
           this.valorParcela = movimentacao.parcela.valorParcela;
           this.movimentacao.valor = movimentacao.parcela.valorTotal;
+          this.dataValue = new Date(movimentacao.parcela!.dataInicio!)
           this.parceladaOnChange();
-
-          this.movimentacaoParcelada
-            ? this.dataValue = new Date(movimentacao.parcela!.dataInicio!)
-            : this.dataValue = new Date(movimentacao.data);
         }
       });
     } else {
