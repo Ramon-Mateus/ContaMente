@@ -53,7 +53,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   responsaveisDropdown: Responsavel[] = [];
   cartoesDropdown: Cartao[] = []
   dataLabel: string = 'Data:';
-  dataValue: string = '';
+  dataValue: Date = new Date();
   idParcela: number = 0;
   datePipe = new DatePipe('pt-BR');
 
@@ -87,14 +87,15 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.parceladaOnChange();
 
           this.movimentacaoParcelada
-            ? this.dataValue = new Date(movimentacao.parcela!.dataInicio!).toLocaleDateString('pt-BR')
-            : this.dataValue = new Date(movimentacao.data).toLocaleDateString('pt-BR');
+            ? this.dataValue = new Date(movimentacao.parcela!.dataInicio!)
+            : this.dataValue = new Date(movimentacao.data);
         }
       });
     } else {
       this.movimentacaoParcelada = false;
       this.parcelaEditable = true;
-      this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+      this.dataValue = new Date();
+      this.movimentacao = { descricao: '', data: this.dataValue, categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
     }
   }
 
@@ -168,7 +169,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       this.movimentacao.cartaoId = null;
     }
 
-    const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd', 'America/Sao_Paulo');
+    const dataFormatada = this.datePipe.transform(this.dataValue, 'yyyy-MM-dd', 'pt-BR');
 
     if(this.idMovimentacao === 0) {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
@@ -185,7 +186,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       };
         this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.labelValor = 'Valor:';
@@ -193,6 +194,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.visible = false;
         });
       } else {
+        this.movimentacao.data = dataFormatada!;
         this.movimentacaoService.postMovimentacao(this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
