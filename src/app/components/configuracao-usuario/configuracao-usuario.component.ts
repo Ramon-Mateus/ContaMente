@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
+import { Component} from '@angular/core'
 import {
     BookMarkedIcon,
     BookUserIcon,
@@ -12,10 +11,6 @@ import {
     SquareUserRoundIcon,
     WalletCardsIcon,
 } from 'lucide-angular'
-import {
-    Usuario,
-} from '../../lib/types'
-import { AutenticacaoService } from '../../services/autenticacao.service'
 import { CategoriasTabComponent } from '../categorias-tab/categorias-tab.component'
 import { ResponsaveisTabComponent } from "../responsaveis-tab/responsaveis-tab.component";
 import { CartoesTabComponent } from "../cartoes-tab/cartoes-tab.component";
