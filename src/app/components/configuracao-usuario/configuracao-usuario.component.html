@@ -5,12 +5,6 @@
         </div>
     </div>
 
-    <app-responsavel-modal
-        [visible]="visibleModalResponsavel"
-        [responsavelId]="responsavelId"
-        (submit)="getResponsaveis()"
-    ></app-responsavel-modal>
-
     <app-cartao-modal
         [visible]="visibleModalCartao"
         [cartaoId]="cartaoId"
@@ -73,22 +67,7 @@
             *ngIf="!isResponsaveisCollapsed"
             class="w-full p-2 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
         >
-            <div class="flex flex-row w-full justify-between mb-3">
-                <h1 class="text-3xl">Responsáveis</h1>
-                <button
-                    (click)="onCreateResponsavelModal()"
-                    class="text-1xl p-2 minor-button rounded-md"
-                >
-                    Adicionar
-                </button>
-            </div>
-            <div *ngFor="let responsavel of responsaveis">
-                <app-responsavel
-                    [responsavel]="responsavel"
-                    (Delete)="getResponsaveis()"
-                    (Edit)="onEditResponsavel($event)"
-                ></app-responsavel>
-            </div>
+            <app-responsaveis-tab></app-responsaveis-tab>
         </div>
 
         <button
@@ -229,13 +208,7 @@
             </div>
 
             <div *ngIf="activeTab === 'responsaveis'">
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-2xl">Responsáveis</h2>
-                    <button (click)="onCreateResponsavelModal()">Adicionar</button>
-                </div>
-                <div *ngFor="let responsavel of responsaveis">
-                    <app-responsavel [responsavel]="responsavel" (Delete)="getResponsaveis()" (Edit)="onEditResponsavel($event)"></app-responsavel>
-                </div>
+                <app-responsaveis-tab></app-responsaveis-tab>
             </div>
             
         </section>

@@ -28,25 +28,26 @@ import { ResponsavelService } from '../../services/responsavel.service'
 import { UserConfigurationService } from '../../services/user-configuration.service'
 import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component'
 import { CartaoComponent } from '../cartao/cartao.component'
-import { CategoriaComponent } from '../categoria/categoria.component'
 import { ResponsavelModalComponent } from '../responsavel-modal/responsavel-modal.component'
 import { ResponsavelComponent } from '../responsavel/responsavel.component'
 import { CategoriasTabComponent } from '../categorias-tab/categorias-tab.component'
+import { ResponsaveisTabComponent } from "../responsaveis-tab/responsaveis-tab.component";
 
 @Component({
     selector: 'app-configuracao-usuario',
     standalone: true,
     imports: [
-        CommonModule,
-        ResponsavelComponent,
-        ResponsavelModalComponent,
-        CartaoComponent,
-        CartaoModalComponent,
-        InputSwitchModule,
-        FormsModule,
-        LucideAngularModule,
-        CategoriasTabComponent
-    ],
+    CommonModule,
+    ResponsavelComponent,
+    ResponsavelModalComponent,
+    CartaoComponent,
+    CartaoModalComponent,
+    InputSwitchModule,
+    FormsModule,
+    LucideAngularModule,
+    CategoriasTabComponent,
+    ResponsaveisTabComponent
+],
     templateUrl: './configuracao-usuario.component.html',
     styleUrl: './configuracao-usuario.component.css',
 })
@@ -74,11 +75,6 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
 
     usuarioLogado: Usuario = { id: '', name: '', email: '' }
     
-    responsaveis: Responsavel[] = []
-    responsavel: PostPutResponsavel = { nome: '' }
-    responsavelId: number = 0
-    visibleModalResponsavel: boolean = false
-    
     userConfiguration: UserConfiguration = { listagemPorFatura: false }
     
     cartoes: Cartao[] = []
@@ -89,18 +85,9 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     activeTab: string = 'categorias'
 
     ngOnInit() {
-        this.getResponsaveis()
         this.getCartoes()
         this.getUsuarioLogado()
         this.getUserConfiguration()
-    }
-
-    getResponsaveis() {
-        this.responsavelService.getResponsaveis().subscribe({
-            next: (responsaveis) => {
-                this.responsaveis = responsaveis
-            },
-        })
     }
 
     getCartoes() {
@@ -131,23 +118,6 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
         this.autenticacaoService.logout().subscribe(() => {
             this.router.navigate(['/login'])
         })
-    }
-
-    onCreateResponsavelModal() {
-        this.responsavelId = 0
-        this.showDialogResponsavel()
-    }
-
-    showDialogResponsavel() {
-        this.visibleModalResponsavel = false
-        setTimeout(() => {
-            this.visibleModalResponsavel = true
-        }, 0)
-    }
-
-    onEditResponsavel(idResponsavel: number) {
-        this.responsavelId = idResponsavel
-        this.showDialogResponsavel()
     }
 
     onCreateCartaoModal() {

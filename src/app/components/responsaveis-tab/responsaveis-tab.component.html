@@ -1,0 +1,15 @@
+<app-responsavel-modal
+    [visible]="visibleModalResponsavel"
+    [responsavelId]="responsavelId"
+    (submit)="getResponsaveis()"
+></app-responsavel-modal>
+
+<div>
+    <div class="flex justify-between items-center mb-2">
+    <h2 class="text-2xl">Responsáveis</h2>
+    <button (click)="onCreateResponsavelModal()">Adicionar</button>
+    </div>
+    <div *ngFor="let responsavel of responsaveis">
+        <app-responsavel [responsavel]="responsavel" (Delete)="getResponsaveis()" (Edit)="onEditResponsavel($event)"></app-responsavel>
+    </div>
+</div>
