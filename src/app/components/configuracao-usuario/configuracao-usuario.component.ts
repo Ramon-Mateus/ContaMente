@@ -35,7 +35,7 @@ import { VisualizacaoTabComponent } from "../visualizacao-tab/visualizacao-tab.c
     templateUrl: './configuracao-usuario.component.html',
     styleUrl: './configuracao-usuario.component.css',
 })
-export class ConfiguracaoUsuarioComponent implements OnInit {
+export class ConfiguracaoUsuarioComponent {
     readonly SquareUserRoundIcon = SquareUserRoundIcon
     readonly FileIcon = FileIcon
     readonly ChevronRightIcon = ChevronRightIcon
@@ -45,36 +45,13 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     readonly WalletCardsIcon = WalletCardsIcon
     readonly LayoutListIcon = LayoutListIcon
 
-    autenticacaoService: AutenticacaoService = inject(AutenticacaoService)
-    router: Router = inject(Router)
-
     isPerfilCollapsed = true
     isVisualizacaoCollapsed = true
     isCategoriasCollapsed = true
     isResponsaveisCollapsed = true
     isCartoesCollapsed = true
-
-    usuarioLogado: Usuario = { id: '', name: '', email: '' }
     
     activeTab: string = 'categorias'
-
-    ngOnInit() {
-        this.getUsuarioLogado()
-    }
-
-    getUsuarioLogado() {
-        this.autenticacaoService.getUser().subscribe({
-            next: (usuario) => {
-                this.usuarioLogado = usuario
-            },
-        })
-    }
-
-    logout() {
-        this.autenticacaoService.logout().subscribe(() => {
-            this.router.navigate(['/login'])
-        })
-    }
 
     setActiveTab(tab: string) {
         this.activeTab = tab
