@@ -19,40 +19,6 @@
 
     <div class="flex flex-col items-center h-screen lg:hidden">
         <button
-            (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="LayoutListIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Visualização
-            </div>
-
-            <lucide-angular
-                *ngIf="this.isVisualizacaoCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!this.isVisualizacaoCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-        <div *ngIf="!isVisualizacaoCollapsed" class="">
-            <label for="listagemPorFatura">Listagem por fatura:</label><br />
-            <p-inputSwitch
-                id="listagemPorFatura"
-                name="listagemPorFatura"
-                (onChange)="userConfigurationOnChange()"
-                [(ngModel)]="userConfiguration.listagemPorFatura"
-            ></p-inputSwitch>
-        </div>
-
-        <button
             (click)="isCategoriasCollapsed = !isCategoriasCollapsed"
             class="flex justify-between items-center w-full"
         >
@@ -77,21 +43,7 @@
         </button>
 
         <div class="w-full p-2 pr-3" *ngIf="!isCategoriasCollapsed">
-            <h1 class="text-3xl">Suas categorias</h1>
-            <p class="text-2xl mt-3">Saída:</p>
-            <div *ngFor="let categoria of categoriasSaida">
-                <app-categoria
-                    [categoria]="categoria"
-                    (editOrDelete)="getCategorias()"
-                ></app-categoria>
-            </div>
-            <p class="text-2xl mt-2">Entrada:</p>
-            <div *ngFor="let categoria of categoriasEntrada">
-                <app-categoria
-                    [categoria]="categoria"
-                    (editOrDelete)="getCategorias()"
-                ></app-categoria>
-            </div>
+            <app-categorias-tab></app-categorias-tab>
         </div>
 
         <button
@@ -180,8 +132,39 @@
                 ></app-cartao>
             </div>
         </div>
+        <button
+            (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
+            class="flex justify-between items-center w-full"
+        >
+            <div class="text-xl flex items-center">
+                <lucide-angular
+                    [img]="LayoutListIcon"
+                    [size]="32"
+                    class="mr-1 text-secondary"
+                ></lucide-angular>
+                Visualização
+            </div>
 
-        
+            <lucide-angular
+                *ngIf="this.isVisualizacaoCollapsed"
+                [img]="ChevronRightIcon"
+                class="text-secondary"
+            ></lucide-angular>
+            <lucide-angular
+                *ngIf="!this.isVisualizacaoCollapsed"
+                [img]="ChevronDownIcon"
+                class="text-secondary"
+            ></lucide-angular>
+        </button>
+        <div *ngIf="!isVisualizacaoCollapsed" class="">
+            <label for="listagemPorFatura">Listagem por fatura:</label><br />
+            <p-inputSwitch
+                id="listagemPorFatura"
+                name="listagemPorFatura"
+                (onChange)="userConfigurationOnChange()"
+                [(ngModel)]="userConfiguration.listagemPorFatura"
+            ></p-inputSwitch>
+        </div>
     </div>
 
     <div class="hidden lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-6">
@@ -242,21 +225,7 @@
             </div>
 
             <div *ngIf="activeTab === 'categorias'">
-                <h1 class="text-2xl">Suas categorias</h1>
-                <p class="text-2xl mt-3">Saída:</p>
-                <div *ngFor="let categoria of categoriasSaida">
-                    <app-categoria
-                        [categoria]="categoria"
-                        (editOrDelete)="getCategorias()"
-                    ></app-categoria>
-                </div>
-                <p class="text-2xl mt-2">Entrada:</p>
-                <div *ngFor="let categoria of categoriasEntrada">
-                    <app-categoria
-                        [categoria]="categoria"
-                        (editOrDelete)="getCategorias()"
-                    ></app-categoria>
-                </div>
+                <app-categorias-tab></app-categorias-tab>
             </div>
 
             <div *ngIf="activeTab === 'responsaveis'">

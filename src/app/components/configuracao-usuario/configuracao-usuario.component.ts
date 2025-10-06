@@ -16,7 +16,6 @@ import {
 import { InputSwitchModule } from 'primeng/inputswitch'
 import {
     Cartao,
-    Categoria,
     PostPutCartao,
     PostPutResponsavel,
     Responsavel,
@@ -25,7 +24,6 @@ import {
 } from '../../lib/types'
 import { AutenticacaoService } from '../../services/autenticacao.service'
 import { CartaoService } from '../../services/cartao.service'
-import { CategoriaService } from '../../services/categoria.service'
 import { ResponsavelService } from '../../services/responsavel.service'
 import { UserConfigurationService } from '../../services/user-configuration.service'
 import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component'
@@ -33,13 +31,13 @@ import { CartaoComponent } from '../cartao/cartao.component'
 import { CategoriaComponent } from '../categoria/categoria.component'
 import { ResponsavelModalComponent } from '../responsavel-modal/responsavel-modal.component'
 import { ResponsavelComponent } from '../responsavel/responsavel.component'
+import { CategoriasTabComponent } from '../categorias-tab/categorias-tab.component'
 
 @Component({
     selector: 'app-configuracao-usuario',
     standalone: true,
     imports: [
         CommonModule,
-        CategoriaComponent,
         ResponsavelComponent,
         ResponsavelModalComponent,
         CartaoComponent,
@@ -47,6 +45,7 @@ import { ResponsavelComponent } from '../responsavel/responsavel.component'
         InputSwitchModule,
         FormsModule,
         LucideAngularModule,
+        CategoriasTabComponent
     ],
     templateUrl: './configuracao-usuario.component.html',
     styleUrl: './configuracao-usuario.component.css',
@@ -61,7 +60,6 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     readonly WalletCardsIcon = WalletCardsIcon
     readonly LayoutListIcon = LayoutListIcon
 
-    categoriaService: CategoriaService = inject(CategoriaService)
     autenticacaoService: AutenticacaoService = inject(AutenticacaoService)
     responsavelService: ResponsavelService = inject(ResponsavelService)
     cartaoService: CartaoService = inject(CartaoService)
@@ -75,9 +73,6 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     isCartoesCollapsed = true
 
     usuarioLogado: Usuario = { id: '', name: '', email: '' }
-    
-    categoriasSaida: Categoria[] = []
-    categoriasEntrada: Categoria[] = []
     
     responsaveis: Responsavel[] = []
     responsavel: PostPutResponsavel = { nome: '' }
@@ -94,25 +89,10 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     activeTab: string = 'categorias'
 
     ngOnInit() {
-        this.getCategorias()
         this.getResponsaveis()
         this.getCartoes()
         this.getUsuarioLogado()
         this.getUserConfiguration()
-    }
-
-    getCategorias() {
-        this.categoriaService.getCategorias(false).subscribe({
-            next: (categorias) => {
-                this.categoriasSaida = categorias
-            },
-        })
-
-        this.categoriaService.getCategorias(true).subscribe({
-            next: (categorias) => {
-                this.categoriasEntrada = categorias
-            },
-        })
     }
 
     getResponsaveis() {
