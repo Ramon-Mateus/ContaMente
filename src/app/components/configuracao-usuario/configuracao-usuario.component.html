@@ -1,12 +1,7 @@
-<main class="w-80 sm:w-[43em] mx-auto">
-    <div class="flex flex-col items-center">
+<main class="sm:w-[43em] mx-auto">
+    <div class="flex flex-col">
         <div class="flex items-start mb-4">
-            <img
-                class="h-12 w-12 ml-2 object-cover rounded-md mr-2"
-                src="carinha.png"
-                alt=""
-            />
-            <h1 class="">{{ usuarioLogado.name }}</h1>
+            <p class="text-4xl ml-2">Perfil e Configurações</p>
         </div>
     </div>
 
@@ -22,32 +17,7 @@
         (submit)="getCartoes()"
     ></app-cartao-modal>
 
-    <div class="flex flex-col items-center h-screen">
-        <button
-            (click)="this.isPerfilCollapsed = !this.isPerfilCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="SquareUserRoundIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Perfil
-            </div>
-
-            <lucide-angular
-                *ngIf="this.isPerfilCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!this.isPerfilCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-
+    <div class="flex flex-col items-center h-screen lg:hidden">
         <button
             (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
             class="flex justify-between items-center w-full"
@@ -149,7 +119,7 @@
         </button>
         <div
             *ngIf="!isResponsaveisCollapsed"
-            class="w-full p-2 mt-6 pt-6 border-t border-white/50 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
+            class="w-full p-2 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
         >
             <div class="flex flex-row w-full justify-between mb-3">
                 <h1 class="text-3xl">Responsáveis</h1>
@@ -212,5 +182,93 @@
         </div>
 
         
+    </div>
+
+    <div class="hidden lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-6">
+        <!-- left column: tabs -->
+        <aside class="col-span-2 p-2 border-r">
+            <ul>
+                <li class="mb-2">
+                    <button class="w-full p-2 text-left" (click)="setActiveTab('categorias')" [ngClass]="{ 'bg-white/10': activeTab === 'categorias' }"> 
+                        <div>
+                            <div>Categorias</div>
+                            <small>Gerencie suas categorias</small>
+                        </div>
+                    </button>
+                </li>
+
+                <li class="mb-2">
+                    <button class="w-full p-2 text-left" (click)="setActiveTab('responsaveis')" [ngClass]="{ 'bg-white/10': activeTab === 'responsaveis' }"> 
+                        <div>Responsáveis</div>
+                        <small>Gerencie seus responsáveis</small>
+                    </button>
+                </li>
+
+                <li class="mb-2">
+                    <button class="w-full p-2 text-left" (click)="setActiveTab('cartoes')" [ngClass]="{ 'bg-white/10': activeTab === 'cartoes' }"> 
+                        <div>Cartões</div>
+                        <small>Gerencie seus cartões</small>
+                    </button>
+                </li>
+
+                <li class="mb-2">
+                    <button class="w-full p-2 text-left" (click)="setActiveTab('visualizacao')" [ngClass]="{ 'bg-white/10': activeTab === 'visualizacao' }"> 
+                        <div>Visualização</div>
+                        <small>Escolha o que será exibido</small>
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- right column: content -->
+        <section class="col-span-3 p-2">
+
+            <div *ngIf="activeTab === 'cartoes'">
+                <div class="flex justify-between items-center mb-2">
+                    <h1 class="text-2xl">Cartões</h1>
+                    <button (click)="onCreateCartaoModal()">Adicionar</button>
+                </div>
+                <div *ngFor="let cartao of cartoes">
+                    <app-cartao [cartao]="cartao" (Delete)="getCartoes()" (Edit)="onEditCartao($event)"></app-cartao>
+                </div>
+            </div>
+
+            <div *ngIf="activeTab === 'visualizacao'">
+                <h2 class="text-2xl mb-2">Visualização</h2>
+                <div class="flex items-center gap-2">
+                    <p-inputSwitch id="listagemPorFatura" name="listagemPorFatura" (onChange)="userConfigurationOnChange()" [(ngModel)]="userConfiguration.listagemPorFatura"></p-inputSwitch>
+                    <label class="text-lg" for="listagemPorFatura">Listagem por fatura</label>
+                </div>
+            </div>
+
+            <div *ngIf="activeTab === 'categorias'">
+                <h1 class="text-2xl">Suas categorias</h1>
+                <p class="text-2xl mt-3">Saída:</p>
+                <div *ngFor="let categoria of categoriasSaida">
+                    <app-categoria
+                        [categoria]="categoria"
+                        (editOrDelete)="getCategorias()"
+                    ></app-categoria>
+                </div>
+                <p class="text-2xl mt-2">Entrada:</p>
+                <div *ngFor="let categoria of categoriasEntrada">
+                    <app-categoria
+                        [categoria]="categoria"
+                        (editOrDelete)="getCategorias()"
+                    ></app-categoria>
+                </div>
+            </div>
+
+            <div *ngIf="activeTab === 'responsaveis'">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-2xl">Responsáveis</h2>
+                    <button (click)="onCreateResponsavelModal()">Adicionar</button>
+                </div>
+                <div *ngFor="let responsavel of responsaveis">
+                    <app-responsavel [responsavel]="responsavel" (Delete)="getResponsaveis()" (Edit)="onEditResponsavel($event)"></app-responsavel>
+                </div>
+            </div>
+            
+        </section>
     </div>
 </main>

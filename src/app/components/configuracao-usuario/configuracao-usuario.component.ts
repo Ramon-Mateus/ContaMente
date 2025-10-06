@@ -65,9 +65,8 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     autenticacaoService: AutenticacaoService = inject(AutenticacaoService)
     responsavelService: ResponsavelService = inject(ResponsavelService)
     cartaoService: CartaoService = inject(CartaoService)
-    userConfigurationService: UserConfigurationService = inject(
-        UserConfigurationService
-    )
+    userConfigurationService: UserConfigurationService = inject(UserConfigurationService)
+    router: Router = inject(Router)
 
     isPerfilCollapsed = true
     isVisualizacaoCollapsed = true
@@ -75,24 +74,24 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
     isResponsaveisCollapsed = true
     isCartoesCollapsed = true
 
-    router: Router = inject(Router)
-
     usuarioLogado: Usuario = { id: '', name: '', email: '' }
-
+    
     categoriasSaida: Categoria[] = []
     categoriasEntrada: Categoria[] = []
-
+    
     responsaveis: Responsavel[] = []
     responsavel: PostPutResponsavel = { nome: '' }
     responsavelId: number = 0
     visibleModalResponsavel: boolean = false
-
+    
     userConfiguration: UserConfiguration = { listagemPorFatura: false }
-
+    
     cartoes: Cartao[] = []
     cartao: PostPutCartao = { apelido: '', diaFechamento: 0 }
     cartaoId: number = 0
     visibleModalCartao: boolean = false
+    
+    activeTab: string = 'categorias'
 
     ngOnInit() {
         this.getCategorias()
@@ -192,5 +191,9 @@ export class ConfiguracaoUsuarioComponent implements OnInit {
         this.userConfigurationService
             .putUserConfiguration(this.userConfiguration)
             .subscribe()
+    }
+
+    setActiveTab(tab: string) {
+        this.activeTab = tab
     }
 }
