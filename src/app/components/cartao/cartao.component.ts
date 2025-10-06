@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Cartao } from '../../lib/types';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +11,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
 import { CartaoService } from '../../services/cartao.service';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-cartao',
@@ -24,7 +25,8 @@ import { CartaoService } from '../../services/cartao.service';
     DialogModule,
     SidebarModule,
     FormsModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MenuModule
   ],
   templateUrl: './cartao.component.html',
   styleUrl: './cartao.component.css',
@@ -35,25 +37,26 @@ export class CartaoComponent {
   @Output() Delete = new EventEmitter<boolean>();
   @Output() Edit = new EventEmitter<number>();
 
+  visibleDeleteModal: boolean = false
+  items: MenuItem[] = [
+    {
+      label: 'Editar',
+      command: () => {
+        this.onEdit()
+      },
+    },
+    {
+      label: 'Deletar',
+      command: (event) => {
+        this.deleteModalToggle()
+      },
+    },
+  ]
+
   constructor(
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private CartaoService: CartaoService
   ) {}
- 
-  confirmDelete(event: Event) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Todas as movimentações associadas a esse cartão também serão excluídas! Tem certeza que deseja excluir esse cartão?',
-      accept: () => {
-        this.onDelete();
-        this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Cartão excluído com sucesso', life: 3000 });
-      },
-      reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejeitado', detail: 'Cartão não excluído', life: 3000 });
-      }
-    });
-  }
 
   onDelete() {
     this.CartaoService.deleteCartao(this.cartao.id!).subscribe({
@@ -65,5 +68,31 @@ export class CartaoComponent {
 
   onEdit() {
     this.Edit.emit(this.cartao.id);
+  }
+
+
+  onDeleteRejection() {
+    this.visibleDeleteModal = false
+
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejeitado',
+      detail: 'Registro não excluído',
+      life: 3000,
+    })
+  }
+
+  onDeleteConfirmation(){
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Confirmado',
+      detail: 'Registro excluído com sucesso',
+      life: 3000,
+    })
+    this.onDelete()
+  }
+
+  deleteModalToggle() {
+    this.visibleDeleteModal = !this.visibleDeleteModal
   }
 }

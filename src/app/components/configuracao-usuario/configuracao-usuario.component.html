@@ -158,20 +158,20 @@
         <!-- right column: content -->
         <section class="col-span-3 p-2">
 
-            <div *ngIf="activeTab === 'cartoes'">
-                <app-cartoes-tab></app-cartoes-tab>
-            </div>
-
-            <div *ngIf="activeTab === 'visualizacao'">
-                <app-visualizacao-tab></app-visualizacao-tab>
-            </div>
-
             <div *ngIf="activeTab === 'categorias'">
                 <app-categorias-tab></app-categorias-tab>
             </div>
 
             <div *ngIf="activeTab === 'responsaveis'">
                 <app-responsaveis-tab></app-responsaveis-tab>
+            </div>
+
+            <div *ngIf="activeTab === 'cartoes'">
+                <app-cartoes-tab></app-cartoes-tab>
+            </div>
+
+            <div *ngIf="activeTab === 'visualizacao'">
+                <app-visualizacao-tab></app-visualizacao-tab>
             </div>
             
         </section>
