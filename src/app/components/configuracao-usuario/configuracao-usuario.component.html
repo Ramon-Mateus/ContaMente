@@ -115,13 +115,7 @@
             ></lucide-angular>
         </button>
         <div *ngIf="!isVisualizacaoCollapsed" class="">
-            <label for="listagemPorFatura">Listagem por fatura:</label><br />
-            <p-inputSwitch
-                id="listagemPorFatura"
-                name="listagemPorFatura"
-                (onChange)="userConfigurationOnChange()"
-                [(ngModel)]="userConfiguration.listagemPorFatura"
-            ></p-inputSwitch>
+            <app-visualizacao-tab></app-visualizacao-tab>
         </div>
     </div>
 
@@ -169,11 +163,7 @@
             </div>
 
             <div *ngIf="activeTab === 'visualizacao'">
-                <h2 class="text-2xl mb-2">Visualização</h2>
-                <div class="flex items-center gap-2">
-                    <p-inputSwitch id="listagemPorFatura" name="listagemPorFatura" (onChange)="userConfigurationOnChange()" [(ngModel)]="userConfiguration.listagemPorFatura"></p-inputSwitch>
-                    <label class="text-lg" for="listagemPorFatura">Listagem por fatura</label>
-                </div>
+                <app-visualizacao-tab></app-visualizacao-tab>
             </div>
 
             <div *ngIf="activeTab === 'categorias'">
