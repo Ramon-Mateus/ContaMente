@@ -76,30 +76,6 @@ export class MovimentacaoComponent implements OnInit {
             : '• Eu'
     }
 
-    confirmDelete(event: Event) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Deseja excluir?',
-            accept: () => {
-                this.onDelete()
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Confirmado',
-                    detail: 'Registro excluído com sucesso',
-                    life: 3000,
-                })
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Rejeitado',
-                    detail: 'Registro não excluído',
-                    life: 3000,
-                })
-            },
-        })
-    }
-
     onDeleteRejection() {
         this.deleteModalVisivel = false
 
