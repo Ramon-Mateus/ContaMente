@@ -53,8 +53,9 @@ export class MovimentacaoModalComponent implements OnChanges {
   responsaveisDropdown: Responsavel[] = [];
   cartoesDropdown: Cartao[] = []
   dataLabel: string = 'Data:';
+  dataValue: Date = new Date();
   idParcela: number = 0;
-  datePipe = new DatePipe('en-us');
+  datePipe = new DatePipe('pt-BR');
 
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0;
@@ -76,6 +77,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           cartaoId: movimentacao.cartao ? movimentacao.cartao.id : 0
         };
 
+        this.dataValue = new Date(movimentacao.data);
+
         if(movimentacao.parcela !== null) {
           this.movimentacaoParcelada = true;
           this.parcelaEditable = false;
@@ -83,13 +86,15 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.numeroParcelas = movimentacao.parcela.numeroParcelas;
           this.valorParcela = movimentacao.parcela.valorParcela;
           this.movimentacao.valor = movimentacao.parcela.valorTotal;
+          this.dataValue = new Date(movimentacao.parcela!.dataInicio!)
           this.parceladaOnChange();
         }
       });
     } else {
       this.movimentacaoParcelada = false;
       this.parcelaEditable = true;
-      this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+      this.dataValue = new Date();
+      this.movimentacao = { descricao: '', data: this.dataValue, categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
     }
   }
 
@@ -163,7 +168,7 @@ export class MovimentacaoModalComponent implements OnChanges {
       this.movimentacao.cartaoId = null;
     }
 
-    const dataFormatada = this.datePipe.transform(this.movimentacao.data, 'yyyy-MM-dd');
+    const dataFormatada = this.datePipe.transform(this.dataValue, 'yyyy-MM-dd', 'pt-BR');
 
     if(this.idMovimentacao === 0) {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
@@ -175,11 +180,12 @@ export class MovimentacaoModalComponent implements OnChanges {
           dataInicio: dataFormatada!,
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
-          responsavelId: this.movimentacao.responsavelId
+          responsavelId: this.movimentacao.responsavelId,
+          cartaoId: this.movimentacao.cartaoId
       };
         this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
-          this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+          this.movimentacao = { descricao: '', data: new Date(), categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
           this.labelValor = 'Valor:';
@@ -187,6 +193,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.visible = false;
         });
       } else {
+        this.movimentacao.data = dataFormatada!;
         this.movimentacaoService.postMovimentacao(this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
@@ -207,6 +214,17 @@ export class MovimentacaoModalComponent implements OnChanges {
       }
     } else {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
+
+        let isMovimentacaoParcelada = false;
+
+        this.movimentacaoService.getMovimentacaoById(this.idMovimentacao).subscribe(movimentacao => {
+          if(movimentacao.parcela !== null) {
+            isMovimentacaoParcelada = true;
+          }
+        });
+
+        this.movimentacaoService.deleteMovimentacao(this.idMovimentacao).subscribe();
+
         const parcela: postParcela = {
           valorTotal: this.movimentacao.valor!,
           numeroParcelas: this.numeroParcelas,
@@ -215,18 +233,33 @@ export class MovimentacaoModalComponent implements OnChanges {
           dataInicio: dataFormatada!,
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
-          responsavelId: this.movimentacao.responsavelId
-      };
-        this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
+          responsavelId: this.movimentacao.responsavelId,
+          cartaoId: this.movimentacao.cartaoId
+        };
+
+        if(isMovimentacaoParcelada) {
+          this.parcelaService.putParcela(this.idParcela, parcela).subscribe(parcela => {
+            this.submit.emit();
+            this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
+            this.numeroParcelas= 2;
+            this.valorParcela = 0;
+            this.movimentacaoParcelada = false;
+            this.parceladaOnChange();
+            this.visible = false;
+          });
+        } else {
+          this.parcelaService.postParcela(parcela).subscribe(parcela => {
           this.submit.emit();
           this.movimentacao = { descricao: '', data: '', categoriaId: 0, fixa: false, tipoPagamentoId: 0, responsavelId: null, cartaoId: null };
           this.numeroParcelas= 2;
           this.valorParcela = 0;
+          this.labelValor = 'Valor:';
           this.movimentacaoParcelada = false;
-          this.parceladaOnChange();
           this.visible = false;
-        });
-      } else {
+          });
+        }
+      } else 
+        {
         this.movimentacaoService.putMovimentacao(this.idMovimentacao, this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
