@@ -13,6 +13,21 @@ export class MovimentacaoService {
 
   public modificouFiltros = new EventEmitter<DiaFiscal[]>()
 
+  ultimosFiltros: {
+    mes?: number, 
+    ano?: number, 
+    entrada?: boolean, 
+    categoriasIds: number[], 
+    tiposPagamentoIds: number[], 
+    responsaveisIds: number[], 
+    cartoesIds: number[]} 
+    = { 
+      categoriasIds: [], 
+      tiposPagamentoIds: [], 
+      responsaveisIds: [], 
+      cartoesIds: [] 
+    }
+
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -48,7 +63,31 @@ export class MovimentacaoService {
       params = params.append('cartoesIds', id.toString());
     });
 
+    this.ultimosFiltros = { mes, ano, entrada, categoriasIds, tiposPagamentoIds, responsaveisIds, cartoesIds }
+
     return this.httpClient.get<{ [Key: string]: Movimentacao[] }>(this.urlDoModel, { params, withCredentials: true }).pipe(
+      map((response: { [key: string]: Movimentacao[] }) => {
+        const movimentacoes: DiaFiscal[] = Object.keys(response).map(key => {
+          return {
+            data: new Date(key),
+            movimentacoes: response[key]
+          };
+        });
+
+        let total = 0;
+        movimentacoes.forEach(dia => {
+          dia.movimentacoes.forEach(movimentacao => {
+            total += movimentacao.valor;
+          });
+        });
+  
+        return { movimentacoes, total };
+      })
+    );
+  }
+
+  refresh() {
+    return this.httpClient.get<{ [Key: string]: Movimentacao[] }>(this.urlDoModel, { params: this.ultimosFiltros, withCredentials: true }).pipe(
       map((response: { [key: string]: Movimentacao[] }) => {
         const movimentacoes: DiaFiscal[] = Object.keys(response).map(key => {
           return {

@@ -17,6 +17,7 @@ import { CategoriaService } from '../../services/categoria.service'
 import { MovimentacaoService } from '../../services/movimentacao.service'
 import { ResponsavelService } from '../../services/responsavel.service'
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service'
+import { CategoriaModalComponent } from '../categoria-modal/categoria-modal.component'
 
 @Component({
     selector: 'app-filtros',
@@ -28,6 +29,7 @@ import { TipoPagamentoService } from '../../services/tipo-pagamento.service'
         InputSwitchModule,
         DialogModule,
         InputTextModule,
+        CategoriaModalComponent
     ],
     templateUrl: './filtros.component.html',
 })
@@ -44,6 +46,7 @@ export class FiltrosComponent {
     entradaMovimentacaoFiltro: boolean = false
     categoriasSaidaFiltro: Categoria[] = []
     categoriasEntradaFiltro: Categoria[] = []
+    categoriaId: number = 0
 
     categorias: Categoria[] = []
     newCategoria: PostCategoria = { nome: '', entrada: false }
@@ -80,6 +83,7 @@ export class FiltrosComponent {
     }
 
     ngOnInit() {
+        this.getMovimentacoesAndEmiteEvento()
         this.getCategorias()
         this.getTiposPagamento()
         this.getResponsaveis()
@@ -98,6 +102,8 @@ export class FiltrosComponent {
     }
 
     getCategorias() {
+        this.visibleModalCategoria = false
+
         this.categoriaService
             .getCategorias(this.entradaCategoria)
             .subscribe((categorias) => {
@@ -165,7 +171,10 @@ export class FiltrosComponent {
     }
 
     showDialogCategoria() {
-        this.visibleModalCategoria = true
+        this.visibleModalCategoria = false
+        setTimeout(() => {
+            this.visibleModalCategoria = true
+        }, 0)
     }
 
     onChangeEntradaMovimentacao() {
@@ -206,5 +215,10 @@ export class FiltrosComponent {
             .map((c) => c.id)
 
         this.getMovimentacoesAndEmiteEvento()
+    }
+
+    onCreateCategoriaModal() {
+        this.categoriaId = 0
+        this.showDialogCategoria()
     }
 }

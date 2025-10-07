@@ -21,6 +21,12 @@
 </div>
 
 <div class="sm:panel rounded-lg p-4 mb-2">
+    <app-categoria-modal
+        [visible]="visibleModalCategoria"
+        [categoriaId]="categoriaId"
+        (submit)="getCategorias()"
+    ></app-categoria-modal>
+
     <div class="font-semibold text-xl mb-2">Categorias</div>
 
     <div
