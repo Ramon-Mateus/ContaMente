@@ -5,20 +5,71 @@
         </p>
         <div class="card flex justify-center gap-2">
             <p-toast />
-            <p-confirmPopup #cp>
-                <ng-template pTemplate="headless" let-message>
-                    <div class="rounded p-4 bg-zinc-400 text-zinc-800">
-                        <span>{{ message.message }}</span>
-                        <div class="flex items-center gap-2 mt-4 text-zinc-800">
-                            <p-button (onClick)="cp.accept()" label="Sim" size="small" />
-                            <p-button (onClick)="cp.reject()" label="Não" [text]="true" size="small" severity="secondary" />
-                        </div>
-                    </div>
+
+            <p-dialog
+                header="Deletar?"
+                [modal]="true"
+                [(visible)]="visibleDeleteModal"
+                [style]="{ width: '25rem' }"
+            >
+                <div>
+                    {{ cartao.apelido }} - Dia de fechamento: {{ cartao.diaFechamento }}
+                </div>
+
+                <div class="text-red-500 text-sm">
+                    AVISO: Todas as movimentações associadas a esse cartão também serão excluídas! Tem certeza que deseja excluir esse cartão?
+                </div>
+
+                <div class="flex items-center gap-2 mt-4 text-zinc-200">
+                    <p-button
+                        (onClick)="onDeleteConfirmation()"
+                        label="Sim"
+                        size="small"
+                    />
+                    <p-button
+                        (onClick)="onDeleteRejection()"
+                        label="Não"
+                        [text]="true"
+                        size="small"
+                        severity="secondary"
+                    />
+                </div>
+
+                <ng-template #footer>
+                    <p-button
+                        label="Cancel"
+                        [text]="true"
+                        severity="secondary"
+                        (click)="deleteModalToggle()"
+                    />
+                    <p-button
+                        label="Save"
+                        [outlined]="true"
+                        severity="secondary"
+                        (click)="deleteModalToggle()"
+                    />
                 </ng-template>
-            </p-confirmPopup>
-            <div>
-                <i class="pi pi-pencil cursor-pointer mr-2" (click)="onEdit()"></i>
-                <i class="pi pi-trash cursor-pointer" (click)="confirmDelete($event)"></i>
+            </p-dialog>
+
+            <p-menu #menu [model]="items" [popup]="true" />
+            <div class="flex items-center">
+                <svg
+                    (click)="menu.toggle($event)"
+                    class="lucide lucide-ellipsis-icon lucide-ellipsis cursor-pointer"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="1" />
+                    <circle cx="19" cy="12" r="1" />
+                    <circle cx="5" cy="12" r="1" />
+                </svg>
             </div>
         </div>
     </div>

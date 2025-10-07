@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DiaFiscalComponent {
   @Input() dia!: DiaFiscal;
+  @Input() ehUltimo!: boolean;
   @Output() deleteMovimentacao = new EventEmitter<number>();
   @Output() editMovimentacao = new EventEmitter<number>();
 

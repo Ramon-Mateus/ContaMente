@@ -1,16 +1,18 @@
 <div class="mx-auto w-80 sm:w-[43em] h-16 flex items-center mt-4 mb-8 sm:mb-12 justify-between ">
-    <a [routerLink]="authService.isAutenticado ? ['/movimentacoes'] : ['']" class="text-zinc-200 text-lg block">ContaMente</a>
+    <a [routerLink]="authService.isAutenticado ? ['/movimentacoes'] : ['']" class="text-zinc-200 text-lg block"> 
+        <img class="md:h-18 h-14" src="logo-semfundo-darkmode.svg" alt="">
+    </a>
 
-    <div class="hidden sm:flex items-center space-x-4">
+    <div class="flex items-center space-x-4">
         <button *ngIf="!authService.isAutenticado" class="base-botao-lined rounded-md px-4 py-1" type="button" label="Login" (click)="login()">Login</button>
         <button *ngIf="!authService.isAutenticado" class="base-botao rounded-md px-4 py-1" type="button" label="Cadastro" (click)="cadastro()">Cadastro</button>
         
         <div class="flex" (click)="menu.toggle($event)" *ngIf="authService.isAutenticado">
             <div>
                 Hello 👋 <br>
-                <div class="font-semibold">{{usuarioLogado.name}}</div>
+                <div class="font-semibold">{{usuarioLogado.name.split(' ')[0]}}</div>
             </div>
-            <img class="h-12 w-12 ml-2 object-cover rounded-md" src="duende.png" alt="">
+            <img class="h-12 w-12 ml-2 object-cover rounded-md" src="carinha.png" alt="">
 
             <p-menu #menu [model]="items" styleClass="panel" [popup]="true"/>
         </div>

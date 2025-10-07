@@ -12,8 +12,7 @@ import { AutenticacaoService } from './services/autenticacao.service';
     HeaderComponent,
     FooterComponent
 ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   

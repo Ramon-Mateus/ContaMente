@@ -1,36 +1,156 @@
-<div class="panel  p-2 pl-4 md:w-[30em] text-zinc-300 rounded-md mt-2
-            
-">
-    <div class="flex align-middle justify-between">
-        <p class="text-base md:text-xl">
-            {{ movimentacao.valor | currency:'BRL' }} 
-            <span class="text-zinc-500 block md:inline">
-                • {{ movimentacao.categoria.nome }}
-                • {{ movimentacao.tipoPagamento.nome }} {{ parcelaFormatada }}
-                {{ cartaoFormatado }}
-                {{ nomeResponsavel }}
-            </span>
-        </p>
-        <div class="card flex justify-center gap-2">
-            <p-toast />
-            <p-confirmPopup #cp>
-                <ng-template pTemplate="headless" let-message>
-                    <div class="rounded p-4 bg-zinc-400 text-zinc-800">
-                        <span>{{ message.message }}</span>
-                        <div class="flex items-center gap-2 mt-4 text-zinc-800">
-                            <p-button (onClick)="cp.accept()" label="Sim" size="small" />
-                            <p-button (onClick)="cp.reject()" label="Não" [text]="true" size="small" severity="secondary" />
-                        </div>
-                    </div>
-                </ng-template>
-            </p-confirmPopup>
-            <div>
-                <i class="pi pi-pencil cursor-pointer mr-2" (click)="onEdit()"></i>
-                <i class="pi pi-trash cursor-pointer" (click)="confirmDelete($event)"></i>
+<div
+    class="md:w-[30em] text-zinc-300 rounded-md my-4 flex align-middle justify-between"
+>
+    <div class="flex items-center">
+        <div class="p-2 rounded-md bg-element mr-3 w-11 h-11 flex justify-center items-center">
+            <img
+            src="{{ normalizeString(movimentacao.tipoPagamento.nome) }}.svg"
+            class="block w-20 md:w-8"
+            alt=""
+        />
+        </div>
+        <div class="flex flex-col justify-center">
+            <div class="flex flex-wrap gap-1 w-max">
+                <p class="text-base block md:text-xl font-medium mr-1 sm:mb-0">
+                    {{ movimentacao.valor | currency : 'BRL' }}
+                </p>
+
+                <div class="mov-att">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-receipt-text-icon lucide-receipt-text h-3 mr-1"
+                    >
+                        <path
+                            d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"
+                        />
+                        <path d="M14 8H8" />
+                        <path d="M16 12H8" />
+                        <path d="M13 16H8" />
+                    </svg>
+                    {{ movimentacao.categoria.nome }}
+                </div>
+
+                <div *ngIf="movimentacao.parcela" class="mov-att">
+                    {{ parcelaFormatada }}
+                </div>
+                <div *ngIf="movimentacao.responsavel" class="mov-att">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-user-icon lucide-user h-3 mr-1"
+                    >
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    {{ movimentacao.responsavel.nome.split(' ')[0] }}
+                </div>
+
+                <div *ngIf="movimentacao.cartao != null" class="mov-att">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-credit-card-icon lucide-credit-card h-3 w-min mr-1"
+                    >
+                        <rect width="20" height="14" x="2" y="5" rx="2" />
+                        <line x1="2" x2="22" y1="10" y2="10" />
+                    </svg>
+                    {{ movimentacao.cartao.apelido }}
+                </div>
             </div>
+            <p class="text-zinc-400">
+                {{
+                    movimentacao.descricao
+                        ? movimentacao.descricao
+                        : 'Sem descrição'
+                }}
+            </p>
         </div>
     </div>
-    <p class="text-zinc-400 hidden md:inline">
-        {{ movimentacao.descricao ? movimentacao.descricao : 'Sem descrição' }}
-    </p>
+    <div class="card flex justify-center gap-2">
+        <p-toast />
+
+        <p-dialog
+            header="Deletar?"
+            [modal]="true"
+            [(visible)]="deleteModalVisivel"
+            [style]="{ width: '25rem' }"
+        >
+            <div>
+                R$ {{ movimentacao.valor }} - "{{ movimentacao.descricao }}"
+            </div>
+
+            <div *ngIf="movimentacao.numeroParcela" class="text-red-500 text-sm">
+                AVISO: Como esta movimentação é parcelada, apagá-la irá apagar todas as outras parcelas também.
+            </div>
+
+            <div class="flex items-center gap-2 mt-4 text-zinc-200">
+                <p-button
+                    (onClick)="onDeleteConfirmation()"
+                    label="Sim"
+                    size="small"
+                />
+                <p-button
+                    (onClick)="onDeleteRejection()"
+                    label="Não"
+                    [text]="true"
+                    size="small"
+                    severity="secondary"
+                />
+            </div>
+
+            <ng-template #footer>
+                <p-button
+                    label="Cancel"
+                    [text]="true"
+                    severity="secondary"
+                    (click)="deleteModalToggle()"
+                />
+                <p-button
+                    label="Save"
+                    [outlined]="true"
+                    severity="secondary"
+                    (click)="deleteModalToggle()"
+                />
+            </ng-template>
+        </p-dialog>
+
+        <p-menu #menu [model]="items" [popup]="true" />
+        <div class="flex items-center">
+            <svg
+                (click)="menu.toggle($event)"
+                class="lucide lucide-ellipsis-icon lucide-ellipsis cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="1" />
+                <circle cx="19" cy="12" r="1" />
+                <circle cx="5" cy="12" r="1" />
+            </svg>
+        </div>
+    </div>
 </div>
