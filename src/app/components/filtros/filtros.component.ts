@@ -29,7 +29,7 @@ import { CategoriaModalComponent } from '../categoria-modal/categoria-modal.comp
         InputSwitchModule,
         DialogModule,
         InputTextModule,
-        CategoriaModalComponent
+        CategoriaModalComponent,
     ],
     templateUrl: './filtros.component.html',
 })

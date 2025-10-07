@@ -78,54 +78,6 @@
         <i class="pi pi-plus" style="font-size: 0.8rem"></i>
         <span class="ml-2 text-base">Nova</span>
     </button>
-
-    <p-dialog
-        header="Adicionar categoria"
-        [modal]="true"
-        [(visible)]="visibleModalCategoria"
-        [style]="{ width: '30rem' }"
-    >
-        <form
-            (ngSubmit)="OnCreateCategoriaSubmit()"
-            #categoriaForm="ngForm"
-            class="p-4 text-base w-full"
-        >
-            <div class="mb-2 flex items-center">
-                <div class="flex-grow mr-2">
-                    <label for="nome">Nome:</label><br />
-
-                    <input
-                        class="w-full h-11 mb-1 min-h-11 p-2"
-                        id="nome"
-                        name="nome"
-                        rows="5"
-                        cols="30"
-                        pInputText
-                        [(ngModel)]="newCategoria.nome"
-                    />
-                </div>
-
-                <div class="flex-shrink-0">
-                    <label for="entrada">Entrada:</label><br />
-                    <p-inputSwitch
-                        id="entrada"
-                        name="entrada"
-                        [(ngModel)]="newCategoria.entrada"
-                    ></p-inputSwitch>
-                </div>
-            </div>
-
-            <div class="flex justify-center">
-                <button
-                    class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7"
-                    type="submit"
-                    [disabled]="!categoriaForm.form.valid"
-                >
-                    Adicionar Categoria
-                </button>
-            </div>
-        </form>
-    </p-dialog>
 </div>
 
 <div class="sm:panel rounded-lg p-4 mb-2">
