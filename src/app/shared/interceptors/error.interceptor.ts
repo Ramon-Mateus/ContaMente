@@ -42,12 +42,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 }
             }
 
-            // Mostrar toast
-            toastr.error(errorMessage, errorTitle, {
-                timeOut: 5000,
-                closeButton: true,
-                progressBar: true,
-            })
+            if (error.status !== 401) {
+                // Mostrar toast
+                toastr.error(errorMessage, errorTitle, {
+                    timeOut: 5000,
+                    closeButton: true,
+                    progressBar: true,
+                })
+            }
 
             return throwError(() => error)
         })
