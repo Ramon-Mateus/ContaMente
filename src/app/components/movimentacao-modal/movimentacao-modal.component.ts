@@ -55,7 +55,6 @@ export class MovimentacaoModalComponent implements OnChanges {
   dataLabel: string = 'Data:';
   dataValue: Date = new Date();
   idParcela: number = 0;
-  datePipe = new DatePipe('pt-BR');
 
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0;
@@ -154,6 +153,11 @@ export class MovimentacaoModalComponent implements OnChanges {
     });
   }
 
+  onDateSelect() {
+    this.movimentacao.data = this.dataValue;
+    console.log("passou aqui");
+  }
+
   OnCreateMovimentacaoSubmit() {
     if (this.movimentacao.valor === 0) {
       alert('Por favor, insira um valor maior que zero.');
@@ -168,8 +172,6 @@ export class MovimentacaoModalComponent implements OnChanges {
       this.movimentacao.cartaoId = null;
     }
 
-    const dataFormatada = this.datePipe.transform(this.dataValue, 'yyyy-MM-dd', 'pt-BR');
-
     if(this.idMovimentacao === 0) {
       if(this.movimentacaoParcelada && this.numeroParcelas >= 2) {
         const parcela: postParcela = {
@@ -177,7 +179,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           numeroParcelas: this.numeroParcelas,
           valorParcela: this.valorParcela,
           descricao: this.movimentacao.descricao!,
-          dataInicio: dataFormatada!,
+          dataInicio: this.movimentacao.data!.toString(),
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
           responsavelId: this.movimentacao.responsavelId,
@@ -193,7 +195,6 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.visible = false;
         });
       } else {
-        this.movimentacao.data = dataFormatada!;
         this.movimentacaoService.postMovimentacao(this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
@@ -230,7 +231,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           numeroParcelas: this.numeroParcelas,
           valorParcela: this.valorParcela,
           descricao: this.movimentacao.descricao!,
-          dataInicio: dataFormatada!,
+          dataInicio: this.movimentacao.data!.toString(),
           categoriaId: this.movimentacao.categoriaId,
           tipoPagamentoId: this.movimentacao.tipoPagamentoId,
           responsavelId: this.movimentacao.responsavelId,
@@ -258,8 +259,7 @@ export class MovimentacaoModalComponent implements OnChanges {
           this.visible = false;
           });
         }
-      } else 
-        {
+      } else {
         this.movimentacaoService.putMovimentacao(this.idMovimentacao, this.movimentacao).pipe(
           map((response: Movimentacao) => ({
             id: response.id,
