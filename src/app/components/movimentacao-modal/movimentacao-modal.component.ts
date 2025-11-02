@@ -1,9 +1,8 @@
 import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CategoriaService } from '../../services/categoria.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -12,6 +11,7 @@ import { Cartao, Categoria, Movimentacao, PostMovimentacao, postParcela, Respons
 import { ParcelaService } from '../../services/parcela.service';
 import { MovimentacaoService } from '../../services/movimentacao.service';
 import { map } from 'rxjs';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-movimentacao-modal',
@@ -20,7 +20,7 @@ import { map } from 'rxjs';
     CommonModule,
     FormsModule,
     InputNumberModule,
-    InputTextareaModule,
+    InputTextModule,
     InputSwitchModule,
     CalendarModule,
     DropdownModule,

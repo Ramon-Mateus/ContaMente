@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ResponsavelService } from '../../services/responsavel.service';
 import { PostPutResponsavel } from '../../lib/types';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-responsavel-modal',
@@ -13,7 +13,7 @@ import { PostPutResponsavel } from '../../lib/types';
     CommonModule,
     FormsModule,
     DialogModule,
-    InputTextareaModule
+    InputTextModule,
   ],
   templateUrl: './responsavel-modal.component.html',
   styleUrl: './responsavel-modal.component.css'

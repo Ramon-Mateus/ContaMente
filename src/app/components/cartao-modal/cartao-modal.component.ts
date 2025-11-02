@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-cartao-modal',
@@ -14,7 +15,7 @@ import { InputNumberModule } from "primeng/inputnumber";
     CommonModule,
     FormsModule,
     DialogModule,
-    InputTextareaModule,
+    InputTextModule,
     InputNumberModule
 ],
   templateUrl: './cartao-modal.component.html',
