@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { CartoesTabComponent } from './cartoes-tab.component';
+import { CartoesTabComponent } from './cartoes-tab.component'
 
 describe('CartoesTabComponent', () => {
-  let component: CartoesTabComponent;
-  let fixture: ComponentFixture<CartoesTabComponent>;
+  let component: CartoesTabComponent
+  let fixture: ComponentFixture<CartoesTabComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CartoesTabComponent]
-    })
-    .compileComponents();
+      imports: [CartoesTabComponent],
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(CartoesTabComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(CartoesTabComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

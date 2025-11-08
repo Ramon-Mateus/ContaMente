@@ -1,20 +1,16 @@
-import { Component, inject } from '@angular/core';
-import { CartaoComponent } from '../cartao/cartao.component';
-import { CommonModule } from '@angular/common';
-import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component';
-import { Cartao, PostPutCartao } from '../../lib/types';
-import { CartaoService } from '../../services/cartao.service';
+import { Component, inject } from '@angular/core'
+import { CartaoComponent } from '../cartao/cartao.component'
+import { CommonModule } from '@angular/common'
+import { CartaoModalComponent } from '../cartao-modal/cartao-modal.component'
+import { Cartao, PostPutCartao } from '../../lib/types'
+import { CartaoService } from '../../services/cartao.service'
 
 @Component({
   selector: 'app-cartoes-tab',
   standalone: true,
-  imports: [
-    CommonModule,
-    CartaoComponent,
-    CartaoModalComponent
-  ],
+  imports: [CommonModule, CartaoComponent, CartaoModalComponent],
   templateUrl: './cartoes-tab.component.html',
-  styleUrl: './cartoes-tab.component.css'
+  styleUrl: './cartoes-tab.component.css',
 })
 export class CartoesTabComponent {
   cartaoService: CartaoService = inject(CartaoService)
@@ -24,7 +20,7 @@ export class CartoesTabComponent {
   cartaoId: number = 0
   visibleModalCartao: boolean = false
 
-  ngOnInit(){
+  ngOnInit() {
     this.getCartoes()
   }
 

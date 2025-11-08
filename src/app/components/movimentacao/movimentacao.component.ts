@@ -10,109 +10,108 @@ import { Movimentacao } from '../../lib/types'
 import { DialogModule } from 'primeng/dialog'
 
 @Component({
-    selector: 'app-movimentacao',
-    standalone: true,
-    imports: [
-        CommonModule,
-        CardModule,
-        ConfirmPopupModule,
-        ToastModule,
-        ButtonModule,
-        MenuModule,
-        DialogModule
-    ],
-    templateUrl: './movimentacao.component.html',
-    styleUrl: './movimentacao.component.css',
-    providers: [ConfirmationService, MessageService],
+  selector: 'app-movimentacao',
+  standalone: true,
+  imports: [
+    CommonModule,
+    CardModule,
+    ConfirmPopupModule,
+    ToastModule,
+    ButtonModule,
+    MenuModule,
+    DialogModule,
+  ],
+  templateUrl: './movimentacao.component.html',
+  styleUrl: './movimentacao.component.css',
+  providers: [ConfirmationService, MessageService],
 })
 export class MovimentacaoComponent implements OnInit {
-    @Input() movimentacao!: Movimentacao
-    @Output() delete = new EventEmitter<number>()
-    @Output() edit = new EventEmitter<number>()
+  @Input() movimentacao!: Movimentacao
+  @Output() delete = new EventEmitter<number>()
+  @Output() edit = new EventEmitter<number>()
 
-    nomeResponsavel: string = ''
-    parcelaFormatada: string = ''
-    cartaoFormatado: string = ''
+  nomeResponsavel: string = ''
+  parcelaFormatada: string = ''
+  cartaoFormatado: string = ''
 
-    deleteModalVisivel = false
-    items: MenuItem[] = [
-        {
-            label: 'Editar',
-            command: () => {
-                this.onEdit()
-            },
-        },
-        {
-            label: 'Deletar',
-            command: (event) => {
-                this.deleteModalToggle()
-                //this.confirmDelete(event as Event)
-            },
-        },
-    ]
+  deleteModalVisivel = false
+  items: MenuItem[] = [
+    {
+      label: 'Editar',
+      command: () => {
+        this.onEdit()
+      },
+    },
+    {
+      label: 'Deletar',
+      command: (event) => {
+        this.deleteModalToggle()
+        //this.confirmDelete(event as Event)
+      },
+    },
+  ]
 
-    constructor(
-        private confirmationService: ConfirmationService,
-        private messageService: MessageService
-    ) {}
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
-    ngOnInit() {
-        if (this.movimentacao.parcela != null) {
-            this.parcelaFormatada =
-                this.movimentacao.numeroParcela!.toString() +
-                '/' +
-                this.movimentacao.parcela
-                    .numeroParcelas!.toString()
-        }
-
-        if (this.movimentacao.cartao == null) {
-            this.cartaoFormatado = ''
-        } else {
-            this.cartaoFormatado = '• ' + this.movimentacao.cartao.apelido
-        }
-
-        this.nomeResponsavel = this.movimentacao.responsavel
-            ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0]
-            : '• Eu'
+  ngOnInit() {
+    if (this.movimentacao.parcela != null) {
+      this.parcelaFormatada =
+        this.movimentacao.numeroParcela!.toString() +
+        '/' +
+        this.movimentacao.parcela.numeroParcelas!.toString()
     }
 
-    onDeleteRejection() {
-        this.deleteModalVisivel = false
-
-        this.messageService.add({
-                    severity: 'error',
-                    summary: 'Rejeitado',
-                    detail: 'Registro não excluído',
-                    life: 3000,
-                })
+    if (this.movimentacao.cartao == null) {
+      this.cartaoFormatado = ''
+    } else {
+      this.cartaoFormatado = '• ' + this.movimentacao.cartao.apelido
     }
 
-    onDeleteConfirmation(){
-        this.messageService.add({
-                    severity: 'info',
-                    summary: 'Confirmado',
-                    detail: 'Registro excluído com sucesso',
-                    life: 3000,
-                })
-        this.onDelete()
-    }
+    this.nomeResponsavel = this.movimentacao.responsavel
+      ? '• ' + this.movimentacao.responsavel.nome.split(' ')[0]
+      : '• Eu'
+  }
 
-    onDelete() {
-        this.delete.emit(this.movimentacao.id)
-    }
+  onDeleteRejection() {
+    this.deleteModalVisivel = false
 
-    onEdit() {
-        this.edit.emit(this.movimentacao.id)
-    }
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Rejeitado',
+      detail: 'Registro não excluído',
+      life: 3000,
+    })
+  }
 
-    normalizeString(text: string): string {
-        return text
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-    }
+  onDeleteConfirmation() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Confirmado',
+      detail: 'Registro excluído com sucesso',
+      life: 3000,
+    })
+    this.onDelete()
+  }
 
-    deleteModalToggle() {
-        this.deleteModalVisivel = !this.deleteModalVisivel
-    }
+  onDelete() {
+    this.delete.emit(this.movimentacao.id)
+  }
+
+  onEdit() {
+    this.edit.emit(this.movimentacao.id)
+  }
+
+  normalizeString(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+  }
+
+  deleteModalToggle() {
+    this.deleteModalVisivel = !this.deleteModalVisivel
+  }
 }

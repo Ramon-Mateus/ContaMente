@@ -1,53 +1,65 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
-import { ResponsavelService } from '../../services/responsavel.service';
-import { PostPutResponsavel } from '../../lib/types';
-import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common'
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core'
+import { FormsModule } from '@angular/forms'
+import { DialogModule } from 'primeng/dialog'
+import { ResponsavelService } from '../../services/responsavel.service'
+import { PostPutResponsavel } from '../../lib/types'
+import { InputTextModule } from 'primeng/inputtext'
 
 @Component({
   selector: 'app-responsavel-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    DialogModule,
-    InputTextModule,
-  ],
+  imports: [CommonModule, FormsModule, DialogModule, InputTextModule],
   templateUrl: './responsavel-modal.component.html',
-  styleUrl: './responsavel-modal.component.css'
+  styleUrl: './responsavel-modal.component.css',
 })
 export class ResponsavelModalComponent {
-  responsavelService: ResponsavelService = inject(ResponsavelService);
+  responsavelService: ResponsavelService = inject(ResponsavelService)
 
-  @Input() visible: boolean = false;
-  @Input() responsavel: PostPutResponsavel = { nome: "" };
-  @Input() responsavelId: number = 0;
+  @Input() visible: boolean = false
+  @Input() responsavel: PostPutResponsavel = { nome: '' }
+  @Input() responsavelId: number = 0
 
-  @Output() submit = new EventEmitter<void>();
+  @Output() submit = new EventEmitter<void>()
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['visible'] && changes['visible'].currentValue === true && this.responsavelId > 0) {
-      this.responsavelService.getResponsavelById(this.responsavelId).subscribe(responsavel => {
-        this.responsavel = responsavel;
-      });
+    if (
+      changes['visible'] &&
+      changes['visible'].currentValue === true &&
+      this.responsavelId > 0
+    ) {
+      this.responsavelService
+        .getResponsavelById(this.responsavelId)
+        .subscribe((responsavel) => {
+          this.responsavel = responsavel
+        })
     } else {
-      this.responsavel = { nome: "" };
+      this.responsavel = { nome: '' }
     }
   }
 
   OnCreateResponsavelSubmit() {
-    if(this.responsavelId === 0) {
-      this.responsavelService.postResponsavel(this.responsavel).subscribe(() => {
-        this.submit.emit();
-        this.visible = false;
-      });
+    if (this.responsavelId === 0) {
+      this.responsavelService
+        .postResponsavel(this.responsavel)
+        .subscribe(() => {
+          this.submit.emit()
+          this.visible = false
+        })
     } else {
-      this.responsavelService.putResponsavel(this.responsavelId, this.responsavel).subscribe(() => {
-        this.submit.emit();
-        this.visible = false;
-      });
+      this.responsavelService
+        .putResponsavel(this.responsavelId, this.responsavel)
+        .subscribe(() => {
+          this.submit.emit()
+          this.visible = false
+        })
     }
   }
 }

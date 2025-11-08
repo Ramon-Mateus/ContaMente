@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ResponsavelComponent } from './responsavel.component';
+import { ResponsavelComponent } from './responsavel.component'
 
 describe('ResponsavelComponent', () => {
-  let component: ResponsavelComponent;
-  let fixture: ComponentFixture<ResponsavelComponent>;
+  let component: ResponsavelComponent
+  let fixture: ComponentFixture<ResponsavelComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ResponsavelComponent]
-    })
-    .compileComponents();
+      imports: [ResponsavelComponent],
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(ResponsavelComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ResponsavelComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

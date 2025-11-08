@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { MovimentacaoService } from './movimentacao.service';
+import { MovimentacaoService } from './movimentacao.service'
 
 describe('MovimentacaoService', () => {
-  let service: MovimentacaoService;
+  let service: MovimentacaoService
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(MovimentacaoService);
-  });
+    TestBed.configureTestingModule({})
+    service = TestBed.inject(MovimentacaoService)
+  })
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+    expect(service).toBeTruthy()
+  })
+})

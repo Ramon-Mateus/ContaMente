@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AutenticacaoService } from '../../services/autenticacao.service';
+import { CommonModule } from '@angular/common'
+import { Component, inject } from '@angular/core'
+import { Router, RouterLink } from '@angular/router'
+import { AutenticacaoService } from '../../services/autenticacao.service'
 
 @Component({
   selector: 'app-landing',
@@ -11,6 +11,6 @@ import { AutenticacaoService } from '../../services/autenticacao.service';
   styleUrl: './landing.component.css',
 })
 export class LandingComponent {
-  authService = inject(AutenticacaoService);
+  authService = inject(AutenticacaoService)
   router = inject(Router)
 }

@@ -1,23 +1,18 @@
-import { Component, inject } from '@angular/core';
-import { ResponsavelComponent } from '../responsavel/responsavel.component';
-import { PostPutResponsavel, Responsavel } from '../../lib/types';
-import { ResponsavelService } from '../../services/responsavel.service';
-import { CommonModule } from '@angular/common';
-import { ResponsavelModalComponent } from '../responsavel-modal/responsavel-modal.component';
+import { Component, inject } from '@angular/core'
+import { ResponsavelComponent } from '../responsavel/responsavel.component'
+import { PostPutResponsavel, Responsavel } from '../../lib/types'
+import { ResponsavelService } from '../../services/responsavel.service'
+import { CommonModule } from '@angular/common'
+import { ResponsavelModalComponent } from '../responsavel-modal/responsavel-modal.component'
 
 @Component({
   selector: 'app-responsaveis-tab',
   standalone: true,
-  imports: [
-    CommonModule,
-    ResponsavelComponent,
-    ResponsavelModalComponent
-  ],
+  imports: [CommonModule, ResponsavelComponent, ResponsavelModalComponent],
   templateUrl: './responsaveis-tab.component.html',
-  styleUrl: './responsaveis-tab.component.css'
+  styleUrl: './responsaveis-tab.component.css',
 })
 export class ResponsaveisTabComponent {
-
   responsavelService: ResponsavelService = inject(ResponsavelService)
 
   responsaveis: Responsavel[] = []
@@ -25,18 +20,17 @@ export class ResponsaveisTabComponent {
   responsavelId: number = 0
   visibleModalResponsavel: boolean = false
 
-
-  ngOnInit(){
+  ngOnInit() {
     this.getResponsaveis()
   }
 
-    getResponsaveis() {
-      this.responsavelService.getResponsaveis().subscribe({
-          next: (responsaveis) => {
-              this.responsaveis = responsaveis
-          },
-      })
-    }
+  getResponsaveis() {
+    this.responsavelService.getResponsaveis().subscribe({
+      next: (responsaveis) => {
+        this.responsaveis = responsaveis
+      },
+    })
+  }
 
   onCreateResponsavelModal() {
     this.responsavelId = 0

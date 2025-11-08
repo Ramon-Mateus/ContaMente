@@ -1,11 +1,15 @@
 <div class="mt-4"></div>
-<p class="font-medium text-secondary">Dia {{dia.data.getDate()}} ({{dia.data.toLocaleDateString('pt-BR', { weekday: 'long' })}})</p>
+<p class="font-medium text-secondary">
+  Dia {{ dia.data.getDate() }} ({{
+    dia.data.toLocaleDateString('pt-BR', { weekday: 'long' })
+  }})
+</p>
 
-<app-movimentacao 
-    *ngFor="let movimentacao of dia.movimentacoes"
-    [movimentacao]="movimentacao"
-    (edit)="onEditMovimentacao($event)"
-    (delete)="onDeleteMovimentacao($event)"
+<app-movimentacao
+  *ngFor="let movimentacao of dia.movimentacoes"
+  [movimentacao]="movimentacao"
+  (edit)="onEditMovimentacao($event)"
+  (delete)="onDeleteMovimentacao($event)"
 ></app-movimentacao>
 
-<hr *ngIf="!this.ehUltimo" class="border-highsec">
+<hr *ngIf="!this.ehUltimo" class="border-highsec" />

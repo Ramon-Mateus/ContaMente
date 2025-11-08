@@ -1,27 +1,25 @@
-import { Component, inject } from '@angular/core';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { UserConfigurationService } from '../../services/user-configuration.service';
-import { UserConfiguration } from '../../lib/types';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core'
+import { InputSwitchModule } from 'primeng/inputswitch'
+import { UserConfigurationService } from '../../services/user-configuration.service'
+import { UserConfiguration } from '../../lib/types'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
 @Component({
   selector: 'app-visualizacao-tab',
   standalone: true,
-  imports: [
-    CommonModule,
-    InputSwitchModule,
-    FormsModule
-  ],
+  imports: [CommonModule, InputSwitchModule, FormsModule],
   templateUrl: './visualizacao-tab.component.html',
-  styleUrl: './visualizacao-tab.component.css'
+  styleUrl: './visualizacao-tab.component.css',
 })
 export class VisualizacaoTabComponent {
-  userConfigurationService: UserConfigurationService = inject(UserConfigurationService)
-  
+  userConfigurationService: UserConfigurationService = inject(
+    UserConfigurationService
+  )
+
   userConfiguration: UserConfiguration = { listagemPorFatura: false }
-  
-  ngOnInit(){
+
+  ngOnInit() {
     this.getUserConfiguration()
   }
 

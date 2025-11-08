@@ -1,179 +1,193 @@
 <main class="sm:w-[43em] mx-auto">
-    <div class="flex flex-col">
-        <div class="flex items-start mb-4">
-            <p class="text-4xl ml-2">Perfil e Configurações</p>
-        </div>
+  <div class="flex flex-col">
+    <div class="flex items-start mb-4">
+      <p class="text-4xl ml-2">Perfil e Configurações</p>
+    </div>
+  </div>
+
+  <div class="flex flex-col items-center h-screen lg:hidden">
+    <button
+      (click)="isCategoriasCollapsed = !isCategoriasCollapsed"
+      class="flex justify-between items-center w-full"
+    >
+      <div class="text-xl flex items-center">
+        <lucide-angular
+          [img]="BookMarkedIcon"
+          [size]="32"
+          class="mr-1 text-secondary"
+        ></lucide-angular>
+        Categorias
+      </div>
+      <lucide-angular
+        *ngIf="isCategoriasCollapsed"
+        [img]="ChevronRightIcon"
+        class="text-secondary"
+      ></lucide-angular>
+      <lucide-angular
+        *ngIf="!isCategoriasCollapsed"
+        [img]="ChevronDownIcon"
+        class="text-secondary"
+      ></lucide-angular>
+    </button>
+
+    <div class="w-full p-2 pr-3" *ngIf="!isCategoriasCollapsed">
+      <app-categorias-tab></app-categorias-tab>
     </div>
 
-    <div class="flex flex-col items-center h-screen lg:hidden">
-        <button
-            (click)="isCategoriasCollapsed = !isCategoriasCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="BookMarkedIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Categorias
-            </div>
-            <lucide-angular
-                *ngIf="isCategoriasCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!isCategoriasCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-
-        <div class="w-full p-2 pr-3" *ngIf="!isCategoriasCollapsed">
-            <app-categorias-tab></app-categorias-tab>
-        </div>
-
-        <button
-            (click)="isResponsaveisCollapsed = !isResponsaveisCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="BookUserIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Responsáveis
-            </div>
-            <lucide-angular
-                *ngIf="isResponsaveisCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!isResponsaveisCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-        <div
-            *ngIf="!isResponsaveisCollapsed"
-            class="w-full p-2 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
-        >
-            <app-responsaveis-tab></app-responsaveis-tab>
-        </div>
-
-        <button
-            (click)="isCartoesCollapsed = !isCartoesCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="WalletCardsIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Cartões
-            </div>
-            <lucide-angular
-                *ngIf="isCartoesCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!isCartoesCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-        <div *ngIf="!isCartoesCollapsed" class="w-full p-2 pr-3">
-            <app-cartoes-tab></app-cartoes-tab>
-        </div>
-        <button
-            (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
-            class="flex justify-between items-center w-full"
-        >
-            <div class="text-xl flex items-center">
-                <lucide-angular
-                    [img]="LayoutListIcon"
-                    [size]="32"
-                    class="mr-1 text-secondary"
-                ></lucide-angular>
-                Visualização
-            </div>
-
-            <lucide-angular
-                *ngIf="this.isVisualizacaoCollapsed"
-                [img]="ChevronRightIcon"
-                class="text-secondary"
-            ></lucide-angular>
-            <lucide-angular
-                *ngIf="!this.isVisualizacaoCollapsed"
-                [img]="ChevronDownIcon"
-                class="text-secondary"
-            ></lucide-angular>
-        </button>
-        <div *ngIf="!isVisualizacaoCollapsed" class="">
-            <app-visualizacao-tab></app-visualizacao-tab>
-        </div>
+    <button
+      (click)="isResponsaveisCollapsed = !isResponsaveisCollapsed"
+      class="flex justify-between items-center w-full"
+    >
+      <div class="text-xl flex items-center">
+        <lucide-angular
+          [img]="BookUserIcon"
+          [size]="32"
+          class="mr-1 text-secondary"
+        ></lucide-angular>
+        Responsáveis
+      </div>
+      <lucide-angular
+        *ngIf="isResponsaveisCollapsed"
+        [img]="ChevronRightIcon"
+        class="text-secondary"
+      ></lucide-angular>
+      <lucide-angular
+        *ngIf="!isResponsaveisCollapsed"
+        [img]="ChevronDownIcon"
+        class="text-secondary"
+      ></lucide-angular>
+    </button>
+    <div
+      *ngIf="!isResponsaveisCollapsed"
+      class="w-full p-2 lg:mt-0 lg:pt-2 lg:border-t-0 lg:border-l"
+    >
+      <app-responsaveis-tab></app-responsaveis-tab>
     </div>
 
-    <div class="hidden lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-6">
-        <!-- left column: tabs -->
-        <aside class="col-span-2 p-2 border-r">
-            <ul>
-                <li class="mb-2">
-                    <button class="w-full p-2 text-left" (click)="setActiveTab('categorias')" [ngClass]="{ 'bg-white/10': activeTab === 'categorias' }"> 
-                        <div>
-                            <div>Categorias</div>
-                            <small>Gerencie suas categorias</small>
-                        </div>
-                    </button>
-                </li>
-
-                <li class="mb-2">
-                    <button class="w-full p-2 text-left" (click)="setActiveTab('responsaveis')" [ngClass]="{ 'bg-white/10': activeTab === 'responsaveis' }"> 
-                        <div>Responsáveis</div>
-                        <small>Gerencie seus responsáveis</small>
-                    </button>
-                </li>
-
-                <li class="mb-2">
-                    <button class="w-full p-2 text-left" (click)="setActiveTab('cartoes')" [ngClass]="{ 'bg-white/10': activeTab === 'cartoes' }"> 
-                        <div>Cartões</div>
-                        <small>Gerencie seus cartões</small>
-                    </button>
-                </li>
-
-                <li class="mb-2">
-                    <button class="w-full p-2 text-left" (click)="setActiveTab('visualizacao')" [ngClass]="{ 'bg-white/10': activeTab === 'visualizacao' }"> 
-                        <div>Visualização</div>
-                        <small>Escolha o que será exibido</small>
-                    </button>
-                </li>
-            </ul>
-        </aside>
-
-        <!-- right column: content -->
-        <section class="col-span-3 p-2">
-
-            <div *ngIf="activeTab === 'categorias'">
-                <app-categorias-tab></app-categorias-tab>
-            </div>
-
-            <div *ngIf="activeTab === 'responsaveis'">
-                <app-responsaveis-tab></app-responsaveis-tab>
-            </div>
-
-            <div *ngIf="activeTab === 'cartoes'">
-                <app-cartoes-tab></app-cartoes-tab>
-            </div>
-
-            <div *ngIf="activeTab === 'visualizacao'">
-                <app-visualizacao-tab></app-visualizacao-tab>
-            </div>
-            
-        </section>
+    <button
+      (click)="isCartoesCollapsed = !isCartoesCollapsed"
+      class="flex justify-between items-center w-full"
+    >
+      <div class="text-xl flex items-center">
+        <lucide-angular
+          [img]="WalletCardsIcon"
+          [size]="32"
+          class="mr-1 text-secondary"
+        ></lucide-angular>
+        Cartões
+      </div>
+      <lucide-angular
+        *ngIf="isCartoesCollapsed"
+        [img]="ChevronRightIcon"
+        class="text-secondary"
+      ></lucide-angular>
+      <lucide-angular
+        *ngIf="!isCartoesCollapsed"
+        [img]="ChevronDownIcon"
+        class="text-secondary"
+      ></lucide-angular>
+    </button>
+    <div *ngIf="!isCartoesCollapsed" class="w-full p-2 pr-3">
+      <app-cartoes-tab></app-cartoes-tab>
     </div>
+    <button
+      (click)="isVisualizacaoCollapsed = !isVisualizacaoCollapsed"
+      class="flex justify-between items-center w-full"
+    >
+      <div class="text-xl flex items-center">
+        <lucide-angular
+          [img]="LayoutListIcon"
+          [size]="32"
+          class="mr-1 text-secondary"
+        ></lucide-angular>
+        Visualização
+      </div>
+
+      <lucide-angular
+        *ngIf="this.isVisualizacaoCollapsed"
+        [img]="ChevronRightIcon"
+        class="text-secondary"
+      ></lucide-angular>
+      <lucide-angular
+        *ngIf="!this.isVisualizacaoCollapsed"
+        [img]="ChevronDownIcon"
+        class="text-secondary"
+      ></lucide-angular>
+    </button>
+    <div *ngIf="!isVisualizacaoCollapsed" class="">
+      <app-visualizacao-tab></app-visualizacao-tab>
+    </div>
+  </div>
+
+  <div class="hidden lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-6">
+    <!-- left column: tabs -->
+    <aside class="col-span-2 p-2 border-r">
+      <ul>
+        <li class="mb-2">
+          <button
+            class="w-full p-2 text-left"
+            (click)="setActiveTab('categorias')"
+            [ngClass]="{ 'bg-white/10': activeTab === 'categorias' }"
+          >
+            <div>
+              <div>Categorias</div>
+              <small>Gerencie suas categorias</small>
+            </div>
+          </button>
+        </li>
+
+        <li class="mb-2">
+          <button
+            class="w-full p-2 text-left"
+            (click)="setActiveTab('responsaveis')"
+            [ngClass]="{ 'bg-white/10': activeTab === 'responsaveis' }"
+          >
+            <div>Responsáveis</div>
+            <small>Gerencie seus responsáveis</small>
+          </button>
+        </li>
+
+        <li class="mb-2">
+          <button
+            class="w-full p-2 text-left"
+            (click)="setActiveTab('cartoes')"
+            [ngClass]="{ 'bg-white/10': activeTab === 'cartoes' }"
+          >
+            <div>Cartões</div>
+            <small>Gerencie seus cartões</small>
+          </button>
+        </li>
+
+        <li class="mb-2">
+          <button
+            class="w-full p-2 text-left"
+            (click)="setActiveTab('visualizacao')"
+            [ngClass]="{ 'bg-white/10': activeTab === 'visualizacao' }"
+          >
+            <div>Visualização</div>
+            <small>Escolha o que será exibido</small>
+          </button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- right column: content -->
+    <section class="col-span-3 p-2">
+      <div *ngIf="activeTab === 'categorias'">
+        <app-categorias-tab></app-categorias-tab>
+      </div>
+
+      <div *ngIf="activeTab === 'responsaveis'">
+        <app-responsaveis-tab></app-responsaveis-tab>
+      </div>
+
+      <div *ngIf="activeTab === 'cartoes'">
+        <app-cartoes-tab></app-cartoes-tab>
+      </div>
+
+      <div *ngIf="activeTab === 'visualizacao'">
+        <app-visualizacao-tab></app-visualizacao-tab>
+      </div>
+    </section>
+  </div>
 </main>

@@ -7,11 +7,11 @@ import { InputSwitchModule } from 'primeng/inputswitch'
 import { InputTextareaModule } from 'primeng/inputtextarea'
 import { SidebarModule } from 'primeng/sidebar'
 import {
-    Cartao,
-    Categoria,
-    DiaFiscal,
-    Responsavel,
-    TipoPagamento,
+  Cartao,
+  Categoria,
+  DiaFiscal,
+  Responsavel,
+  TipoPagamento,
 } from '../../lib/types'
 import { CartaoService } from '../../services/cartao.service'
 import { CategoriaService } from '../../services/categoria.service'
@@ -24,141 +24,141 @@ import { FiltrosComponent } from '../filtros/filtros.component'
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component'
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        InputTextareaModule,
-        InputSwitchModule,
-        CalendarModule,
-        DialogModule,
-        DiaFiscalComponent,
-        MovimentacaoModalComponent,
-        SidebarModule,
-        FiltrosComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css',
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputTextareaModule,
+    InputSwitchModule,
+    CalendarModule,
+    DialogModule,
+    DiaFiscalComponent,
+    MovimentacaoModalComponent,
+    SidebarModule,
+    FiltrosComponent,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
-    movimentacaoService: MovimentacaoService = inject(MovimentacaoService)
-    categoriaService: CategoriaService = inject(CategoriaService)
-    tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService)
-    parcelaService: ParcelaService = inject(ParcelaService)
-    responsavelService: ResponsavelService = inject(ResponsavelService)
-    cartaoService: CartaoService = inject(CartaoService)
+  movimentacaoService: MovimentacaoService = inject(MovimentacaoService)
+  categoriaService: CategoriaService = inject(CategoriaService)
+  tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService)
+  parcelaService: ParcelaService = inject(ParcelaService)
+  responsavelService: ResponsavelService = inject(ResponsavelService)
+  cartaoService: CartaoService = inject(CartaoService)
 
-    dias: DiaFiscal[] = []
+  dias: DiaFiscal[] = []
 
-    categorias: Categoria[] = []
-    tiposPagamento: TipoPagamento[] = []
-    totalMovimentacoes: number = 0
-    visibleModalMovimentacao: boolean = false
-    entradaCategoria: boolean = false
-    entradaMovimentacaoFiltro: boolean = false
-    movimentacaoParcelada: boolean = false
-    numeroParcelas: number = 2
-    valorParcela: number = 0
-    labelValor: string = 'Valor:'
-    idMovimentacao: number = 0
-    responsaveis: Responsavel[] = []
-    cartoes: Cartao[] = []
+  categorias: Categoria[] = []
+  tiposPagamento: TipoPagamento[] = []
+  totalMovimentacoes: number = 0
+  visibleModalMovimentacao: boolean = false
+  entradaCategoria: boolean = false
+  entradaMovimentacaoFiltro: boolean = false
+  movimentacaoParcelada: boolean = false
+  numeroParcelas: number = 2
+  valorParcela: number = 0
+  labelValor: string = 'Valor:'
+  idMovimentacao: number = 0
+  responsaveis: Responsavel[] = []
+  cartoes: Cartao[] = []
 
-    dataDeFiltragem = new Date()
+  dataDeFiltragem = new Date()
 
-    sidebarVisible = false
+  sidebarVisible = false
 
-    constructor() {}
+  constructor() {}
 
-    ngOnInit() {
-        this.movimentacaoService.modificouFiltros.subscribe((dias) => {
-            this.dias = dias
+  ngOnInit() {
+    this.movimentacaoService.modificouFiltros.subscribe((dias) => {
+      this.dias = dias
 
-            let somaMovs = 0
+      let somaMovs = 0
 
-            dias.forEach((d) => {
-                d.movimentacoes.forEach((mov) => {
-                    somaMovs += mov.valor
-                })
-            })
-
-            this.totalMovimentacoes = somaMovs
+      dias.forEach((d) => {
+        d.movimentacoes.forEach((mov) => {
+          somaMovs += mov.valor
         })
+      })
 
-        this.getCategorias()
-        this.getTiposPagamento()
-        this.getResponsaveis()
-        this.getCartoes()
-    }
+      this.totalMovimentacoes = somaMovs
+    })
 
-    showDialogMovimentacao() {
-        this.visibleModalMovimentacao = false
-        setTimeout(() => {
-            this.visibleModalMovimentacao = true
-        }, 0)
-    }
+    this.getCategorias()
+    this.getTiposPagamento()
+    this.getResponsaveis()
+    this.getCartoes()
+  }
 
-    onCreateMovimentacaoModal() {
-        this.idMovimentacao = 0
-        this.showDialogMovimentacao()
-    }
+  showDialogMovimentacao() {
+    this.visibleModalMovimentacao = false
+    setTimeout(() => {
+      this.visibleModalMovimentacao = true
+    }, 0)
+  }
 
-    onDeleteMovimentacao(id: number) {
-        this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
-            this.refresh()
-        })
-    }
+  onCreateMovimentacaoModal() {
+    this.idMovimentacao = 0
+    this.showDialogMovimentacao()
+  }
 
-    onEditMovimentacao(idMovimentacao: number) {
-        this.idMovimentacao = idMovimentacao
-        this.showDialogMovimentacao()
-    }
+  onDeleteMovimentacao(id: number) {
+    this.movimentacaoService.deleteMovimentacao(id).subscribe(() => {
+      this.refresh()
+    })
+  }
 
-    getCategorias() {
-        this.categoriaService
-            .getCategorias(this.entradaCategoria)
-            .subscribe((categorias) => {
-                this.categorias = categorias
-            })
-    }
+  onEditMovimentacao(idMovimentacao: number) {
+    this.idMovimentacao = idMovimentacao
+    this.showDialogMovimentacao()
+  }
 
-    getTiposPagamento() {
-        this.tiposPagamentoService
-            .getTiposPagamento()
-            .subscribe((tiposPagamento) => {
-                this.tiposPagamento = tiposPagamento
-            })
-    }
+  getCategorias() {
+    this.categoriaService
+      .getCategorias(this.entradaCategoria)
+      .subscribe((categorias) => {
+        this.categorias = categorias
+      })
+  }
 
-    getResponsaveis() {
-        this.responsavelService.getResponsaveis().subscribe((responsaveis) => {
-            this.responsaveis = [
-                {
-                    id: 0,
-                    nome: 'Eu',
-                    userId: '',
-                    user: null,
-                    movimentacoes: [],
-                },
-                ...responsaveis,
-            ]
-        })
-    }
+  getTiposPagamento() {
+    this.tiposPagamentoService
+      .getTiposPagamento()
+      .subscribe((tiposPagamento) => {
+        this.tiposPagamento = tiposPagamento
+      })
+  }
 
-    getCartoes() {
-        this.cartaoService.getCartoes().subscribe((cartoes) => {
-            this.cartoes = [
-                { id: 0, apelido: 'Nenhum', diaFechamento: 0 },
-                ...cartoes,
-            ]
-        })
-    }
+  getResponsaveis() {
+    this.responsavelService.getResponsaveis().subscribe((responsaveis) => {
+      this.responsaveis = [
+        {
+          id: 0,
+          nome: 'Eu',
+          userId: '',
+          user: null,
+          movimentacoes: [],
+        },
+        ...responsaveis,
+      ]
+    })
+  }
 
-    refresh() {
-        this.movimentacaoService.refresh().subscribe((data) => {
-            this.dias = data.movimentacoes
-            this.totalMovimentacoes = data.total
-        })
-    }
+  getCartoes() {
+    this.cartaoService.getCartoes().subscribe((cartoes) => {
+      this.cartoes = [
+        { id: 0, apelido: 'Nenhum', diaFechamento: 0 },
+        ...cartoes,
+      ]
+    })
+  }
+
+  refresh() {
+    this.movimentacaoService.refresh().subscribe((data) => {
+      this.dias = data.movimentacoes
+      this.totalMovimentacoes = data.total
+    })
+  }
 }

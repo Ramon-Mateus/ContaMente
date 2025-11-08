@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Categoria, PutCategoria } from '../../lib/types';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { SidebarModule } from 'primeng/sidebar';
-import { FormsModule } from '@angular/forms';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CategoriaService } from '../../services/categoria.service';
-import { MenuModule } from 'primeng/menu';
+import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Categoria, PutCategoria } from '../../lib/types'
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api'
+import { CommonModule } from '@angular/common'
+import { CardModule } from 'primeng/card'
+import { ConfirmPopupModule } from 'primeng/confirmpopup'
+import { ToastModule } from 'primeng/toast'
+import { ButtonModule } from 'primeng/button'
+import { DialogModule } from 'primeng/dialog'
+import { SidebarModule } from 'primeng/sidebar'
+import { FormsModule } from '@angular/forms'
+import { InputSwitchModule } from 'primeng/inputswitch'
+import { InputTextareaModule } from 'primeng/inputtextarea'
+import { CategoriaService } from '../../services/categoria.service'
+import { MenuModule } from 'primeng/menu'
 
 @Component({
   selector: 'app-categoria',
@@ -28,20 +28,20 @@ import { MenuModule } from 'primeng/menu';
     FormsModule,
     InputSwitchModule,
     InputTextareaModule,
-    MenuModule
+    MenuModule,
   ],
   templateUrl: './categoria.component.html',
   styleUrl: './categoria.component.css',
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
 })
 export class CategoriaComponent {
-  @Input() categoria!: Categoria;
-  @Output() editOrDelete = new EventEmitter<boolean>();
+  @Input() categoria!: Categoria
+  @Output() editOrDelete = new EventEmitter<boolean>()
 
-  editCategoria: PutCategoria = {};
+  editCategoria: PutCategoria = {}
 
-  visibleModalCategoria: boolean = false;
-  
+  visibleModalCategoria: boolean = false
+
   visibleDeleteModal: boolean = false
   items: MenuItem[] = [
     {
@@ -66,30 +66,36 @@ export class CategoriaComponent {
   onDelete() {
     this.categoriaService.deleteCategoria(this.categoria.id!).subscribe({
       next: () => {
-        this.editOrDelete.emit(true);
-      }
+        this.editOrDelete.emit(true)
+      },
     })
   }
 
   showDialogCategoria() {
     this.editCategoria = {
       nome: this.categoria.nome,
-      entrada: this.categoria.entrada
-    };
-    this.visibleModalCategoria = true;
+      entrada: this.categoria.entrada,
+    }
+    this.visibleModalCategoria = true
   }
 
   OnEditCategoria() {
-    this.categoriaService.putCategoria(this.categoria.id!, {
-      nome: this.editCategoria.nome,
-      entrada: this.editCategoria.entrada
-    } as PutCategoria).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Categoria editada com sucesso' });
-        this.visibleModalCategoria = false;
-        this.editOrDelete.emit(true);
-      }
-    });
+    this.categoriaService
+      .putCategoria(this.categoria.id!, {
+        nome: this.editCategoria.nome,
+        entrada: this.editCategoria.entrada,
+      } as PutCategoria)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Categoria editada com sucesso',
+          })
+          this.visibleModalCategoria = false
+          this.editOrDelete.emit(true)
+        },
+      })
   }
 
   onDeleteRejection() {
@@ -103,7 +109,7 @@ export class CategoriaComponent {
     })
   }
 
-  onDeleteConfirmation(){
+  onDeleteConfirmation() {
     this.messageService.add({
       severity: 'info',
       summary: 'Confirmado',

@@ -1,76 +1,77 @@
 <div>
-    <div class="flex align-middle justify-between">
-        <p class="text-base md:text-xl">
-            {{  responsavel.nome }}
-        </p>
-        <div class="card flex justify-center gap-2">
-            <p-toast />
+  <div class="flex align-middle justify-between">
+    <p class="text-base md:text-xl">
+      {{ responsavel.nome }}
+    </p>
+    <div class="card flex justify-center gap-2">
+      <p-toast />
 
-            <p-dialog
-                header="Deletar?"
-                [modal]="true"
-                [(visible)]="visibleDeleteModal"
-                [style]="{ width: '25rem' }"
-            >
-                <div>
-                    {{ responsavel.nome }}
-                </div>
-
-                <div class="text-red-500 text-sm">
-                    AVISO: Todas as movimentações associadas a esse responsável também serão excluídas! Tem certeza que deseja excluir esse responsável?
-                </div>
-
-                <div class="flex items-center gap-2 mt-4 text-zinc-200">
-                    <p-button
-                        (onClick)="onDeleteConfirmation()"
-                        label="Sim"
-                        size="small"
-                    />
-                    <p-button
-                        (onClick)="onDeleteRejection()"
-                        label="Não"
-                        [text]="true"
-                        size="small"
-                        severity="secondary"
-                    />
-                </div>
-
-                <ng-template #footer>
-                    <p-button
-                        label="Cancel"
-                        [text]="true"
-                        severity="secondary"
-                        (click)="deleteModalToggle()"
-                    />
-                    <p-button
-                        label="Save"
-                        [outlined]="true"
-                        severity="secondary"
-                        (click)="deleteModalToggle()"
-                    />
-                </ng-template>
-            </p-dialog>
-
-            <p-menu #menu [model]="items" [popup]="true" />
-            <div class="flex items-center">
-                <svg
-                    (click)="menu.toggle($event)"
-                    class="lucide lucide-ellipsis-icon lucide-ellipsis cursor-pointer"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <circle cx="12" cy="12" r="1" />
-                    <circle cx="19" cy="12" r="1" />
-                    <circle cx="5" cy="12" r="1" />
-                </svg>
-            </div>
+      <p-dialog
+        header="Deletar?"
+        [modal]="true"
+        [(visible)]="visibleDeleteModal"
+        [style]="{ width: '25rem' }"
+      >
+        <div>
+          {{ responsavel.nome }}
         </div>
+
+        <div class="text-red-500 text-sm">
+          AVISO: Todas as movimentações associadas a esse responsável também
+          serão excluídas! Tem certeza que deseja excluir esse responsável?
+        </div>
+
+        <div class="flex items-center gap-2 mt-4 text-zinc-200">
+          <p-button
+            (onClick)="onDeleteConfirmation()"
+            label="Sim"
+            size="small"
+          />
+          <p-button
+            (onClick)="onDeleteRejection()"
+            label="Não"
+            [text]="true"
+            size="small"
+            severity="secondary"
+          />
+        </div>
+
+        <ng-template #footer>
+          <p-button
+            label="Cancel"
+            [text]="true"
+            severity="secondary"
+            (click)="deleteModalToggle()"
+          />
+          <p-button
+            label="Save"
+            [outlined]="true"
+            severity="secondary"
+            (click)="deleteModalToggle()"
+          />
+        </ng-template>
+      </p-dialog>
+
+      <p-menu #menu [model]="items" [popup]="true" />
+      <div class="flex items-center">
+        <svg
+          (click)="menu.toggle($event)"
+          class="lucide lucide-ellipsis-icon lucide-ellipsis cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </svg>
+      </div>
     </div>
+  </div>
 </div>

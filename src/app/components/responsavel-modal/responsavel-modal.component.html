@@ -1,14 +1,35 @@
-<p-dialog header="Adicionar responsavel" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
-    <form (ngSubmit)="OnCreateResponsavelSubmit()" #responsavelForm="ngForm" class="p-4 text-base w-full">
-        <div class="mb-2 flex items-center">
-            <div class="flex-grow mr-2">
-                <label for="nome">Nome:</label><br>
-                <input class="w-full h-11 mb-1 min-h-11 p-2" id="nome" name="nome" pInputText [(ngModel)]="responsavel.nome">
-            </div>
-        </div>
+<p-dialog
+  header="Adicionar responsavel"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '30rem' }"
+>
+  <form
+    (ngSubmit)="OnCreateResponsavelSubmit()"
+    #responsavelForm="ngForm"
+    class="p-4 text-base w-full"
+  >
+    <div class="mb-2 flex items-center">
+      <div class="flex-grow mr-2">
+        <label for="nome">Nome:</label><br />
+        <input
+          class="w-full h-11 mb-1 min-h-11 p-2"
+          id="nome"
+          name="nome"
+          pInputText
+          [(ngModel)]="responsavel.nome"
+        />
+      </div>
+    </div>
 
-        <div class="flex justify-center">
-            <button class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7" type="submit" [disabled]="!responsavelForm.form.valid">Salvar Responsável</button>
-        </div>
-    </form>
+    <div class="flex justify-center">
+      <button
+        class="bg-emerald-600 hover:bg-emerald-700 transition cursor-pointer text-white px-3 text-lg py-2 rounded-md mt-7"
+        type="submit"
+        [disabled]="!responsavelForm.form.valid"
+      >
+        Salvar Responsável
+      </button>
+    </div>
+  </form>
 </p-dialog>

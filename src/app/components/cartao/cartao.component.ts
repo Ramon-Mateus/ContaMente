@@ -1,17 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Cartao } from '../../lib/types';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { SidebarModule } from 'primeng/sidebar';
-import { ToastModule } from 'primeng/toast';
-import { CartaoService } from '../../services/cartao.service';
-import { MenuModule } from 'primeng/menu';
+import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Cartao } from '../../lib/types'
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
+import { ButtonModule } from 'primeng/button'
+import { CardModule } from 'primeng/card'
+import { ConfirmPopupModule } from 'primeng/confirmpopup'
+import { DialogModule } from 'primeng/dialog'
+import { InputTextareaModule } from 'primeng/inputtextarea'
+import { SidebarModule } from 'primeng/sidebar'
+import { ToastModule } from 'primeng/toast'
+import { CartaoService } from '../../services/cartao.service'
+import { MenuModule } from 'primeng/menu'
 
 @Component({
   selector: 'app-cartao',
@@ -26,16 +26,16 @@ import { MenuModule } from 'primeng/menu';
     SidebarModule,
     FormsModule,
     InputTextareaModule,
-    MenuModule
+    MenuModule,
   ],
   templateUrl: './cartao.component.html',
   styleUrl: './cartao.component.css',
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
 })
 export class CartaoComponent {
-  @Input() cartao!: Cartao;
-  @Output() Delete = new EventEmitter<boolean>();
-  @Output() Edit = new EventEmitter<number>();
+  @Input() cartao!: Cartao
+  @Output() Delete = new EventEmitter<boolean>()
+  @Output() Edit = new EventEmitter<number>()
 
   visibleDeleteModal: boolean = false
   items: MenuItem[] = [
@@ -61,15 +61,14 @@ export class CartaoComponent {
   onDelete() {
     this.CartaoService.deleteCartao(this.cartao.id!).subscribe({
       next: () => {
-        this.Delete.emit(true);
-      }
+        this.Delete.emit(true)
+      },
     })
   }
 
   onEdit() {
-    this.Edit.emit(this.cartao.id);
+    this.Edit.emit(this.cartao.id)
   }
-
 
   onDeleteRejection() {
     this.visibleDeleteModal = false
@@ -82,7 +81,7 @@ export class CartaoComponent {
     })
   }
 
-  onDeleteConfirmation(){
+  onDeleteConfirmation() {
     this.messageService.add({
       severity: 'info',
       summary: 'Confirmado',
