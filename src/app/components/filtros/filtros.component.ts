@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, inject } from '@angular/core'
+import { Component, inject, Output, EventEmitter } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CalendarModule } from 'primeng/calendar'
 import { DialogModule } from 'primeng/dialog'
@@ -39,6 +39,8 @@ export class FiltrosComponent {
     tiposPagamentoService: TipoPagamentoService = inject(TipoPagamentoService)
     cartaoService: CartaoService = inject(CartaoService)
     responsavelService: ResponsavelService = inject(ResponsavelService)
+
+    @Output() categoriaAdicionadaEvent = new EventEmitter<void>()
 
     dataDeFiltragem = new Date()
 
@@ -98,6 +100,7 @@ export class FiltrosComponent {
                 this.getCategorias()
                 this.newCategoria = { nome: '', entrada: false }
                 this.visibleModalCategoria = false
+                this.categoriaAdicionadaEvent.emit()
             })
     }
 
@@ -217,8 +220,8 @@ export class FiltrosComponent {
         this.getMovimentacoesAndEmiteEvento()
     }
 
-    onCreateCategoriaModal() {
-        this.categoriaId = 0
-        this.showDialogCategoria()
+    onCategoriaSubmit() {
+        this.getCategorias()
+        this.categoriaAdicionadaEvent.emit()
     }
 }
