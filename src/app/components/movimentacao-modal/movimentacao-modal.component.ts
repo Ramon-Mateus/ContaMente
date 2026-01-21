@@ -79,6 +79,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   dataLabel: string = 'Data:'
   dataValue: Date = new Date()
   idParcela: number = 0
+  isSubmitting: boolean = false
 
   ngOnChanges(changes: SimpleChanges) {
     this.valorParcela = 0
@@ -202,10 +203,16 @@ export class MovimentacaoModalComponent implements OnChanges {
   }
 
   OnCreateMovimentacaoSubmit() {
+    if (this.isSubmitting) {
+      return
+    }
+
     if (this.movimentacao.valor === 0) {
       alert('Por favor, insira um valor maior que zero.')
       return
     }
+
+    this.isSubmitting = true
 
     if (this.movimentacao.responsavelId === 0) {
       this.movimentacao.responsavelId = null
@@ -228,39 +235,8 @@ export class MovimentacaoModalComponent implements OnChanges {
           responsavelId: this.movimentacao.responsavelId,
           cartaoId: this.movimentacao.cartaoId,
         }
-        this.parcelaService.postParcela(parcela).subscribe((parcela) => {
-          this.submit.emit()
-          this.movimentacao = {
-            descricao: '',
-            data: new Date(),
-            categoriaId: 0,
-            fixa: false,
-            tipoPagamentoId: 0,
-            responsavelId: null,
-            cartaoId: null,
-          }
-          this.numeroParcelas = 2
-          this.valorParcela = 0
-          this.labelValor = 'Valor:'
-          this.movimentacaoParcelada = false
-          this.visible = false
-        })
-      } else {
-        this.movimentacaoService
-          .postMovimentacao(this.movimentacao)
-          .pipe(
-            map(
-              (response: Movimentacao) =>
-                ({
-                  id: response.id,
-                  valor: response.valor,
-                  data: response.data,
-                  descricao: response.descricao,
-                  categoria: response.categoria,
-                } as Movimentacao)
-            )
-          )
-          .subscribe((movimentacao) => {
+        this.parcelaService.postParcela(parcela).subscribe({
+          next: (parcela) => {
             this.submit.emit()
             this.movimentacao = {
               descricao: '',
@@ -276,6 +252,51 @@ export class MovimentacaoModalComponent implements OnChanges {
             this.labelValor = 'Valor:'
             this.movimentacaoParcelada = false
             this.visible = false
+            this.isSubmitting = false
+          },
+          error: (error) => {
+            console.error('Erro ao criar parcela:', error)
+            this.isSubmitting = false
+          }
+        })
+      } else {
+        this.movimentacaoService
+          .postMovimentacao(this.movimentacao)
+          .pipe(
+            map(
+              (response: Movimentacao) =>
+              ({
+                id: response.id,
+                valor: response.valor,
+                data: response.data,
+                descricao: response.descricao,
+                categoria: response.categoria,
+              } as Movimentacao)
+            )
+          )
+          .subscribe({
+            next: (movimentacao) => {
+              this.submit.emit()
+              this.movimentacao = {
+                descricao: '',
+                data: new Date(),
+                categoriaId: 0,
+                fixa: false,
+                tipoPagamentoId: 0,
+                responsavelId: null,
+                cartaoId: null,
+              }
+              this.numeroParcelas = 2
+              this.valorParcela = 0
+              this.labelValor = 'Valor:'
+              this.movimentacaoParcelada = false
+              this.visible = false
+              this.isSubmitting = false
+            },
+            error: (error) => {
+              console.error('Erro ao criar movimentação:', error)
+              this.isSubmitting = false
+            }
           })
       }
     } else {
@@ -309,7 +330,33 @@ export class MovimentacaoModalComponent implements OnChanges {
         if (isMovimentacaoParcelada) {
           this.parcelaService
             .putParcela(this.idParcela, parcela)
-            .subscribe((parcela) => {
+            .subscribe({
+              next: (parcela) => {
+                this.submit.emit()
+                this.movimentacao = {
+                  descricao: '',
+                  data: '',
+                  categoriaId: 0,
+                  fixa: false,
+                  tipoPagamentoId: 0,
+                  responsavelId: null,
+                  cartaoId: null,
+                }
+                this.numeroParcelas = 2
+                this.valorParcela = 0
+                this.movimentacaoParcelada = false
+                this.parceladaOnChange()
+                this.visible = false
+                this.isSubmitting = false
+              },
+              error: (error) => {
+                console.error('Erro ao atualizar parcela:', error)
+                this.isSubmitting = false
+              }
+            })
+        } else {
+          this.parcelaService.postParcela(parcela).subscribe({
+            next: (parcela) => {
               this.submit.emit()
               this.movimentacao = {
                 descricao: '',
@@ -322,27 +369,15 @@ export class MovimentacaoModalComponent implements OnChanges {
               }
               this.numeroParcelas = 2
               this.valorParcela = 0
+              this.labelValor = 'Valor:'
               this.movimentacaoParcelada = false
-              this.parceladaOnChange()
               this.visible = false
-            })
-        } else {
-          this.parcelaService.postParcela(parcela).subscribe((parcela) => {
-            this.submit.emit()
-            this.movimentacao = {
-              descricao: '',
-              data: '',
-              categoriaId: 0,
-              fixa: false,
-              tipoPagamentoId: 0,
-              responsavelId: null,
-              cartaoId: null,
+              this.isSubmitting = false
+            },
+            error: (error) => {
+              console.error('Erro ao criar parcela:', error)
+              this.isSubmitting = false
             }
-            this.numeroParcelas = 2
-            this.valorParcela = 0
-            this.labelValor = 'Valor:'
-            this.movimentacaoParcelada = false
-            this.visible = false
           })
         }
       } else {
@@ -351,31 +386,38 @@ export class MovimentacaoModalComponent implements OnChanges {
           .pipe(
             map(
               (response: Movimentacao) =>
-                ({
-                  id: response.id,
-                  valor: response.valor,
-                  data: response.data,
-                  descricao: response.descricao,
-                  categoria: response.categoria,
-                } as Movimentacao)
+              ({
+                id: response.id,
+                valor: response.valor,
+                data: response.data,
+                descricao: response.descricao,
+                categoria: response.categoria,
+              } as Movimentacao)
             )
           )
-          .subscribe((movimentacao) => {
-            this.submit.emit()
-            this.movimentacao = {
-              descricao: '',
-              data: new Date(),
-              categoriaId: 0,
-              fixa: false,
-              tipoPagamentoId: 0,
-              responsavelId: null,
-              cartaoId: null,
+          .subscribe({
+            next: (movimentacao) => {
+              this.submit.emit()
+              this.movimentacao = {
+                descricao: '',
+                data: new Date(),
+                categoriaId: 0,
+                fixa: false,
+                tipoPagamentoId: 0,
+                responsavelId: null,
+                cartaoId: null,
+              }
+              this.numeroParcelas = 2
+              this.valorParcela = 0
+              this.movimentacaoParcelada = false
+              this.parceladaOnChange()
+              this.visible = false
+              this.isSubmitting = false
+            },
+            error: (error) => {
+              console.error('Erro ao atualizar movimentação:', error)
+              this.isSubmitting = false
             }
-            this.numeroParcelas = 2
-            this.valorParcela = 0
-            this.movimentacaoParcelada = false
-            this.parceladaOnChange()
-            this.visible = false
           })
       }
     }
