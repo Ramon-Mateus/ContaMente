@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, inject } from '@angular/core'
+import { Component, inject, ViewChild } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CalendarModule } from 'primeng/calendar'
 import { DialogModule } from 'primeng/dialog'
@@ -19,6 +19,7 @@ import { MovimentacaoService } from '../../services/movimentacao.service'
 import { ParcelaService } from '../../services/parcela.service'
 import { ResponsavelService } from '../../services/responsavel.service'
 import { TipoPagamentoService } from '../../services/tipo-pagamento.service'
+import { PdfExportService } from '../../services/pdf-export.service'
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component'
 import { FiltrosComponent } from '../filtros/filtros.component'
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component'
@@ -48,6 +49,9 @@ export class HomeComponent {
   parcelaService: ParcelaService = inject(ParcelaService)
   responsavelService: ResponsavelService = inject(ResponsavelService)
   cartaoService: CartaoService = inject(CartaoService)
+  pdfExportService: PdfExportService = inject(PdfExportService)
+
+  @ViewChild(FiltrosComponent) filtrosComponent!: FiltrosComponent
 
   dias: DiaFiscal[] = []
 
@@ -65,11 +69,9 @@ export class HomeComponent {
   responsaveis: Responsavel[] = []
   cartoes: Cartao[] = []
 
-  dataDeFiltragem = new Date()
-
   sidebarVisible = false
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.movimentacaoService.modificouFiltros.subscribe((dias) => {
@@ -160,5 +162,21 @@ export class HomeComponent {
       this.dias = data.movimentacoes
       this.totalMovimentacoes = data.total
     })
+  }
+
+  exportarPDF() {
+    // Obter período atual (mês/ano) do componente de filtros
+    const dataFiltro = this.filtrosComponent?.dataDeFiltragem || new Date()
+    const periodo = dataFiltro.toLocaleDateString('pt-BR', {
+      month: 'long',
+      year: 'numeric',
+    })
+
+    // Chamar serviço de exportação
+    this.pdfExportService.exportMovimentacoesPDF(
+      this.dias,
+      this.totalMovimentacoes,
+      periodo
+    )
   }
 }

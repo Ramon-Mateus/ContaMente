@@ -1,26 +1,16 @@
 <div class="flex justify-center">
   <div class="flex justify-start flex-col w-[96em]">
     <div class="flex mt-12 mx-7 justify-start">
-      <app-movimentacao-modal
-        [visible]="visibleModalMovimentacao"
-        [categorias]="categorias"
-        [responsaveis]="responsaveis"
-        [cartoes]="cartoes"
-        [tiposPagamento]="tiposPagamento"
-        [labelValor]="'Valor'"
-        [idMovimentacao]="idMovimentacao"
-        [parcelaEditable]="true"
-        (submit)="refresh()"
-      >
+      <app-movimentacao-modal [visible]="visibleModalMovimentacao" [categorias]="categorias"
+        [responsaveis]="responsaveis" [cartoes]="cartoes" [tiposPagamento]="tiposPagamento" [labelValor]="'Valor'"
+        [idMovimentacao]="idMovimentacao" [parcelaEditable]="true" (submit)="refresh()">
       </app-movimentacao-modal>
     </div>
 
     <div class="flex mx-auto md:w-[43em] gap-3 justify-center">
       <aside id="filtros" class="w-[11em] h-full hidden md:block">
-        <button
-          (click)="onCreateMovimentacaoModal()"
-          class="text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none"
-        >
+        <button (click)="onCreateMovimentacaoModal()"
+          class="text-ground bg-zinc-300 w-full p-2 mb-2 rounded-lg focus:outline-none">
           <i class="pi pi-plus" style="font-size: 1rem"></i>
           <span class="ml-2 text-lg font-medium">Movimentação</span>
         </button>
@@ -28,70 +18,49 @@
         <app-filtros (categoriaAdicionadaEvent)="getCategorias()"></app-filtros>
       </aside>
 
-      <section
-        id="lista-movs"
-        class="w-80 sm:w-[33em] flex flex-col justify-start"
-      >
+      <section id="lista-movs" class="w-80 sm:w-[33em] flex flex-col justify-start">
         <div
-          class="flex flex-col items-center sm:items-start border border-b-2 border-r-2 border-highsec py-5 sm:py-2 px-3 rounded-md"
-        >
-          <p class="text-sm font-medium">Balanço do mês:</p>
-          <div class="flex items-center">
-            <p class="mr-1 font-bold text-xl">
-              {{ entradaMovimentacaoFiltro ? '' : '-'
-              }}{{ totalMovimentacoes | currency : 'BRL' }}
-            </p>
-            <svg
-              class="w-6 h-6 text-gray-800 dark:text-secondary"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z"
-                clip-rule="evenodd"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
-                clip-rule="evenodd"
-              />
-              <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
-            </svg>
+          class="flex flex-row justify-between items-center sm:items-start border border-b-2 border-r-2 border-highsec py-5 sm:py-2 px-3 rounded-md">
+          <div>
+            <div class="flex items-center justify-between w-full">
+              <p class="text-sm font-medium">Balanço do mês:</p>
+            </div>
+            <div class="flex items-center">
+              <p class="mr-1 font-bold text-xl">
+                {{ entradaMovimentacaoFiltro ? '' : '-'
+                }}{{ totalMovimentacoes | currency : 'BRL' }}
+              </p>
+              <svg class="w-6 h-6 text-gray-800 dark:text-secondary" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                  d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z"
+                  clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                  d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
+                  clip-rule="evenodd" />
+                <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
+              </svg>
+            </div>
           </div>
+          <button (click)="exportarPDF()" class="p-2 rounded-md bg-zinc-700 hover:bg-zinc-600 transition-colors"
+            title="Baixar PDF">
+            <i class="pi pi-file-pdf text-red-400 text-lg"></i>
+          </button>
         </div>
 
-        <div
-          class="hidden mt-10 py-5 font-bold text-white bg-[#4A4C5D] rounded-md text-center"
-        >
+        <div class="hidden mt-10 py-5 font-bold text-white bg-[#4A4C5D] rounded-md text-center">
           <span class="text-slate-300 font-medium"> Balanço do mês </span>
           <br />
           <div class="text-xl flex mx-auto w-max">
             {{ entradaMovimentacaoFiltro ? '' : '-'
             }}{{ totalMovimentacoes | currency : 'BRL' }}
-            <svg
-              class="w-6 h-6 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z"
-                clip-rule="evenodd"
-              />
-              <path
-                fill-rule="evenodd"
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z"
+                clip-rule="evenodd" />
+              <path fill-rule="evenodd"
                 d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z"
-                clip-rule="evenodd"
-              />
+                clip-rule="evenodd" />
               <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
             </svg>
           </div>
@@ -101,22 +70,11 @@
           <app-filtros (categoryAdded)="getCategorias()"></app-filtros>
         </p-sidebar>
 
-        <div
-          (click)="sidebarVisible = true"
-          class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-sliders-horizontal-icon lucide-sliders-horizontal inline mr-2"
-          >
+        <div (click)="sidebarVisible = true"
+          class="sm:hidden cursor-pointer px-4 py-2 text-xl mt-6 bg-zinc-950 rounded-md font-medium flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-sliders-horizontal-icon lucide-sliders-horizontal inline mr-2">
             <line x1="21" x2="14" y1="4" y2="4" />
             <line x1="10" x2="3" y1="4" y2="4" />
             <line x1="21" x2="12" y1="12" y2="12" />
@@ -131,23 +89,16 @@
         </div>
 
         <div class="md:w-full h-full mt-10 md:mt-2">
-          <app-dia-fiscal
-            *ngFor="let dia of dias"
-            [dia]="dia"
-            (editMovimentacao)="onEditMovimentacao($event)"
-            (deleteMovimentacao)="onDeleteMovimentacao($event)"
-            [ehUltimo]="dias.indexOf(dia) == dias.length - 1"
-          >
+          <app-dia-fiscal *ngFor="let dia of dias" [dia]="dia" (editMovimentacao)="onEditMovimentacao($event)"
+            (deleteMovimentacao)="onDeleteMovimentacao($event)" [ehUltimo]="dias.indexOf(dia) == dias.length - 1">
           </app-dia-fiscal>
         </div>
       </section>
     </div>
   </div>
 
-  <button
-    (click)="onCreateMovimentacaoModal()"
-    class="text-ground z-10 bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none fixed md:hidden bottom-12 right-12 h-16 flex items-center"
-  >
+  <button (click)="onCreateMovimentacaoModal()"
+    class="text-ground z-10 bg-zinc-300 p-2 pb-3 mb-2 rounded-lg focus:outline-none fixed md:hidden bottom-12 right-12 h-16 flex items-center">
     <div>
       <i class="pi pi-plus text-4xl font-bold"></i>
     </div>
@@ -156,10 +107,8 @@
       movimentação
     </div>
   </button>
-  <button
-    (click)="onCreateMovimentacaoModal()"
-    class="text-ground z-0 bg-zinc-500 p-2 pb-3 mb-2 rounded-lg focus:outline-none fixed md:hidden bottom-10 right-10 h-16 flex items-center"
-  >
+  <button (click)="onCreateMovimentacaoModal()"
+    class="text-ground z-0 bg-zinc-500 p-2 pb-3 mb-2 rounded-lg focus:outline-none fixed md:hidden bottom-10 right-10 h-16 flex items-center">
     <div class="invisible">
       <i class="pi pi-plus text-4xl font-bold"></i>
     </div>
