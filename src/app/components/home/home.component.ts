@@ -10,6 +10,7 @@ import {
   Cartao,
   Categoria,
   DiaFiscal,
+  Movimentacao,
   Responsavel,
   TipoPagamento,
 } from '../../lib/types'
@@ -23,6 +24,7 @@ import { PdfExportService } from '../../services/pdf-export.service'
 import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component'
 import { FiltrosComponent } from '../filtros/filtros.component'
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component'
+import { PaginatorModule } from 'primeng/paginator'
 
 @Component({
   selector: 'app-home',
@@ -38,6 +40,7 @@ import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-m
     MovimentacaoModalComponent,
     SidebarModule,
     FiltrosComponent,
+    PaginatorModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -71,21 +74,18 @@ export class HomeComponent {
 
   sidebarVisible = false
 
+  // Paginação
+  first: number = 0
+  rows: number = 10
+  totalRecordsMovimentacoes: number = 0
+  allFlatMovimentacoes: { data: Date; movimentacao: Movimentacao }[] = []
+  paginatedDias: DiaFiscal[] = []
+
   constructor() { }
 
   ngOnInit() {
     this.movimentacaoService.modificouFiltros.subscribe((dias) => {
-      this.dias = dias
-
-      let somaMovs = 0
-
-      dias.forEach((d) => {
-        d.movimentacoes.forEach((mov) => {
-          somaMovs += mov.valor
-        })
-      })
-
-      this.totalMovimentacoes = somaMovs
+      this.processDias(dias)
     })
 
     this.getCategorias()
@@ -159,9 +159,55 @@ export class HomeComponent {
 
   refresh() {
     this.movimentacaoService.refresh().subscribe((data) => {
-      this.dias = data.movimentacoes
+      this.processDias(data.movimentacoes)
       this.totalMovimentacoes = data.total
     })
+  }
+
+  processDias(dias: DiaFiscal[]) {
+    this.dias = dias
+
+    let somaMovs = 0
+    let flatMovs: { data: Date; movimentacao: Movimentacao }[] = []
+
+    dias.forEach((d) => {
+      d.movimentacoes.forEach((mov) => {
+        somaMovs += mov.valor
+        flatMovs.push({ data: new Date(d.data), movimentacao: mov })
+      })
+    })
+
+    this.totalMovimentacoes = somaMovs
+    this.allFlatMovimentacoes = flatMovs
+    this.totalRecordsMovimentacoes = flatMovs.length
+
+    // reset pagination
+    this.first = 0
+    this.updatePaginatedDias()
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first
+    this.rows = event.rows
+    this.updatePaginatedDias()
+  }
+
+  updatePaginatedDias() {
+    const start = this.first
+    const end = this.first + this.rows
+    const paginatedFlat = this.allFlatMovimentacoes.slice(start, end)
+
+    const newDias: DiaFiscal[] = []
+    paginatedFlat.forEach((flat) => {
+      const last = newDias[newDias.length - 1]
+      if (!last || last.data.getTime() !== flat.data.getTime()) {
+        newDias.push({ data: flat.data, movimentacoes: [flat.movimentacao] })
+      } else {
+        last.movimentacoes.push(flat.movimentacao)
+      }
+    })
+
+    this.paginatedDias = newDias
   }
 
   exportarPDF() {

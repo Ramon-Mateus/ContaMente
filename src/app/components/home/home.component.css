@@ -1,0 +1,77 @@
+::ng-deep .custom-paginator {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0.5rem 0 !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
+}
+
+::ng-deep .custom-paginator .p-paginator-current {
+  color: #909090 !important;
+  font-size: 0.875rem !important;
+  white-space: nowrap !important;
+}
+
+::ng-deep .custom-paginator .p-paginator-page,
+::ng-deep .custom-paginator .p-paginator-next,
+::ng-deep .custom-paginator .p-paginator-last,
+::ng-deep .custom-paginator .p-paginator-first,
+::ng-deep .custom-paginator .p-paginator-prev {
+  background-color: transparent !important;
+  color: #d4d4d8 !important;
+  /* zinc-300 */
+  border-radius: 0.375rem !important;
+  /* rounded-md */
+  min-width: 2rem !important;
+  height: 2rem !important;
+  transition: background-color 0.2s, color 0.2s !important;
+}
+
+::ng-deep .custom-paginator .p-paginator-page:hover,
+::ng-deep .custom-paginator .p-paginator-next:not(.p-disabled):hover,
+::ng-deep .custom-paginator .p-paginator-last:not(.p-disabled):hover,
+::ng-deep .custom-paginator .p-paginator-first:not(.p-disabled):hover,
+::ng-deep .custom-paginator .p-paginator-prev:not(.p-disabled):hover {
+  background-color: #222 !important;
+  /* bg-element */
+  color: #fff !important;
+}
+
+::ng-deep .custom-paginator .p-paginator-page.p-highlight {
+  background-color: #222 !important;
+  /* bg-element */
+  color: white !important;
+  border: 1px solid #575757 !important;
+  /* border-highsec */
+}
+
+::ng-deep .custom-paginator .p-dropdown {
+  background-color: #141414 !important;
+  /* ground */
+  border: 1px solid #575757 !important;
+  /* highsec */
+  border-radius: 0.375rem !important;
+}
+
+::ng-deep .custom-paginator .p-dropdown .p-dropdown-label {
+  color: #d4d4d8 !important;
+}
+
+::ng-deep .custom-paginator .p-dropdown:not(.p-disabled):hover {
+  border-color: #d4d4d8 !important;
+}
+
+::ng-deep .custom-paginator .p-dropdown-panel {
+  background-color: #141414 !important;
+  border: 1px solid #575757 !important;
+}
+
+::ng-deep .custom-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: #d4d4d8 !important;
+}
+
+::ng-deep .custom-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover,
+::ng-deep .custom-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background-color: #222 !important;
+  color: #fff !important;
+}
