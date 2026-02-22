@@ -89,9 +89,16 @@
         </div>
 
         <div class="md:w-full h-full mt-10 md:mt-2">
-          <app-dia-fiscal *ngFor="let dia of dias" [dia]="dia" (editMovimentacao)="onEditMovimentacao($event)"
-            (deleteMovimentacao)="onDeleteMovimentacao($event)" [ehUltimo]="dias.indexOf(dia) == dias.length - 1">
+          <app-dia-fiscal *ngFor="let dia of paginatedDias" [dia]="dia" (editMovimentacao)="onEditMovimentacao($event)"
+            (deleteMovimentacao)="onDeleteMovimentacao($event)"
+            [ehUltimo]="paginatedDias.indexOf(dia) == paginatedDias.length - 1">
           </app-dia-fiscal>
+
+          <p-paginator *ngIf="totalRecordsMovimentacoes > 0" styleClass="custom-paginator"
+            (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+            [totalRecords]="totalRecordsMovimentacoes" [rowsPerPageOptions]="[10, 20, 30, 50]" [pageLinkSize]="3"
+            [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} de {totalRecords}">
+          </p-paginator>
         </div>
       </section>
     </div>
