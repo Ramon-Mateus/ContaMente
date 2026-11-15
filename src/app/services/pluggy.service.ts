@@ -134,7 +134,7 @@ export class PluggyService {
     await this.carregarScript()
     const pluggyConnect = new window.PluggyConnect({
       connectToken,
-      includeSandbox: import.meta.env['NG_APP_PLUGGY_SANDBOX'] === 'true',
+      includeSandbox: import.meta.env?.NG_APP_PLUGGY_SANDBOX === 'true',
       updateItem: itemId,
       onSuccess: (itemData: any) => callbacks.onSuccess(itemData.item.id),
       onError: (erro: any) => callbacks.onError?.(erro),
