@@ -25,6 +25,8 @@ import { DiaFiscalComponent } from '../dia-fiscal/dia-fiscal.component'
 import { FiltrosComponent } from '../filtros/filtros.component'
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component'
 import { PaginatorModule } from 'primeng/paginator'
+import { RouterLink } from '@angular/router'
+import { PluggyService } from '../../services/pluggy.service'
 
 @Component({
   selector: 'app-home',
@@ -41,6 +43,7 @@ import { PaginatorModule } from 'primeng/paginator'
     SidebarModule,
     FiltrosComponent,
     PaginatorModule,
+    RouterLink,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -53,6 +56,7 @@ export class HomeComponent {
   responsavelService: ResponsavelService = inject(ResponsavelService)
   cartaoService: CartaoService = inject(CartaoService)
   pdfExportService: PdfExportService = inject(PdfExportService)
+  pluggyService: PluggyService = inject(PluggyService)
 
   @ViewChild(FiltrosComponent) filtrosComponent!: FiltrosComponent
 
@@ -73,6 +77,7 @@ export class HomeComponent {
   cartoes: Cartao[] = []
 
   sidebarVisible = false
+  importacoesPendentes = 0
 
   // Paginação
   first: number = 0
@@ -92,6 +97,11 @@ export class HomeComponent {
     this.getTiposPagamento()
     this.getResponsaveis()
     this.getCartoes()
+
+    this.pluggyService.contarPendentes().subscribe({
+      next: (n) => (this.importacoesPendentes = n),
+      error: () => {},
+    })
   }
 
   showDialogMovimentacao() {

@@ -5,6 +5,7 @@ declare interface Env {
   readonly NODE_ENV: string
   // Replace the following with your own environment variables.
   readonly NG_APP_URL_DA_API: string
+  readonly NG_APP_PLUGGY_SANDBOX?: string
   readonly aaaa: string
   [key: string]: any
 }

@@ -7,6 +7,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component'
 import { LandingComponent } from './components/landing/landing.component'
 import { ConfiguracaoUsuarioComponent } from './components/configuracao-usuario/configuracao-usuario.component'
+import { TransacoesPendentesComponent } from './components/transacoes-pendentes/transacoes-pendentes.component'
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
   {
     path: 'movimentacoes',
     component: HomeComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'importacoes',
+    component: TransacoesPendentesComponent,
     canActivate: [AuthGuard],
   },
   {

@@ -15,6 +15,13 @@
           <span class="ml-2 text-lg font-medium">Movimentação</span>
         </button>
 
+        <a routerLink="/importacoes"
+          class="flex items-center justify-between bg-element hover:bg-zinc-700 transition w-full p-2 mb-2 rounded-lg text-sm">
+          <span><i class="pi pi-credit-card mr-2"></i>Importações</span>
+          <span *ngIf="importacoesPendentes > 0"
+            class="bg-emerald-600 text-white rounded-full px-2 text-xs font-bold">{{ importacoesPendentes }}</span>
+        </a>
+
         <app-filtros (categoriaAdicionadaEvent)="getCategorias()"></app-filtros>
       </aside>
 
