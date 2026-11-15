@@ -131,3 +131,44 @@ export interface PostPutCartao {
 export interface UserConfiguration {
   listagemPorFatura: boolean
 }
+
+export interface PluggyConta {
+  id: number
+  pluggyAccountId: string
+  nome: string
+  numero: string | null
+  cartaoId: number | null
+}
+
+export interface PluggyItem {
+  id: number
+  pluggyItemId: string
+  nomeConector: string | null
+  status: string | null
+  erroUltimaAtualizacao: string | null
+  criadoEm: string
+  ultimaSincronizacao: string | null
+  contas: PluggyConta[]
+}
+
+export enum StatusTransacaoPendente {
+  Pendente = 0,
+  Aprovada = 1,
+  Ignorada = 2,
+}
+
+export interface TransacaoPendente {
+  id: number
+  descricao: string
+  valor: number
+  data: string
+  nomeConta: string | null
+  finalCartao: string | null
+  categoriaPluggy: string | null
+  numeroParcela: number | null
+  totalParcelas: number | null
+  pendente: boolean
+  status: StatusTransacaoPendente
+  cartaoSugeridoId: number | null
+  movimentacaoId: number | null
+}

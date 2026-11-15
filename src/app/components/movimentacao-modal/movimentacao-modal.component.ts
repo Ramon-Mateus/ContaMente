@@ -28,6 +28,7 @@ import { ParcelaService } from '../../services/parcela.service'
 import { MovimentacaoService } from '../../services/movimentacao.service'
 import { map } from 'rxjs'
 import { InputTextModule } from 'primeng/inputtext'
+import { PluggyService } from '../../services/pluggy.service'
 
 @Component({
   selector: 'app-movimentacao-modal',
@@ -49,6 +50,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   categoriaService: CategoriaService = inject(CategoriaService)
   parcelaService: ParcelaService = inject(ParcelaService)
   movimentacaoService: MovimentacaoService = inject(MovimentacaoService)
+  pluggyService: PluggyService = inject(PluggyService)
 
   @Input() visible: boolean = false
   @Input() movimentacao: PostMovimentacao = {
@@ -69,6 +71,9 @@ export class MovimentacaoModalComponent implements OnChanges {
   @Input() valorParcela: number = 0
   @Input() idMovimentacao: number = 0
   @Input() parcelaEditable: boolean = true
+  // Modo aprovação de transação importada do Pluggy
+  @Input() transacaoPendenteId: number = 0
+  @Input() preenchimento: PostMovimentacao | null = null
 
   @Output() submit = new EventEmitter<PostMovimentacao>()
 
@@ -87,6 +92,18 @@ export class MovimentacaoModalComponent implements OnChanges {
 
     this.carregaCartoes()
     this.carregaResponsaveis()
+
+    if (this.transacaoPendenteId > 0 && this.preenchimento) {
+      if (changes['visible']?.currentValue === true || changes['preenchimento']) {
+        this.movimentacaoParcelada = false
+        this.parcelaEditable = false
+        this.labelValor = 'Valor:'
+        this.dataLabel = 'Data:'
+        this.dataValue = new Date(this.preenchimento.data)
+        this.movimentacao = { ...this.preenchimento, data: this.dataValue }
+      }
+      return
+    }
 
     if (
       changes['visible'] &&
@@ -142,7 +159,7 @@ export class MovimentacaoModalComponent implements OnChanges {
     this.responsaveisDropdown = [...this.responsaveis]
 
     setTimeout(() => {
-      this.movimentacao.responsavelId = 0
+      if (this.movimentacao.responsavelId == null) this.movimentacao.responsavelId = 0
     })
   }
 
@@ -150,7 +167,7 @@ export class MovimentacaoModalComponent implements OnChanges {
     this.cartoesDropdown = [...this.cartoes]
 
     setTimeout(() => {
-      this.movimentacao.cartaoId = 0
+      if (this.movimentacao.cartaoId == null) this.movimentacao.cartaoId = 0
     })
   }
 
@@ -220,6 +237,23 @@ export class MovimentacaoModalComponent implements OnChanges {
 
     if (this.movimentacao.cartaoId === 0) {
       this.movimentacao.cartaoId = null
+    }
+
+    if (this.transacaoPendenteId > 0) {
+      this.pluggyService
+        .aprovar(this.transacaoPendenteId, { ...this.movimentacao, fixa: false })
+        .subscribe({
+          next: () => {
+            this.submit.emit()
+            this.visible = false
+            this.isSubmitting = false
+          },
+          error: (error) => {
+            console.error('Erro ao aprovar transação:', error)
+            this.isSubmitting = false
+          },
+        })
+      return
     }
 
     if (this.idMovimentacao === 0) {

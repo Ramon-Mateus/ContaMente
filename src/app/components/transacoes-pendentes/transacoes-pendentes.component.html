@@ -1,0 +1,157 @@
+<app-movimentacao-modal
+  [visible]="visibleModal"
+  [categorias]="categorias"
+  [responsaveis]="responsaveis"
+  [cartoes]="cartoes"
+  [tiposPagamento]="tiposPagamento"
+  [labelValor]="'Valor:'"
+  [idMovimentacao]="0"
+  [parcelaEditable]="false"
+  [transacaoPendenteId]="transacaoSelecionadaId"
+  [preenchimento]="preenchimento"
+  (submit)="onAprovada()"
+></app-movimentacao-modal>
+
+<main class="w-80 sm:w-[43em] mx-auto mb-16">
+  <div class="flex items-center justify-between mb-6">
+    <p class="text-3xl sm:text-4xl">Importações do cartão</p>
+  </div>
+
+  <!-- Conexões -->
+  <section class="border border-b-2 border-r-2 border-highsec rounded-md p-4 mb-6">
+    <div class="flex flex-wrap gap-2 justify-between items-center mb-3">
+      <h2 class="text-xl font-medium">Conexões bancárias</h2>
+      <div class="flex gap-2">
+        <button
+          (click)="sincronizar()"
+          [disabled]="sincronizando || itens.length === 0"
+          class="px-3 py-1.5 rounded-md bg-zinc-700 hover:bg-zinc-600 transition disabled:opacity-50"
+        >
+          <i class="pi pi-refresh mr-1" [class.pi-spin]="sincronizando"></i>
+          {{ sincronizando ? 'Sincronizando...' : 'Sincronizar agora' }}
+        </button>
+        <button
+          (click)="conectar()"
+          [disabled]="conectando"
+          class="px-3 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-700 transition text-white disabled:opacity-50"
+        >
+          <i class="pi pi-link mr-1"></i> Conectar banco
+        </button>
+      </div>
+    </div>
+
+    <p *ngIf="itens.length === 0" class="text-secondary text-sm">
+      Nenhum banco conectado. Clique em "Conectar banco" para autorizar o acesso às faturas do seu cartão via Pluggy.
+    </p>
+
+    <div *ngFor="let item of itens" class="border-t border-highsec pt-3 mt-3 first:border-t-0 first:pt-0 first:mt-0">
+      <div class="flex justify-between items-start gap-2">
+        <div>
+          <p class="font-semibold">{{ item.nomeConector ?? 'Banco' }}</p>
+          <p class="text-xs text-secondary">
+            Status: {{ item.status ?? '—' }}
+            <span *ngIf="item.ultimaSincronizacao">
+              · última sincronização {{ item.ultimaSincronizacao | date: 'dd/MM HH:mm' }}
+            </span>
+          </p>
+          <p *ngIf="item.erroUltimaAtualizacao" class="text-xs text-red-400">{{ item.erroUltimaAtualizacao }}</p>
+        </div>
+        <div class="flex gap-3 text-sm">
+          <button
+            *ngIf="item.status === 'LOGIN_ERROR' || item.status === 'OUTDATED' || item.status === 'WAITING_USER_INPUT'"
+            (click)="conectar(item)"
+            class="text-amber-400 hover:underline"
+          >
+            Reconectar
+          </button>
+          <button (click)="removerItem(item)" class="text-red-400 hover:underline">Remover</button>
+        </div>
+      </div>
+
+      <div *ngFor="let conta of item.contas" class="flex flex-wrap items-center justify-between gap-2 mt-2 text-sm">
+        <span>
+          <i class="pi pi-credit-card mr-1 text-secondary"></i>
+          {{ conta.nome }} <span *ngIf="conta.numero" class="text-secondary">•••• {{ conta.numero.slice(-4) }}</span>
+        </span>
+        <p-dropdown
+          [options]="cartoes"
+          optionLabel="apelido"
+          optionValue="id"
+          appendTo="body"
+          [(ngModel)]="conta.cartaoId"
+          (onChange)="vincularCartao(conta)"
+          placeholder="Vincular a um cartão"
+          styleClass="w-48"
+        ></p-dropdown>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abas -->
+  <div class="flex gap-1 mb-3 text-sm">
+    <button
+      *ngFor="let aba of [
+        { s: Status.Pendente, label: 'Pendentes' },
+        { s: Status.Aprovada, label: 'Aprovadas' },
+        { s: Status.Ignorada, label: 'Ignoradas' }
+      ]"
+      (click)="mudarStatus(aba.s)"
+      class="px-3 py-1.5 rounded-md transition"
+      [ngClass]="statusAtual === aba.s ? 'bg-zinc-300 text-ground font-semibold' : 'bg-element hover:bg-zinc-700'"
+    >
+      {{ aba.label }}
+    </button>
+  </div>
+
+  <p *ngIf="statusAtual === Status.Pendente && transacoes.length > 0" class="text-sm text-secondary mb-2">
+    {{ transacoes.length }} aguardando aceite · {{ totalSelecionado | currency: 'BRL' }}
+  </p>
+
+  <p *ngIf="carregando" class="text-secondary">Carregando...</p>
+  <p *ngIf="!carregando && transacoes.length === 0" class="text-secondary">Nada por aqui.</p>
+
+  <div
+    *ngFor="let t of transacoes"
+    class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-element rounded-md px-3 py-2 mb-2"
+  >
+    <div class="min-w-0">
+      <p class="font-medium truncate">
+        {{ t.descricao }}
+        <span *ngIf="t.numeroParcela && t.totalParcelas" class="text-xs text-secondary">
+          {{ t.numeroParcela }}/{{ t.totalParcelas }}
+        </span>
+      </p>
+      <div class="flex flex-wrap gap-1 mt-1">
+        <span class="mov-att">{{ t.data | date: 'dd/MM/yyyy' }}</span>
+        <span class="mov-att" *ngIf="t.nomeConta">
+          {{ t.nomeConta }}<span *ngIf="t.finalCartao">&nbsp;•{{ t.finalCartao.slice(-4) }}</span>
+        </span>
+        <span class="mov-att" *ngIf="t.categoriaPluggy">{{ t.categoriaPluggy }}</span>
+        <span class="mov-att text-amber-400" *ngIf="t.pendente">não lançada</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 shrink-0">
+      <span class="font-bold">{{ t.valor | currency: 'BRL' }}</span>
+      <ng-container *ngIf="statusAtual === Status.Pendente">
+        <button (click)="ignorar(t)" class="px-2 py-1 rounded-md bg-zinc-700 hover:bg-zinc-600 text-sm" title="Ignorar">
+          <i class="pi pi-times"></i>
+        </button>
+        <button
+          (click)="aprovar(t)"
+          class="px-3 py-1 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-sm"
+        >
+          Aprovar
+        </button>
+      </ng-container>
+      <button
+        *ngIf="statusAtual === Status.Ignorada"
+        (click)="restaurar(t)"
+        class="px-3 py-1 rounded-md bg-zinc-700 hover:bg-zinc-600 text-sm"
+      >
+        Restaurar
+      </button>
+      <i *ngIf="statusAtual === Status.Aprovada" class="pi pi-check text-emerald-500"></i>
+    </div>
+  </div>
+</main>

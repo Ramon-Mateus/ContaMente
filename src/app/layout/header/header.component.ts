@@ -27,6 +27,11 @@ export class HeaderComponent {
       command: () => this.movimentacoes(),
     },
     {
+      label: 'Importações do cartão',
+      icon: 'pi pi-credit-card',
+      command: () => this.router.navigate(['/importacoes']),
+    },
+    {
       label: 'Logout',
       icon: 'pi pi-sign-out',
       command: () => this.logout(),
