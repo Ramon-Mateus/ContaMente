@@ -20,13 +20,14 @@ import {
   Categoria,
   Movimentacao,
   PostMovimentacao,
+  PreenchimentoParcela,
   postParcela,
   Responsavel,
   TipoPagamento,
 } from '../../lib/types'
 import { ParcelaService } from '../../services/parcela.service'
 import { MovimentacaoService } from '../../services/movimentacao.service'
-import { map } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { InputTextModule } from 'primeng/inputtext'
 import { PluggyService } from '../../services/pluggy.service'
 
@@ -74,6 +75,7 @@ export class MovimentacaoModalComponent implements OnChanges {
   // Modo aprovação de transação importada do Pluggy
   @Input() transacaoPendenteId: number = 0
   @Input() preenchimento: PostMovimentacao | null = null
+  @Input() preenchimentoParcela: PreenchimentoParcela | null = null
 
   @Output() submit = new EventEmitter<PostMovimentacao>()
 
@@ -95,12 +97,15 @@ export class MovimentacaoModalComponent implements OnChanges {
 
     if (this.transacaoPendenteId > 0 && this.preenchimento) {
       if (changes['visible']?.currentValue === true || changes['preenchimento']) {
-        this.movimentacaoParcelada = false
-        this.parcelaEditable = false
-        this.labelValor = 'Valor:'
-        this.dataLabel = 'Data:'
+        this.parcelaEditable = true
         this.dataValue = new Date(this.preenchimento.data)
         this.movimentacao = { ...this.preenchimento, data: this.dataValue }
+        this.movimentacaoParcelada = !!this.preenchimentoParcela
+        this.labelValor = this.movimentacaoParcelada ? 'Valor total da compra:' : 'Valor:'
+        this.dataLabel = this.movimentacaoParcelada ? 'Data da compra:' : 'Data:'
+        // Depois do reset feito no início do ngOnChanges
+        this.numeroParcelas = this.preenchimentoParcela?.numeroParcelas ?? 2
+        this.valorParcela = this.preenchimentoParcela?.valorParcela ?? 0
       }
       return
     }
@@ -240,9 +245,22 @@ export class MovimentacaoModalComponent implements OnChanges {
     }
 
     if (this.transacaoPendenteId > 0) {
-      this.pluggyService
-        .aprovar(this.transacaoPendenteId, { ...this.movimentacao, fixa: false })
-        .subscribe({
+      const aprovacao$: Observable<unknown> =
+        this.movimentacaoParcelada && this.numeroParcelas >= 2
+          ? this.pluggyService.aprovarParcelada(this.transacaoPendenteId, {
+              valorTotal: this.movimentacao.valor!,
+              numeroParcelas: this.numeroParcelas,
+              valorParcela: this.valorParcela,
+              descricao: this.movimentacao.descricao!,
+              dataInicio: this.movimentacao.data,
+              categoriaId: this.movimentacao.categoriaId,
+              tipoPagamentoId: this.movimentacao.tipoPagamentoId,
+              responsavelId: this.movimentacao.responsavelId,
+              cartaoId: this.movimentacao.cartaoId,
+            })
+          : this.pluggyService.aprovar(this.transacaoPendenteId, { ...this.movimentacao, fixa: false })
+
+      aprovacao$.subscribe({
           next: () => {
             this.submit.emit()
             this.visible = false

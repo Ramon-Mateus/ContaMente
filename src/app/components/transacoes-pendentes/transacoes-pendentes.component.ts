@@ -9,6 +9,7 @@ import {
   PluggyConta,
   PluggyItem,
   PostMovimentacao,
+  PreenchimentoParcela,
   Responsavel,
   StatusTransacaoPendente,
   TipoPagamento,
@@ -56,11 +57,12 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
   visibleModal = false
   transacaoSelecionadaId = 0
   preenchimento: PostMovimentacao | null = null
+  preenchimentoParcela: PreenchimentoParcela | null = null
 
   private timer?: ReturnType<typeof setInterval>
 
   get totalSelecionado(): number {
-    return this.transacoes.reduce((s, t) => s + t.valor, 0)
+    return this.transacoes.reduce((s, t) => s + this.valorDaCompra(t), 0)
   }
 
   ngOnInit() {
@@ -171,13 +173,24 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
     })
   }
 
+  ehParcelada(t: TransacaoPendente): boolean {
+    return (t.totalParcelas ?? 1) > 1
+  }
+
+  valorDaCompra(t: TransacaoPendente): number {
+    return this.ehParcelada(t) ? t.valorTotal ?? t.valor * t.totalParcelas! : t.valor
+  }
+
   aprovar(t: TransacaoPendente) {
-    const parcela = t.numeroParcela && t.totalParcelas ? ` (${t.numeroParcela}/${t.totalParcelas})` : ''
+    const parcelada = this.ehParcelada(t)
     this.transacaoSelecionadaId = t.id
+    this.preenchimentoParcela = parcelada
+      ? { numeroParcelas: t.totalParcelas!, valorParcela: t.valor }
+      : null
     this.preenchimento = {
-      valor: t.valor,
+      valor: this.valorDaCompra(t),
       data: new Date(t.data),
-      descricao: `${t.descricao}${parcela}`,
+      descricao: t.descricao,
       fixa: false,
       categoriaId: 0,
       tipoPagamentoId: TIPO_PAGAMENTO_CREDITO,

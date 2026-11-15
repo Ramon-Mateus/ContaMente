@@ -9,6 +9,7 @@
   [parcelaEditable]="false"
   [transacaoPendenteId]="transacaoSelecionadaId"
   [preenchimento]="preenchimento"
+  [preenchimentoParcela]="preenchimentoParcela"
   (submit)="onAprovada()"
 ></app-movimentacao-modal>
 
@@ -117,12 +118,13 @@
     <div class="min-w-0">
       <p class="font-medium truncate">
         {{ t.descricao }}
-        <span *ngIf="t.numeroParcela && t.totalParcelas" class="text-xs text-secondary">
-          {{ t.numeroParcela }}/{{ t.totalParcelas }}
-        </span>
+
       </p>
       <div class="flex flex-wrap gap-1 mt-1">
         <span class="mov-att">{{ t.data | date: 'dd/MM/yyyy' }}</span>
+        <span class="mov-att" *ngIf="ehParcelada(t)">
+          {{ t.totalParcelas }}x de {{ t.valor | currency: 'BRL' }}
+        </span>
         <span class="mov-att" *ngIf="t.nomeConta">
           {{ t.nomeConta }}<span *ngIf="t.finalCartao">&nbsp;•{{ t.finalCartao.slice(-4) }}</span>
         </span>
@@ -132,7 +134,7 @@
     </div>
 
     <div class="flex items-center gap-3 shrink-0">
-      <span class="font-bold">{{ t.valor | currency: 'BRL' }}</span>
+      <span class="font-bold">{{ valorDaCompra(t) | currency: 'BRL' }}</span>
       <ng-container *ngIf="statusAtual === Status.Pendente">
         <button (click)="ignorar(t)" class="px-2 py-1 rounded-md bg-zinc-700 hover:bg-zinc-600 text-sm" title="Ignorar">
           <i class="pi pi-times"></i>

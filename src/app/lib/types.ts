@@ -167,8 +167,15 @@ export interface TransacaoPendente {
   categoriaPluggy: string | null
   numeroParcela: number | null
   totalParcelas: number | null
+  valorTotal: number | null
   pendente: boolean
   status: StatusTransacaoPendente
   cartaoSugeridoId: number | null
   movimentacaoId: number | null
+  parcelaId: number | null
+}
+
+export interface PreenchimentoParcela {
+  numeroParcelas: number
+  valorParcela: number
 }
