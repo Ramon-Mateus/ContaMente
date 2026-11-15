@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { map, Observable } from 'rxjs'
 import {
+  postParcela,
   PluggyConta,
   PluggyItem,
   PostMovimentacao,
@@ -95,6 +96,14 @@ export class PluggyService {
     return this.httpClient.post<{ movimentacaoId: number }>(
       `${this.urlTransacoes}/${id}/aprovar`,
       movimentacao,
+      { withCredentials: true }
+    )
+  }
+
+  aprovarParcelada(id: number, parcela: postParcela): Observable<{ parcelaId: number }> {
+    return this.httpClient.post<{ parcelaId: number }>(
+      `${this.urlTransacoes}/${id}/aprovar-parcelada`,
+      parcela,
       { withCredentials: true }
     )
   }
