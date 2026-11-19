@@ -27,6 +27,11 @@ export class HeaderComponent {
       command: () => this.movimentacoes(),
     },
     {
+      label: 'Análise de gastos',
+      icon: 'pi pi-chart-bar',
+      command: () => this.router.navigate(['/analise']),
+    },
+    {
       label: 'Importações do cartão',
       icon: 'pi pi-credit-card',
       command: () => this.router.navigate(['/importacoes']),

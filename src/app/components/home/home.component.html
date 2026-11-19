@@ -22,6 +22,11 @@
             class="bg-emerald-600 text-white rounded-full px-2 text-xs font-bold">{{ importacoesPendentes }}</span>
         </a>
 
+        <a routerLink="/analise"
+          class="flex items-center bg-element hover:bg-zinc-700 transition w-full p-2 mb-2 rounded-lg text-sm">
+          <span><i class="pi pi-chart-bar mr-2"></i>Análise de gastos</span>
+        </a>
+
         <app-filtros (categoriaAdicionadaEvent)="getCategorias()"></app-filtros>
       </aside>
 

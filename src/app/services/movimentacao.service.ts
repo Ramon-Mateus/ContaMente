@@ -129,6 +129,29 @@ export class MovimentacaoService {
       )
   }
 
+  /**
+   * Busca as movimentações de um mês (respeitando a configuração de listagem
+   * por fatura do usuário) já achatadas em uma lista. Não altera os
+   * `ultimosFiltros` usados pela tela de movimentações.
+   */
+  getMovimentacoesDoMes(
+    mes: number,
+    ano: number,
+    entrada: boolean
+  ): Observable<Movimentacao[]> {
+    const params = new HttpParams()
+      .set('mes', mes.toString())
+      .set('ano', ano.toString())
+      .set('entrada', entrada ? 'true' : 'false')
+
+    return this.httpClient
+      .get<{ [key: string]: Movimentacao[] }>(this.urlDoModel, {
+        params,
+        withCredentials: true,
+      })
+      .pipe(map((response) => Object.values(response).flat()))
+  }
+
   getMovimentacaoById(id: number): Observable<Movimentacao> {
     return this.httpClient.get<Movimentacao>(`${this.urlDoModel}/${id}`, {
       withCredentials: true,

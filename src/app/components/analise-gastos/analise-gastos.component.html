@@ -1,0 +1,426 @@
+<main class="w-full max-w-7xl mx-auto px-4 mb-16">
+  <!-- Cabeçalho -->
+  <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+    <div>
+      <a routerLink="/movimentacoes" class="text-sm text-secondary hover:text-zinc-200 transition">
+        <i class="pi pi-arrow-left text-xs mr-1"></i>Movimentações
+      </a>
+      <h1 class="text-3xl sm:text-4xl">Análise de gastos</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <i *ngIf="carregando" class="pi pi-spin pi-spinner text-secondary"></i>
+      <span *ngIf="erroCarregamento" class="text-sm text-red-400">
+        <i class="pi pi-exclamation-triangle mr-1"></i>Alguns meses não carregaram
+      </span>
+      <p-selectButton [options]="opcoesVisao" [(ngModel)]="visao" optionLabel="label" optionValue="value"
+        [allowEmpty]="false" (onChange)="onVisaoChange()" styleClass="seletor-compacto"></p-selectButton>
+    </div>
+  </div>
+
+  <!-- Período -->
+  <section class="panel rounded-lg p-4 mb-3">
+    <div class="flex flex-wrap items-center gap-3">
+      <span class="font-semibold">Período</span>
+      <p-selectButton [options]="presets" [(ngModel)]="presetAtivo" optionLabel="label" optionValue="value"
+        (onChange)="aplicarPreset($event.value)" styleClass="seletor-compacto"></p-selectButton>
+      <div class="flex items-center gap-2">
+        <p-calendar [(ngModel)]="inicio" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+          inputStyleClass="w-24 p-2 text-sm minor-button" (onSelect)="onPeriodoManual()"
+          appendTo="body"></p-calendar>
+        <span class="text-secondary">até</span>
+        <p-calendar [(ngModel)]="fim" view="month" dateFormat="mm/yy" [readonlyInput]="true"
+          inputStyleClass="w-24 p-2 text-sm minor-button" (onSelect)="onPeriodoManual()"
+          appendTo="body"></p-calendar>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <section class="panel rounded-lg p-4 mb-5">
+    <div class="flex items-center justify-between">
+      <button class="font-semibold flex items-center gap-2" (click)="filtrosAbertos = !filtrosAbertos">
+        <i class="pi" [ngClass]="filtrosAbertos ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
+        Filtros
+        <span *ngIf="qtdFiltrosAtivos > 0"
+          class="bg-zinc-200 text-ground rounded-full px-2 text-xs font-bold">{{ qtdFiltrosAtivos }}</span>
+      </button>
+      <button *ngIf="qtdFiltrosAtivos > 0" (click)="limparFiltros()"
+        class="text-sm text-secondary hover:text-zinc-200 transition">
+        <i class="pi pi-filter-slash mr-1"></i>Limpar filtros
+      </button>
+    </div>
+
+    <div *ngIf="filtrosAbertos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+      <div>
+        <label class="text-xs text-secondary block mb-1">Categorias</label>
+        <p-multiSelect [options]="opcoesCategorias" [(ngModel)]="categoriasSel" optionLabel="label"
+          optionValue="value" placeholder="Todas" display="chip" [filter]="true" [showClear]="true"
+          (onChange)="recalcular()" (onClear)="recalcular()" styleClass="w-full" appendTo="body"></p-multiSelect>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Responsáveis</label>
+        <p-multiSelect [options]="opcoesResponsaveis" [(ngModel)]="responsaveisSel" optionLabel="label"
+          optionValue="value" placeholder="Todos" display="chip" [showClear]="true" (onChange)="recalcular()"
+          (onClear)="recalcular()" styleClass="w-full" appendTo="body"></p-multiSelect>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Cartões</label>
+        <p-multiSelect [options]="opcoesCartoes" [(ngModel)]="cartoesSel" optionLabel="label" optionValue="value"
+          placeholder="Todos" display="chip" [showClear]="true" (onChange)="recalcular()" (onClear)="recalcular()"
+          styleClass="w-full" appendTo="body"></p-multiSelect>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Tipo de pagamento</label>
+        <p-multiSelect [options]="opcoesTipos" [(ngModel)]="tiposSel" optionLabel="label" optionValue="value"
+          placeholder="Todos" display="chip" [showClear]="true" (onChange)="recalcular()" (onClear)="recalcular()"
+          styleClass="w-full" appendTo="body"></p-multiSelect>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Parcelamento</label>
+        <p-selectButton [options]="opcoesParcelamento" [(ngModel)]="parcelamento" optionLabel="label"
+          optionValue="value" [allowEmpty]="false" (onChange)="recalcular()"
+          styleClass="seletor-compacto"></p-selectButton>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Recorrência</label>
+        <p-selectButton [options]="opcoesFixas" [(ngModel)]="fixas" optionLabel="label" optionValue="value"
+          [allowEmpty]="false" (onChange)="recalcular()" styleClass="seletor-compacto"></p-selectButton>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Descrição contém</label>
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" [(ngModel)]="busca" (ngModelChange)="recalcular()"
+            placeholder="ex.: mercado, uber..." class="w-full p-2 text-sm" />
+        </span>
+      </div>
+      <div>
+        <label class="text-xs text-secondary block mb-1">Valor (R$)</label>
+        <div class="flex gap-2">
+          <p-inputNumber [(ngModel)]="valorMin" (ngModelChange)="recalcular()" mode="decimal" [minFractionDigits]="0"
+            [maxFractionDigits]="2" locale="pt-BR" placeholder="mín." inputStyleClass="w-full p-2 text-sm"
+            styleClass="w-1/2"></p-inputNumber>
+          <p-inputNumber [(ngModel)]="valorMax" (ngModelChange)="recalcular()" mode="decimal" [minFractionDigits]="0"
+            [maxFractionDigits]="2" locale="pt-BR" placeholder="máx." inputStyleClass="w-full p-2 text-sm"
+            styleClass="w-1/2"></p-inputNumber>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="filtrosAbertos" class="text-xs text-secondary mt-3">
+      <i class="pi pi-info-circle mr-1"></i>Dica: clique numa fatia ou barra dos gráficos de distribuição para
+      filtrar por ela.
+    </p>
+  </section>
+
+  <!-- KPIs -->
+  <section class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+    <div class="kpi">
+      <p class="kpi-label">{{ visao === 'entrada' ? 'Total de entradas' : 'Total gasto' }}</p>
+      <p class="kpi-valor">{{ formatarBRL(kpi.totalVisao) }}</p>
+      <p class="kpi-sub">{{ kpi.qtd }} movimentações</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Média mensal</p>
+      <p class="kpi-valor">{{ formatarBRL(kpi.mediaMensal) }}</p>
+      <p class="kpi-sub">Ticket médio {{ formatarBRL(kpi.ticketMedio) }}</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">{{ kpi.ultimoMes.label }}</p>
+      <p class="kpi-valor">{{ formatarBRL(kpi.ultimoMes.valor) }}</p>
+      <p class="kpi-sub" *ngIf="kpi.variacao !== null">
+        <i class="pi text-xs" [ngClass]="kpi.variacao >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+        {{ (kpi.variacao >= 0 ? '+' : '') + kpi.variacao.toFixed(1) }}% vs mês anterior
+      </p>
+      <p class="kpi-sub" *ngIf="kpi.projecao !== null">Projeção: {{ formatarBRL(kpi.projecao) }}</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Saldo do período</p>
+      <p class="kpi-valor" [ngClass]="kpi.saldo >= 0 ? 'text-emerald-400' : 'text-red-400'">
+        {{ formatarBRL(kpi.saldo) }}
+      </p>
+      <p class="kpi-sub">
+        Entradas {{ formatarBRL(kpi.totalEntradas) }} · Gastos {{ formatarBRL(kpi.totalSaidas) }}
+      </p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Maior mês</p>
+      <p class="kpi-valor">{{ formatarBRL(kpi.maiorMes.valor) }}</p>
+      <p class="kpi-sub">{{ kpi.maiorMes.label }}</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Menor mês</p>
+      <p class="kpi-valor">{{ formatarBRL(kpi.menorMes.valor) }}</p>
+      <p class="kpi-sub">{{ kpi.menorMes.label }}</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Maior movimentação</p>
+      <p class="kpi-valor">{{ formatarBRL(topMovimentacoes.length ? topMovimentacoes[0].valor : 0) }}</p>
+      <p class="kpi-sub truncate">{{ topMovimentacoes.length ? topMovimentacoes[0].descricao || '-' : '-' }}</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Maior categoria</p>
+      <p class="kpi-valor">{{ formatarBRL(categoriaData?.datasets[0]?.data[0] ?? 0) }}</p>
+      <p class="kpi-sub truncate">{{ categoriaData?.labels[0] ?? '-' }}</p>
+    </div>
+  </section>
+
+  <div *ngIf="!carregando && !temDados" class="panel rounded-lg p-10 text-center text-secondary mb-5">
+    <i class="pi pi-chart-line text-4xl mb-3 block"></i>
+    Nenhuma movimentação encontrada para o período e filtros selecionados.
+  </div>
+
+  <!-- Evolução -->
+  <section class="card mb-5">
+    <div class="card-header">
+      <div>
+        <h2 class="card-titulo">Evolução mensal</h2>
+        <p class="card-sub">Entradas, gastos e saldo mês a mês, com média móvel de 3 meses</p>
+      </div>
+      <p-selectButton [options]="opcoesTipoEvolucao" [(ngModel)]="tipoEvolucao" optionLabel="label"
+        optionValue="value" [allowEmpty]="false" (onChange)="recalcular()"
+        styleClass="seletor-compacto"></p-selectButton>
+    </div>
+    <div class="h-80">
+      <p-chart type="bar" [data]="evolucaoData" [options]="evolucaoOptions" height="100%"></p-chart>
+    </div>
+  </section>
+
+  <!-- Composição -->
+  <section class="card mb-5">
+    <div class="card-header">
+      <div>
+        <h2 class="card-titulo">{{ visao === 'entrada' ? 'Entradas' : 'Gastos' }} por mês, agrupados</h2>
+        <p class="card-sub">Como cada grupo contribui para o total ao longo do tempo</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <p-selectButton [options]="opcoesAgrupamento" [(ngModel)]="agrupamento" optionLabel="label"
+          optionValue="value" [allowEmpty]="false" (onChange)="recalcular()"
+          styleClass="seletor-compacto"></p-selectButton>
+        <p-selectButton [options]="opcoesTipoEvolucao" [(ngModel)]="tipoComposicao" optionLabel="label"
+          optionValue="value" [allowEmpty]="false" (onChange)="recalcular()"
+          styleClass="seletor-compacto"></p-selectButton>
+        <button (click)="composicaoPercentual = !composicaoPercentual; recalcular()"
+          class="px-3 text-sm rounded-md border border-highsec transition"
+          [ngClass]="composicaoPercentual ? 'bg-zinc-200 text-ground' : 'hover:bg-zinc-700'">
+          %
+        </button>
+      </div>
+    </div>
+    <div class="h-96">
+      <p-chart [type]="tipoComposicao" [data]="composicaoData" [options]="composicaoOptions"
+        height="100%"></p-chart>
+    </div>
+  </section>
+
+  <!-- Distribuições -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="card">
+      <h2 class="card-titulo">Por categoria</h2>
+      <p class="card-sub mb-3">Clique numa fatia para filtrar</p>
+      <div class="h-72">
+        <p-chart type="doughnut" [data]="categoriaData" [options]="pizzaOptions" height="100%"
+          (onDataSelect)="onSelecionarNoGrafico('categoria', $event, idsCategoria)"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Por responsável</h2>
+      <p class="card-sub mb-3">Quem gastou quanto no período</p>
+      <div class="h-72">
+        <p-chart type="pie" [data]="responsavelData" [options]="pieOptions" height="100%"
+          (onDataSelect)="onSelecionarNoGrafico('responsavel', $event, idsResponsavel)"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Por cartão</h2>
+      <p class="card-sub mb-3">Inclui movimentações sem cartão</p>
+      <div class="h-72">
+        <p-chart type="bar" [data]="cartaoData" [options]="barraHorizontalOptions" height="100%"
+          (onDataSelect)="onSelecionarNoGrafico('cartao', $event, idsCartao)"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Por tipo de pagamento</h2>
+      <p class="card-sub mb-3">Crédito, Pix, débito...</p>
+      <div class="h-72">
+        <p-chart type="polarArea" [data]="tipoPagamentoData" [options]="polarOptions" height="100%"
+          (onDataSelect)="onSelecionarNoGrafico('tipoPagamento', $event, idsTipo)"></p-chart>
+      </div>
+    </div>
+  </section>
+
+  <!-- Acumulado + ticket -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="card">
+      <h2 class="card-titulo">Acumulado no período</h2>
+      <p class="card-sub mb-3">Soma corrida comparada ao ritmo médio</p>
+      <div class="h-72">
+        <p-chart type="line" [data]="acumuladoData" [options]="acumuladoOptions" height="100%"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Ticket médio por mês</h2>
+      <p class="card-sub mb-3">Valor médio de cada movimentação</p>
+      <div class="h-72">
+        <p-chart type="line" [data]="ticketData" [options]="ticketOptions" height="100%"></p-chart>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calendário -->
+  <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+    <div class="card">
+      <h2 class="card-titulo">Por dia da semana</h2>
+      <p class="card-sub mb-3">Em que dias você mais gasta</p>
+      <div class="h-64">
+        <p-chart type="bar" [data]="diaSemanaData" [options]="barraSimplesOptions" height="100%"></p-chart>
+      </div>
+    </div>
+    <div class="card lg:col-span-2">
+      <h2 class="card-titulo">Por dia do mês</h2>
+      <p class="card-sub mb-3">Concentração ao longo do mês (soma do período)</p>
+      <div class="h-64">
+        <p-chart type="bar" [data]="diaMesData" [options]="barraSimplesOptions" height="100%"></p-chart>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perfis -->
+  <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+    <div class="card">
+      <h2 class="card-titulo">Fixas x variáveis</h2>
+      <div class="h-60 mt-3">
+        <p-chart type="doughnut" [data]="fixasData" [options]="pizzaOptions" height="100%"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Parceladas x à vista</h2>
+      <div class="h-60 mt-3">
+        <p-chart type="doughnut" [data]="parceladoData" [options]="pizzaOptions" height="100%"></p-chart>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Perfil por responsável</h2>
+      <p class="card-sub">Top 6 categorias × top 3 responsáveis</p>
+      <div class="h-60">
+        <p-chart type="radar" [data]="radarData" [options]="radarOptions" height="100%"></p-chart>
+      </div>
+    </div>
+  </section>
+
+  <!-- Variação por categoria -->
+  <section class="card mb-5">
+    <h2 class="card-titulo">Variação por categoria</h2>
+    <p class="card-sub mb-3">{{ labelMesAtual }} comparado a {{ labelMesAnterior || '—' }} e à média do período</p>
+    <div class="overflow-x-auto">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th class="text-left">Categoria</th>
+            <th>{{ labelMesAtual }}</th>
+            <th>{{ labelMesAnterior || 'Anterior' }}</th>
+            <th>Variação</th>
+            <th>Média/mês</th>
+            <th>vs média</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of variacaoCategorias">
+            <td class="text-left">
+              <span class="inline-block w-2.5 h-2.5 rounded-sm mr-2" [style.background]="c.cor"></span>{{ c.nome }}
+            </td>
+            <td>{{ formatarBRL(c.atual) }}</td>
+            <td>{{ formatarBRL(c.anterior) }}</td>
+            <td>
+              <span *ngIf="c.delta !== null" [ngClass]="
+                  (visao === 'saida' ? c.delta > 0 : c.delta < 0) ? 'text-red-400' : 'text-emerald-400'
+                ">
+                <i class="pi text-[10px]" [ngClass]="c.delta >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+                {{ (c.delta >= 0 ? '+' : '') + c.delta.toFixed(1) }}%
+              </span>
+              <span *ngIf="c.delta === null" class="text-secondary">—</span>
+            </td>
+            <td>{{ formatarBRL(c.media) }}</td>
+            <td>
+              <span *ngIf="c.media > 0" class="text-secondary">
+                {{ ((c.atual / c.media - 1) * 100 >= 0 ? '+' : '') + ((c.atual / c.media - 1) * 100).toFixed(0) }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Rankings -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="card">
+      <h2 class="card-titulo">Maiores movimentações</h2>
+      <p class="card-sub mb-3">Top 10 do período</p>
+      <div class="overflow-x-auto">
+        <table class="tabela">
+          <tbody>
+            <tr *ngFor="let m of topMovimentacoes; let i = index">
+              <td class="text-left text-secondary w-6">{{ i + 1 }}</td>
+              <td class="text-left">
+                <div class="truncate max-w-[14rem]">{{ m.descricao || '(sem descrição)' }}</div>
+                <div class="text-xs text-secondary">
+                  <span class="inline-block w-2 h-2 rounded-sm mr-1" [style.background]="corCategoria(m)"></span>
+                  {{ m.categoria.nome }} · {{ m.data | date: 'dd/MM/yy' }}
+                  <span *ngIf="m.parcela"> · parcela {{ m.numeroParcela }}/{{ m.parcela.numeroParcelas }}</span>
+                  <span *ngIf="m.cartao"> · {{ m.cartao.apelido }}</span>
+                </div>
+              </td>
+              <td class="font-semibold">{{ formatarBRL(m.valor) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="card-titulo">Onde mais {{ visao === 'entrada' ? 'entrou dinheiro' : 'gastou' }}</h2>
+      <p class="card-sub mb-3">Agrupado por descrição</p>
+      <div class="overflow-x-auto">
+        <table class="tabela">
+          <tbody>
+            <tr *ngFor="let d of topDescricoes; let i = index">
+              <td class="text-left text-secondary w-6">{{ i + 1 }}</td>
+              <td class="text-left">
+                <div class="truncate max-w-[14rem]">{{ d.descricao }}</div>
+                <div class="text-xs text-secondary">{{ d.qtd }}× · média {{ formatarBRL(d.total / d.qtd) }}</div>
+              </td>
+              <td class="font-semibold">{{ formatarBRL(d.total) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabela mensal -->
+  <section class="card">
+    <h2 class="card-titulo">Resumo mês a mês</h2>
+    <p class="card-sub mb-3">Os números por trás dos gráficos</p>
+    <div class="overflow-x-auto">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th class="text-left">Mês</th>
+            <th>Entradas</th>
+            <th>Gastos</th>
+            <th>Saldo</th>
+            <th>Qtd.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of tabelaMensal">
+            <td class="text-left">{{ l.label }}</td>
+            <td>{{ formatarBRL(l.entradas) }}</td>
+            <td>{{ formatarBRL(l.saidas) }}</td>
+            <td [ngClass]="l.saldo >= 0 ? 'text-emerald-400' : 'text-red-400'">{{ formatarBRL(l.saldo) }}</td>
+            <td class="text-secondary">{{ l.qtd }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

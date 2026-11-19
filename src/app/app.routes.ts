@@ -20,6 +20,14 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'analise',
+    loadComponent: () =>
+      import('./components/analise-gastos/analise-gastos.component').then(
+        (m) => m.AnaliseGastosComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'importacoes',
     component: TransacoesPendentesComponent,
     canActivate: [AuthGuard],
