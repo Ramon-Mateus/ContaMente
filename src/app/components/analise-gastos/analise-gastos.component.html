@@ -114,53 +114,53 @@
 
   <!-- KPIs -->
   <section class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-    <div class="kpi">
-      <p class="kpi-label">{{ visao === 'entrada' ? 'Total de entradas' : 'Total gasto' }}</p>
-      <p class="kpi-valor">{{ formatarBRL(kpi.totalVisao) }}</p>
-      <p class="kpi-sub">{{ kpi.qtd }} movimentações</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">{{ visao === 'entrada' ? 'Total de entradas' : 'Total gasto' }}</p>
+      <p class="an-kpi-valor">{{ formatarBRL(kpi.totalVisao) }}</p>
+      <p class="an-kpi-sub">{{ kpi.qtd }} movimentações</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Média mensal</p>
-      <p class="kpi-valor">{{ formatarBRL(kpi.mediaMensal) }}</p>
-      <p class="kpi-sub">Ticket médio {{ formatarBRL(kpi.ticketMedio) }}</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">Média mensal</p>
+      <p class="an-kpi-valor">{{ formatarBRL(kpi.mediaMensal) }}</p>
+      <p class="an-kpi-sub">Ticket médio {{ formatarBRL(kpi.ticketMedio) }}</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">{{ kpi.ultimoMes.label }}</p>
-      <p class="kpi-valor">{{ formatarBRL(kpi.ultimoMes.valor) }}</p>
-      <p class="kpi-sub" *ngIf="kpi.variacao !== null">
+    <div class="an-kpi">
+      <p class="an-kpi-label">{{ kpi.ultimoMes.label }}</p>
+      <p class="an-kpi-valor">{{ formatarBRL(kpi.ultimoMes.valor) }}</p>
+      <p class="an-kpi-sub" *ngIf="kpi.variacao !== null">
         <i class="pi text-xs" [ngClass]="kpi.variacao >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
         {{ (kpi.variacao >= 0 ? '+' : '') + kpi.variacao.toFixed(1) }}% vs mês anterior
       </p>
-      <p class="kpi-sub" *ngIf="kpi.projecao !== null">Projeção: {{ formatarBRL(kpi.projecao) }}</p>
+      <p class="an-kpi-sub" *ngIf="kpi.projecao !== null">Projeção: {{ formatarBRL(kpi.projecao) }}</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Saldo do período</p>
-      <p class="kpi-valor" [ngClass]="kpi.saldo >= 0 ? 'text-emerald-400' : 'text-red-400'">
+    <div class="an-kpi">
+      <p class="an-kpi-label">Saldo do período</p>
+      <p class="an-kpi-valor" [ngClass]="kpi.saldo >= 0 ? 'text-emerald-400' : 'text-red-400'">
         {{ formatarBRL(kpi.saldo) }}
       </p>
-      <p class="kpi-sub">
+      <p class="an-kpi-sub">
         Entradas {{ formatarBRL(kpi.totalEntradas) }} · Gastos {{ formatarBRL(kpi.totalSaidas) }}
       </p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Maior mês</p>
-      <p class="kpi-valor">{{ formatarBRL(kpi.maiorMes.valor) }}</p>
-      <p class="kpi-sub">{{ kpi.maiorMes.label }}</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">Maior mês</p>
+      <p class="an-kpi-valor">{{ formatarBRL(kpi.maiorMes.valor) }}</p>
+      <p class="an-kpi-sub">{{ kpi.maiorMes.label }}</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Menor mês</p>
-      <p class="kpi-valor">{{ formatarBRL(kpi.menorMes.valor) }}</p>
-      <p class="kpi-sub">{{ kpi.menorMes.label }}</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">Menor mês</p>
+      <p class="an-kpi-valor">{{ formatarBRL(kpi.menorMes.valor) }}</p>
+      <p class="an-kpi-sub">{{ kpi.menorMes.label }}</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Maior movimentação</p>
-      <p class="kpi-valor">{{ formatarBRL(topMovimentacoes.length ? topMovimentacoes[0].valor : 0) }}</p>
-      <p class="kpi-sub truncate">{{ topMovimentacoes.length ? topMovimentacoes[0].descricao || '-' : '-' }}</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">Maior movimentação</p>
+      <p class="an-kpi-valor">{{ formatarBRL(topMovimentacoes.length ? topMovimentacoes[0].valor : 0) }}</p>
+      <p class="an-kpi-sub truncate">{{ topMovimentacoes.length ? topMovimentacoes[0].descricao || '-' : '-' }}</p>
     </div>
-    <div class="kpi">
-      <p class="kpi-label">Maior categoria</p>
-      <p class="kpi-valor">{{ formatarBRL(categoriaData?.datasets[0]?.data[0] ?? 0) }}</p>
-      <p class="kpi-sub truncate">{{ categoriaData?.labels[0] ?? '-' }}</p>
+    <div class="an-kpi">
+      <p class="an-kpi-label">Maior categoria</p>
+      <p class="an-kpi-valor">{{ formatarBRL(categoriaData?.datasets[0]?.data[0] ?? 0) }}</p>
+      <p class="an-kpi-sub truncate">{{ categoriaData?.labels[0] ?? '-' }}</p>
     </div>
   </section>
 
@@ -170,11 +170,11 @@
   </div>
 
   <!-- Evolução -->
-  <section class="card mb-5">
-    <div class="card-header">
+  <section class="an-card mb-5">
+    <div class="an-card-header">
       <div>
-        <h2 class="card-titulo">Evolução mensal</h2>
-        <p class="card-sub">Entradas, gastos e saldo mês a mês, com média móvel de 3 meses</p>
+        <h2 class="an-card-titulo">Evolução mensal</h2>
+        <p class="an-card-sub">Entradas, gastos e saldo mês a mês, com média móvel de 3 meses</p>
       </div>
       <p-selectButton [options]="opcoesTipoEvolucao" [(ngModel)]="tipoEvolucao" optionLabel="label"
         optionValue="value" [allowEmpty]="false" (onChange)="recalcular()"
@@ -186,11 +186,11 @@
   </section>
 
   <!-- Composição -->
-  <section class="card mb-5">
-    <div class="card-header">
+  <section class="an-card mb-5">
+    <div class="an-card-header">
       <div>
-        <h2 class="card-titulo">{{ visao === 'entrada' ? 'Entradas' : 'Gastos' }} por mês, agrupados</h2>
-        <p class="card-sub">Como cada grupo contribui para o total ao longo do tempo</p>
+        <h2 class="an-card-titulo">{{ visao === 'entrada' ? 'Entradas' : 'Gastos' }} por mês, agrupados</h2>
+        <p class="an-card-sub">Como cada grupo contribui para o total ao longo do tempo</p>
       </div>
       <div class="flex flex-wrap gap-2">
         <p-selectButton [options]="opcoesAgrupamento" [(ngModel)]="agrupamento" optionLabel="label"
@@ -214,33 +214,33 @@
 
   <!-- Distribuições -->
   <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    <div class="card">
-      <h2 class="card-titulo">Por categoria</h2>
-      <p class="card-sub mb-3">Clique numa fatia para filtrar</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Por categoria</h2>
+      <p class="an-card-sub mb-3">Clique numa fatia para filtrar</p>
       <div class="h-72">
         <p-chart type="doughnut" [data]="categoriaData" [options]="pizzaOptions" height="100%"
           (onDataSelect)="onSelecionarNoGrafico('categoria', $event, idsCategoria)"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Por responsável</h2>
-      <p class="card-sub mb-3">Quem gastou quanto no período</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Por responsável</h2>
+      <p class="an-card-sub mb-3">Quem gastou quanto no período</p>
       <div class="h-72">
         <p-chart type="pie" [data]="responsavelData" [options]="pieOptions" height="100%"
           (onDataSelect)="onSelecionarNoGrafico('responsavel', $event, idsResponsavel)"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Por cartão</h2>
-      <p class="card-sub mb-3">Inclui movimentações sem cartão</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Por cartão</h2>
+      <p class="an-card-sub mb-3">Inclui movimentações sem cartão</p>
       <div class="h-72">
         <p-chart type="bar" [data]="cartaoData" [options]="barraHorizontalOptions" height="100%"
           (onDataSelect)="onSelecionarNoGrafico('cartao', $event, idsCartao)"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Por tipo de pagamento</h2>
-      <p class="card-sub mb-3">Crédito, Pix, débito...</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Por tipo de pagamento</h2>
+      <p class="an-card-sub mb-3">Crédito, Pix, débito...</p>
       <div class="h-72">
         <p-chart type="polarArea" [data]="tipoPagamentoData" [options]="polarOptions" height="100%"
           (onDataSelect)="onSelecionarNoGrafico('tipoPagamento', $event, idsTipo)"></p-chart>
@@ -250,16 +250,16 @@
 
   <!-- Acumulado + ticket -->
   <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    <div class="card">
-      <h2 class="card-titulo">Acumulado no período</h2>
-      <p class="card-sub mb-3">Soma corrida comparada ao ritmo médio</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Acumulado no período</h2>
+      <p class="an-card-sub mb-3">Soma corrida comparada ao ritmo médio</p>
       <div class="h-72">
         <p-chart type="line" [data]="acumuladoData" [options]="acumuladoOptions" height="100%"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Ticket médio por mês</h2>
-      <p class="card-sub mb-3">Valor médio de cada movimentação</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Ticket médio por mês</h2>
+      <p class="an-card-sub mb-3">Valor médio de cada movimentação</p>
       <div class="h-72">
         <p-chart type="line" [data]="ticketData" [options]="ticketOptions" height="100%"></p-chart>
       </div>
@@ -268,16 +268,16 @@
 
   <!-- Calendário -->
   <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
-    <div class="card">
-      <h2 class="card-titulo">Por dia da semana</h2>
-      <p class="card-sub mb-3">Em que dias você mais gasta</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Por dia da semana</h2>
+      <p class="an-card-sub mb-3">Em que dias você mais gasta</p>
       <div class="h-64">
         <p-chart type="bar" [data]="diaSemanaData" [options]="barraSimplesOptions" height="100%"></p-chart>
       </div>
     </div>
-    <div class="card lg:col-span-2">
-      <h2 class="card-titulo">Por dia do mês</h2>
-      <p class="card-sub mb-3">Concentração ao longo do mês (soma do período)</p>
+    <div class="an-card lg:col-span-2">
+      <h2 class="an-card-titulo">Por dia do mês</h2>
+      <p class="an-card-sub mb-3">Concentração ao longo do mês (soma do período)</p>
       <div class="h-64">
         <p-chart type="bar" [data]="diaMesData" [options]="barraSimplesOptions" height="100%"></p-chart>
       </div>
@@ -286,21 +286,21 @@
 
   <!-- Perfis -->
   <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
-    <div class="card">
-      <h2 class="card-titulo">Fixas x variáveis</h2>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Fixas x variáveis</h2>
       <div class="h-60 mt-3">
         <p-chart type="doughnut" [data]="fixasData" [options]="pizzaOptions" height="100%"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Parceladas x à vista</h2>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Parceladas x à vista</h2>
       <div class="h-60 mt-3">
         <p-chart type="doughnut" [data]="parceladoData" [options]="pizzaOptions" height="100%"></p-chart>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Perfil por responsável</h2>
-      <p class="card-sub">Top 6 categorias × top 3 responsáveis</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Perfil por responsável</h2>
+      <p class="an-card-sub">Top 6 categorias × top 3 responsáveis</p>
       <div class="h-60">
         <p-chart type="radar" [data]="radarData" [options]="radarOptions" height="100%"></p-chart>
       </div>
@@ -308,11 +308,11 @@
   </section>
 
   <!-- Variação por categoria -->
-  <section class="card mb-5">
-    <h2 class="card-titulo">Variação por categoria</h2>
-    <p class="card-sub mb-3">{{ labelMesAtual }} comparado a {{ labelMesAnterior || '—' }} e à média do período</p>
+  <section class="an-card mb-5">
+    <h2 class="an-card-titulo">Variação por categoria</h2>
+    <p class="an-card-sub mb-3">{{ labelMesAtual }} comparado a {{ labelMesAnterior || '—' }} e à média do período</p>
     <div class="overflow-x-auto">
-      <table class="tabela">
+      <table class="an-tabela">
         <thead>
           <tr>
             <th class="text-left">Categoria</th>
@@ -353,11 +353,11 @@
 
   <!-- Rankings -->
   <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    <div class="card">
-      <h2 class="card-titulo">Maiores movimentações</h2>
-      <p class="card-sub mb-3">Top 10 do período</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Maiores movimentações</h2>
+      <p class="an-card-sub mb-3">Top 10 do período</p>
       <div class="overflow-x-auto">
-        <table class="tabela">
+        <table class="an-tabela">
           <tbody>
             <tr *ngFor="let m of topMovimentacoes; let i = index">
               <td class="text-left text-secondary w-6">{{ i + 1 }}</td>
@@ -376,11 +376,11 @@
         </table>
       </div>
     </div>
-    <div class="card">
-      <h2 class="card-titulo">Onde mais {{ visao === 'entrada' ? 'entrou dinheiro' : 'gastou' }}</h2>
-      <p class="card-sub mb-3">Agrupado por descrição</p>
+    <div class="an-card">
+      <h2 class="an-card-titulo">Onde mais {{ visao === 'entrada' ? 'entrou dinheiro' : 'gastou' }}</h2>
+      <p class="an-card-sub mb-3">Agrupado por descrição</p>
       <div class="overflow-x-auto">
-        <table class="tabela">
+        <table class="an-tabela">
           <tbody>
             <tr *ngFor="let d of topDescricoes; let i = index">
               <td class="text-left text-secondary w-6">{{ i + 1 }}</td>
@@ -397,11 +397,11 @@
   </section>
 
   <!-- Tabela mensal -->
-  <section class="card">
-    <h2 class="card-titulo">Resumo mês a mês</h2>
-    <p class="card-sub mb-3">Os números por trás dos gráficos</p>
+  <section class="an-card">
+    <h2 class="an-card-titulo">Resumo mês a mês</h2>
+    <p class="an-card-sub mb-3">Os números por trás dos gráficos</p>
     <div class="overflow-x-auto">
-      <table class="tabela">
+      <table class="an-tabela">
         <thead>
           <tr>
             <th class="text-left">Mês</th>
