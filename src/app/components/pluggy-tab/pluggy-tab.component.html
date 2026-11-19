@@ -1,0 +1,82 @@
+<div>
+  <h2 class="text-2xl mb-2">Pluggy</h2>
+  <p class="text-sm text-secondary mb-4">
+    Para importar as faturas do cartão, crie uma conta em
+    <a href="https://dashboard.pluggy.ai" target="_blank" rel="noopener" class="underline">dashboard.pluggy.ai</a>,
+    gere uma aplicação e cole aqui o <b>Client ID</b> e o <b>Client Secret</b> dela.
+  </p>
+
+  <div *ngIf="credenciais.configurado && !editando" class="flex flex-col gap-2">
+    <p>
+      <i class="pi pi-check-circle text-emerald-500 mr-1"></i>
+      Credenciais cadastradas
+    </p>
+    <p class="text-sm text-secondary break-all">Client ID: {{ credenciais.clientId }}</p>
+    <p *ngIf="credenciais.atualizadoEm" class="text-xs text-secondary">
+      Atualizado em {{ credenciais.atualizadoEm | date: 'dd/MM/yyyy HH:mm' }}
+    </p>
+    <div class="flex gap-2 mt-2">
+      <button
+        (click)="editando = true"
+        class="px-3 py-1.5 rounded-md bg-zinc-700 hover:bg-zinc-600 transition"
+      >
+        Alterar
+      </button>
+      <button
+        (click)="remover()"
+        class="px-3 py-1.5 rounded-md text-red-400 hover:bg-white/10 transition"
+      >
+        Remover
+      </button>
+    </div>
+  </div>
+
+  <form *ngIf="editando" #form="ngForm" (ngSubmit)="salvar()" class="flex flex-col gap-3">
+    <div>
+      <label for="pluggyClientId">Client ID:</label><br />
+      <input
+        class="w-full h-11 p-2"
+        id="pluggyClientId"
+        name="clientId"
+        pInputText
+        required
+        autocomplete="off"
+        [(ngModel)]="clientId"
+      />
+    </div>
+    <div>
+      <label for="pluggyClientSecret">Client Secret:</label><br />
+      <p-password
+        inputId="pluggyClientSecret"
+        name="clientSecret"
+        styleClass="w-full"
+        inputStyleClass="w-full h-11 p-2"
+        [feedback]="false"
+        [toggleMask]="true"
+        [required]="true"
+        autocomplete="new-password"
+        [(ngModel)]="clientSecret"
+      ></p-password>
+      <small *ngIf="credenciais.configurado" class="text-secondary">
+        Por segurança o secret salvo não é exibido; informe-o novamente para alterar.
+      </small>
+    </div>
+    <div class="flex gap-2">
+      <button
+        type="submit"
+        [disabled]="salvando || !clientId.trim() || !clientSecret.trim()"
+        class="bg-emerald-600 hover:bg-emerald-700 transition text-white px-3 py-1.5 rounded-md disabled:opacity-50"
+      >
+        {{ salvando ? 'Validando...' : 'Salvar' }}
+      </button>
+      <button
+        *ngIf="credenciais.configurado"
+        type="button"
+        (click)="cancelar()"
+        class="px-3 py-1.5 rounded-md bg-zinc-700 hover:bg-zinc-600 transition"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

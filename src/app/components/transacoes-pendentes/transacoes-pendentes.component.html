@@ -18,6 +18,15 @@
     <p class="text-3xl sm:text-4xl">Importações do cartão</p>
   </div>
 
+  <div
+    *ngIf="!credenciaisConfiguradas"
+    class="border border-amber-500/60 bg-amber-500/10 rounded-md p-4 mb-6 text-sm"
+  >
+    <i class="pi pi-info-circle mr-1"></i>
+    Para importar suas faturas, cadastre o Client ID e o Client Secret da sua conta Pluggy em
+    <a routerLink="/configuracao-usuario" class="underline font-medium">Perfil e Configurações</a>.
+  </div>
+
   <!-- Conexões -->
   <section class="border border-b-2 border-r-2 border-highsec rounded-md p-4 mb-6">
     <div class="flex flex-wrap gap-2 justify-between items-center mb-3">

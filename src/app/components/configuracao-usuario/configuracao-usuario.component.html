@@ -117,6 +117,33 @@
     <div *ngIf="!isVisualizacaoCollapsed" class="">
       <app-visualizacao-tab></app-visualizacao-tab>
     </div>
+
+    <button
+      (click)="isPluggyCollapsed = !isPluggyCollapsed"
+      class="flex justify-between items-center w-full"
+    >
+      <div class="text-xl flex items-center">
+        <lucide-angular
+          [img]="LinkIcon"
+          [size]="32"
+          class="mr-1 text-secondary"
+        ></lucide-angular>
+        Pluggy
+      </div>
+      <lucide-angular
+        *ngIf="isPluggyCollapsed"
+        [img]="ChevronRightIcon"
+        class="text-secondary"
+      ></lucide-angular>
+      <lucide-angular
+        *ngIf="!isPluggyCollapsed"
+        [img]="ChevronDownIcon"
+        class="text-secondary"
+      ></lucide-angular>
+    </button>
+    <div *ngIf="!isPluggyCollapsed" class="w-full p-2 pr-3">
+      <app-pluggy-tab></app-pluggy-tab>
+    </div>
   </div>
 
   <div class="hidden lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-6">
@@ -168,6 +195,17 @@
             <small>Escolha o que será exibido</small>
           </button>
         </li>
+
+        <li class="mb-2">
+          <button
+            class="w-full p-2 text-left"
+            (click)="setActiveTab('pluggy')"
+            [ngClass]="{ 'bg-white/10': activeTab === 'pluggy' }"
+          >
+            <div>Pluggy</div>
+            <small>Credenciais para importar faturas</small>
+          </button>
+        </li>
       </ul>
     </aside>
 
@@ -187,6 +225,10 @@
 
       <div *ngIf="activeTab === 'visualizacao'">
         <app-visualizacao-tab></app-visualizacao-tab>
+      </div>
+
+      <div *ngIf="activeTab === 'pluggy'">
+        <app-pluggy-tab></app-pluggy-tab>
       </div>
     </section>
   </div>

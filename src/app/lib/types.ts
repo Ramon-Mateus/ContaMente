@@ -132,6 +132,12 @@ export interface UserConfiguration {
   listagemPorFatura: boolean
 }
 
+export interface PluggyCredenciais {
+  configurado: boolean
+  clientId: string | null
+  atualizadoEm: string | null
+}
+
 export interface PluggyConta {
   id: number
   pluggyAccountId: string

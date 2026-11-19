@@ -7,6 +7,7 @@ import {
   ChevronDownIcon,
   FileIcon,
   LayoutListIcon,
+  LinkIcon,
   LucideAngularModule,
   SquareUserRoundIcon,
   WalletCardsIcon,
@@ -15,6 +16,7 @@ import { CategoriasTabComponent } from '../categorias-tab/categorias-tab.compone
 import { ResponsaveisTabComponent } from '../responsaveis-tab/responsaveis-tab.component'
 import { CartoesTabComponent } from '../cartoes-tab/cartoes-tab.component'
 import { VisualizacaoTabComponent } from '../visualizacao-tab/visualizacao-tab.component'
+import { PluggyTabComponent } from '../pluggy-tab/pluggy-tab.component'
 
 @Component({
   selector: 'app-configuracao-usuario',
@@ -26,6 +28,7 @@ import { VisualizacaoTabComponent } from '../visualizacao-tab/visualizacao-tab.c
     ResponsaveisTabComponent,
     CartoesTabComponent,
     VisualizacaoTabComponent,
+    PluggyTabComponent,
   ],
   templateUrl: './configuracao-usuario.component.html',
   styleUrl: './configuracao-usuario.component.css',
@@ -39,12 +42,14 @@ export class ConfiguracaoUsuarioComponent {
   readonly BookUserIcon = BookUserIcon
   readonly WalletCardsIcon = WalletCardsIcon
   readonly LayoutListIcon = LayoutListIcon
+  readonly LinkIcon = LinkIcon
 
   isPerfilCollapsed = true
   isVisualizacaoCollapsed = true
   isCategoriasCollapsed = true
   isResponsaveisCollapsed = true
   isCartoesCollapsed = true
+  isPluggyCollapsed = true
 
   activeTab: string = 'categorias'
 

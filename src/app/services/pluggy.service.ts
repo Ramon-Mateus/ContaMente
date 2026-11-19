@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs'
 import {
   postParcela,
   PluggyConta,
+  PluggyCredenciais,
   PluggyItem,
   PostMovimentacao,
   StatusTransacaoPendente,
@@ -28,6 +29,27 @@ export class PluggyService {
   private scriptCarregado?: Promise<void>
 
   constructor(private httpClient: HttpClient) {}
+
+  // ---- Credenciais da conta Pluggy (perfil) ----
+  getCredenciais(): Observable<PluggyCredenciais> {
+    return this.httpClient.get<PluggyCredenciais>(`${this.urlPluggy}/credenciais`, {
+      withCredentials: true,
+    })
+  }
+
+  salvarCredenciais(clientId: string, clientSecret: string): Observable<PluggyCredenciais> {
+    return this.httpClient.put<PluggyCredenciais>(
+      `${this.urlPluggy}/credenciais`,
+      { clientId, clientSecret },
+      { withCredentials: true }
+    )
+  }
+
+  removerCredenciais(): Observable<void> {
+    return this.httpClient.delete<void>(`${this.urlPluggy}/credenciais`, {
+      withCredentials: true,
+    })
+  }
 
   // ---- Conexões ----
   getConnectToken(itemId?: string): Observable<string> {

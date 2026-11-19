@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, inject, NgZone, OnDestroy, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { RouterLink } from '@angular/router'
 import { DropdownModule } from 'primeng/dropdown'
 import { ToastrService } from 'ngx-toastr'
 import {
@@ -28,7 +29,7 @@ const INTERVALO_ATUALIZACAO_MS = 60_000
 @Component({
   selector: 'app-transacoes-pendentes',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule, MovimentacaoModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, DropdownModule, MovimentacaoModalComponent],
   templateUrl: './transacoes-pendentes.component.html',
 })
 export class TransacoesPendentesComponent implements OnInit, OnDestroy {
@@ -48,6 +49,7 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
   carregando = false
   sincronizando = false
   conectando = false
+  credenciaisConfiguradas = true
 
   categorias: Categoria[] = []
   responsaveis: Responsavel[] = []
@@ -66,6 +68,7 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.pluggyService.getCredenciais().subscribe((c) => (this.credenciaisConfiguradas = c.configurado))
     this.carregarItens()
     this.carregarTransacoes()
     this.categoriaService.getCategorias(false).subscribe((c) => (this.categorias = c))
