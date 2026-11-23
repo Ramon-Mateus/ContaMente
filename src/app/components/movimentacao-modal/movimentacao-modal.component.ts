@@ -139,6 +139,11 @@ export class MovimentacaoModalComponent implements OnChanges {
 
           this.dataValue = new Date(movimentacao.data)
 
+          // Abre com o tipo (entrada/saída) da categoria da movimentação e a lista de categorias correspondente,
+          // senão a categoria atual não existe no dropdown e aparece em branco.
+          this.entradaCategoria = !!movimentacao.categoria?.entrada
+          this.getCategorias()
+
           if (movimentacao.parcela !== null) {
             this.movimentacaoParcelada = true
             this.parcelaEditable = false
@@ -151,6 +156,11 @@ export class MovimentacaoModalComponent implements OnChanges {
           }
         })
     } else {
+      // Nova movimentação começa como saída (o modal pode ter ficado como entrada após uma edição).
+      if (changes['visible']?.currentValue === true && this.entradaCategoria) {
+        this.entradaCategoria = false
+        this.getCategorias()
+      }
       this.movimentacaoParcelada = false
       this.parcelaEditable = true
       this.dataValue = new Date()
