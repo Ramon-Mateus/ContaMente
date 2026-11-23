@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr'
 import {
   Cartao,
   Categoria,
+  OrigemTransacaoPendente,
   PluggyConta,
   PluggyItem,
   PostMovimentacao,
@@ -24,6 +25,7 @@ import { TipoPagamentoService } from '../../services/tipo-pagamento.service'
 import { MovimentacaoModalComponent } from '../movimentacao-modal/movimentacao-modal.component'
 
 const TIPO_PAGAMENTO_CREDITO = 1
+const TIPO_PAGAMENTO_PIX = 2
 const INTERVALO_ATUALIZACAO_MS = 60_000
 
 @Component({
@@ -42,6 +44,11 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
   private zone = inject(NgZone)
 
   readonly Status = StatusTransacaoPendente
+  readonly Origem = OrigemTransacaoPendente
+
+  // null = cartão e conta juntos
+  filtroOrigem: OrigemTransacaoPendente | null = null
+  preenchimentoEntrada = false
 
   itens: PluggyItem[] = []
   transacoes: TransacaoPendente[] = []
@@ -63,8 +70,18 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
 
   private timer?: ReturnType<typeof setInterval>
 
-  get totalSelecionado(): number {
-    return this.transacoes.reduce((s, t) => s + this.valorDaCompra(t), 0)
+  get transacoesFiltradas(): TransacaoPendente[] {
+    return this.filtroOrigem === null
+      ? this.transacoes
+      : this.transacoes.filter((t) => t.origem === this.filtroOrigem)
+  }
+
+  get totalSaidas(): number {
+    return this.transacoesFiltradas.filter((t) => !t.entrada).reduce((s, t) => s + this.valorDaCompra(t), 0)
+  }
+
+  get totalEntradas(): number {
+    return this.transacoesFiltradas.filter((t) => t.entrada).reduce((s, t) => s + t.valor, 0)
   }
 
   ngOnInit() {
@@ -186,7 +203,9 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
 
   aprovar(t: TransacaoPendente) {
     const parcelada = this.ehParcelada(t)
+    const daConta = t.origem === OrigemTransacaoPendente.Conta
     this.transacaoSelecionadaId = t.id
+    this.preenchimentoEntrada = t.entrada
     this.preenchimentoParcela = parcelada
       ? { numeroParcelas: t.totalParcelas!, valorParcela: t.valor }
       : null
@@ -196,9 +215,9 @@ export class TransacoesPendentesComponent implements OnInit, OnDestroy {
       descricao: t.descricao,
       fixa: false,
       categoriaId: 0,
-      tipoPagamentoId: TIPO_PAGAMENTO_CREDITO,
+      tipoPagamentoId: t.tipoPagamentoSugerido ?? (daConta ? TIPO_PAGAMENTO_PIX : TIPO_PAGAMENTO_CREDITO),
       responsavelId: null,
-      cartaoId: t.cartaoSugeridoId,
+      cartaoId: daConta ? null : t.cartaoSugeridoId,
     }
     this.visibleModal = false
     setTimeout(() => (this.visibleModal = true))

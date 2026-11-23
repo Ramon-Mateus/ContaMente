@@ -76,6 +76,8 @@ export class MovimentacaoModalComponent implements OnChanges {
   @Input() transacaoPendenteId: number = 0
   @Input() preenchimento: PostMovimentacao | null = null
   @Input() preenchimentoParcela: PreenchimentoParcela | null = null
+  // Transação de conta corrente que é entrada (salário, PIX recebido...): abre com categorias de entrada.
+  @Input() preenchimentoEntrada: boolean = false
 
   @Output() submit = new EventEmitter<PostMovimentacao>()
 
@@ -106,6 +108,10 @@ export class MovimentacaoModalComponent implements OnChanges {
         // Depois do reset feito no início do ngOnChanges
         this.numeroParcelas = this.preenchimentoParcela?.numeroParcelas ?? 2
         this.valorParcela = this.preenchimentoParcela?.valorParcela ?? 0
+        if (this.entradaCategoria !== this.preenchimentoEntrada) {
+          this.entradaCategoria = this.preenchimentoEntrada
+          this.getCategorias()
+        }
       }
       return
     }

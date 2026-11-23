@@ -141,6 +141,7 @@ export interface PluggyCredenciais {
 export interface PluggyConta {
   id: number
   pluggyAccountId: string
+  tipo: 'CREDIT' | 'BANK'
   nome: string
   numero: string | null
   cartaoId: number | null
@@ -155,6 +156,11 @@ export interface PluggyItem {
   criadoEm: string
   ultimaSincronizacao: string | null
   contas: PluggyConta[]
+}
+
+export enum OrigemTransacaoPendente {
+  Cartao = 0,
+  Conta = 1,
 }
 
 export enum StatusTransacaoPendente {
@@ -176,6 +182,9 @@ export interface TransacaoPendente {
   valorTotal: number | null
   pendente: boolean
   status: StatusTransacaoPendente
+  origem: OrigemTransacaoPendente
+  entrada: boolean
+  tipoPagamentoSugerido: number | null
   cartaoSugeridoId: number | null
   movimentacaoId: number | null
   parcelaId: number | null

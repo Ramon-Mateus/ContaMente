@@ -10,6 +10,7 @@
   [transacaoPendenteId]="transacaoSelecionadaId"
   [preenchimento]="preenchimento"
   [preenchimentoParcela]="preenchimentoParcela"
+  [preenchimentoEntrada]="preenchimentoEntrada"
   (submit)="onAprovada()"
 ></app-movimentacao-modal>
 
@@ -80,10 +81,12 @@
 
       <div *ngFor="let conta of item.contas" class="flex flex-wrap items-center justify-between gap-2 mt-2 text-sm">
         <span>
-          <i class="pi pi-credit-card mr-1 text-secondary"></i>
+          <i class="pi mr-1 text-secondary" [ngClass]="conta.tipo === 'BANK' ? 'pi-wallet' : 'pi-credit-card'"></i>
           {{ conta.nome }} <span *ngIf="conta.numero" class="text-secondary">•••• {{ conta.numero.slice(-4) }}</span>
+          <span *ngIf="conta.tipo === 'BANK'" class="text-xs text-secondary">(conta)</span>
         </span>
         <p-dropdown
+          *ngIf="conta.tipo !== 'BANK'"
           [options]="cartoes"
           optionLabel="apelido"
           optionValue="id"
@@ -113,15 +116,31 @@
     </button>
   </div>
 
-  <p *ngIf="statusAtual === Status.Pendente && transacoes.length > 0" class="text-sm text-secondary mb-2">
-    {{ transacoes.length }} aguardando aceite · {{ totalSelecionado | currency: 'BRL' }}
+  <div class="flex gap-1 mb-3 text-xs">
+    <button
+      *ngFor="let f of [
+        { o: null, label: 'Tudo' },
+        { o: Origem.Cartao, label: 'Cartão' },
+        { o: Origem.Conta, label: 'Conta' }
+      ]"
+      (click)="filtroOrigem = f.o"
+      class="px-2.5 py-1 rounded-md transition"
+      [ngClass]="filtroOrigem === f.o ? 'bg-zinc-600 font-semibold' : 'bg-element hover:bg-zinc-700'"
+    >
+      {{ f.label }}
+    </button>
+  </div>
+
+  <p *ngIf="statusAtual === Status.Pendente && transacoesFiltradas.length > 0" class="text-sm text-secondary mb-2">
+    {{ transacoesFiltradas.length }} aguardando aceite · saídas {{ totalSaidas | currency: 'BRL' }}
+    <span *ngIf="totalEntradas > 0"> · entradas {{ totalEntradas | currency: 'BRL' }}</span>
   </p>
 
   <p *ngIf="carregando" class="text-secondary">Carregando...</p>
-  <p *ngIf="!carregando && transacoes.length === 0" class="text-secondary">Nada por aqui.</p>
+  <p *ngIf="!carregando && transacoesFiltradas.length === 0" class="text-secondary">Nada por aqui.</p>
 
   <div
-    *ngFor="let t of transacoes"
+    *ngFor="let t of transacoesFiltradas"
     class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-element rounded-md px-3 py-2 mb-2"
   >
     <div class="min-w-0">
@@ -131,6 +150,10 @@
       </p>
       <div class="flex flex-wrap gap-1 mt-1">
         <span class="mov-att">{{ t.data | date: 'dd/MM/yyyy' }}</span>
+        <span class="mov-att">
+          <i class="pi text-xs mr-0.5" [ngClass]="t.origem === Origem.Conta ? 'pi-wallet' : 'pi-credit-card'"></i>
+          {{ t.origem === Origem.Conta ? 'Conta' : 'Cartão' }}
+        </span>
         <span class="mov-att" *ngIf="ehParcelada(t)">
           {{ t.totalParcelas }}x de {{ t.valor | currency: 'BRL' }}
         </span>
@@ -143,7 +166,9 @@
     </div>
 
     <div class="flex items-center gap-3 shrink-0">
-      <span class="font-bold">{{ valorDaCompra(t) | currency: 'BRL' }}</span>
+      <span class="font-bold" [class.text-emerald-400]="t.entrada">
+        {{ t.entrada ? '+' : '' }}{{ valorDaCompra(t) | currency: 'BRL' }}
+      </span>
       <ng-container *ngIf="statusAtual === Status.Pendente">
         <button (click)="ignorar(t)" class="px-2 py-1 rounded-md bg-zinc-700 hover:bg-zinc-600 text-sm" title="Ignorar">
           <i class="pi pi-times"></i>
